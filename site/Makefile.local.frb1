@@ -1,0 +1,4 @@
+# Makefile.local for frb1.physics.mcgill.ca
+
+# Directory where Python modules will be installed
+PYDIR=$(HOME)/lib/python2.7/site-packages
