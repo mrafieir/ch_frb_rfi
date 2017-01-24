@@ -7,6 +7,7 @@ endif
 PYFILES=ch_frb_rfi/__init__.py \
 	ch_frb_rfi/acquisitions.py \
 	ch_frb_rfi/chains.py \
+	ch_frb_rfi/helper_transform.py \
 	ch_frb_rfi/utils.py
 
 install:
