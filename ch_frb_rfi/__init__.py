@@ -29,5 +29,8 @@ from helper_transform import helper_transform
 
 from utils import run_for_web_viewer
 
-# Syntax for accessing is e.g. ch_frb_rfi.acqusitions.toy()
-import acquisitions
+# Example syntax: ch_frb_rfi.acquisitions.toy()
+from . import acquisitions
+
+# Example syntax: ch_frb_rfi.bonsai.nfreq1024_singletree()
+from . import bonsai

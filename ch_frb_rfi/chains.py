@@ -24,7 +24,8 @@ class transform_parameters:
     Constructor syntax:
 
        p = transform_parameters(detrender_niter=2, clipper_niter=3, detrend_nt=2048, clip_nt=1024, cpp=True, two_pass=True, 
-                                plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, plot_nzoom=None)
+                                plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, plot_nzoom=None,
+                                bonsai_output_plot_stem=None, bonsai_output_hdf5_filename=None)
     
     with arguments as follows:
 
@@ -39,6 +40,9 @@ class transform_parameters:
 
        - two_pass: if True, then the first round of clipper transforms will use a
             more numerically stable, but slightly slower, clipping algorithm.
+
+       - bonsai_output_hdf5_filename: if a string is specified (e.g. 'triggers.hdf5'), then a 
+            sequence of hdf5 files will be written (with names like triggers_10_tree1.png).
 
     The way the plotting parameters are determined deserves special explanation!
 
@@ -57,8 +61,9 @@ class transform_parameters:
     By default (if no plotting-related constructor arguments are specified), plotting is disabled.
     """
 
-    def __init__(self, detrender_niter=2, clipper_niter=3, detrend_nt=2048, clip_nt=1024, cpp=True, two_pass=True, 
-                 plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, plot_nzoom=None):
+    def __init__(self, detrender_niter=2, clipper_niter=3, detrend_nt=2048, clip_nt=1024, cpp=True, two_pass=True,
+                 plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, plot_nzoom=None,
+                 bonsai_output_plot_stem=None, bonsai_output_hdf5_filename=None):
 
         self.detrender_niter = detrender_niter
         self.clipper_niter = clipper_niter
@@ -66,6 +71,9 @@ class transform_parameters:
         self.clip_nt = clip_nt
         self.two_pass = two_pass
         self.cpp = cpp
+
+        self.bonsai_output_plot_stem = bonsai_output_plot_stem
+        self.bonsai_output_hdf5_filename = bonsai_output_hdf5_filename
 
         # The rest of the constructor initializes plotting parameters.
         # See docstring above for a description of the initialization logic!
