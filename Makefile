@@ -6,7 +6,8 @@ endif
 
 PYFILES=ch_frb_rfi/__init__.py \
 	ch_frb_rfi/acquisitions.py \
-	ch_frb_rfi/chains.py
+	ch_frb_rfi/chains.py \
+	ch_frb_rfi/helper_transform.py
 
 install:
 	mkdir -p $(PYDIR)/ch_frb_rfi
