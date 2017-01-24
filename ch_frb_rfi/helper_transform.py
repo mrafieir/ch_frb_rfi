@@ -44,7 +44,8 @@ class helper_transform(rf_pipelines.py_wi_transform):
     
       'max_niter=1' is the maximum number of iterations for each chunk.
 
-      'test=False' triggers the test flag.
+      'test=False' is used for comparing statistical results from a
+       single iteration of helper functions with different flavors.
     """
 
     def __init__(self, nt_chunk=1024, fdict=None, rms_cut=0., mask_cut=0.05, max_niter=1, test=False):
@@ -86,14 +87,16 @@ class helper_transform(rf_pipelines.py_wi_transform):
             self.max_niter = 1
             test_results = {}
             rms = 0
+        else:
+            unmasked_after = 0
 
         for ix in xrange(self.max_niter):
 
             if not self.test:
+                
                 (mean, rms) = rf_pipelines_c.weighted_mean_and_rms(intensity, weights)
-
+                
                 unmasked_before = self.unmasked(weights)
-                unmasked_after = unmasked_before
 
                 if rms > self.rms_cut:
                     weights[:] = 0.
@@ -123,10 +126,9 @@ class helper_transform(rf_pipelines.py_wi_transform):
                 p = pprint.PrettyPrinter()
                 p.pprint(test_results)
                 print '\n-----------------------\n'
+            
             else:
                 unmasked_after = self.unmasked(weights)
 
     def unmasked(self, weights):
- 
         return np.count_nonzero(weights) / float(weights.size)
-
