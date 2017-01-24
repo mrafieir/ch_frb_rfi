@@ -19,7 +19,6 @@ The helper transform is well documented: help(ch_frb_rfi.helper_transform).
 """
 
 # These functions are imported to the top level of the ch_frb_rfi package.
-<<<<<<< HEAD
 from chains import clipper_chain, \
     detrender_chain, \
     transform_chain, \
