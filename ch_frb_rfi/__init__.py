@@ -18,5 +18,5 @@ For a list of all acquisitions available, see dir(ch_frb_rfi.acquisitions).
 # These functions are imported to the top level of the ch_frb_rfi package.
 from chains import clipper_chain, detrender_chain, transform_chain, new_transform
 
-# Syntax for accessing these is ch_
+# Syntax for accessing is e.g. ch_frb_rfi.acqusitions.toy()
 import acquisitions
