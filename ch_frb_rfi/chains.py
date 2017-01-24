@@ -19,16 +19,16 @@ def detrender_chain(ix, detrend_nt=2048, cpp=True):
            ]
 
 
-def clipper_chain(jx, ix, two_pass=True, clip_nt=1024):    
+def clipper_chain(jx, ix, two_pass=True, clip_nt=1024, cpp=True):
     if (ix == 0) and (two_pass is True):
         pass
     else:
         two_pass = False
 
-    return [ rf_pipelines.intensity_clipper_cpp(sigma=3, niter=12, iter_sigma=3, axis=None, nt_chunk=clip_nt, Df=2, Dt=16),
-             rf_pipelines.intensity_clipper_cpp(sigma=3, niter=1, iter_sigma=3, axis=0, nt_chunk=clip_nt, Df=1, Dt=1),
-             rf_pipelines.intensity_clipper_cpp(sigma=3, niter=1, iter_sigma=3, axis=1, nt_chunk=clip_nt, Df=1, Dt=1, two_pass=two_pass),
-             rf_pipelines.std_dev_clipper_cpp(sigma=3, axis=1, Dt=16, two_pass=two_pass)
+    return [ rf_pipelines.intensity_clipper(sigma=3, niter=12, iter_sigma=3, axis=None, nt_chunk=clip_nt, Df=2, Dt=16, cpp=cpp),
+             rf_pipelines.intensity_clipper(sigma=3, niter=1, iter_sigma=3, axis=0, nt_chunk=clip_nt, Df=1, Dt=1, cpp=cpp),
+             rf_pipelines.intensity_clipper(sigma=3, niter=1, iter_sigma=3, axis=1, nt_chunk=clip_nt, Df=1, Dt=1, two_pass=two_pass, cpp=cpp),
+             rf_pipelines.std_dev_clipper(sigma=3, axis=1, Dt=16, two_pass=two_pass, cpp=cpp)
            ]
 
 
@@ -39,7 +39,7 @@ def transform_chain(detrender_niter=2, clipper_niter=3, detrend_nt=2048, clip_nt
 
     for ix in xrange(detrender_niter):
         for jx in xrange(clipper_niter):
-            transform_chain += clipper_chain(jx, ix, two_pass=two_pass, clip_nt=clip_nt)
+            transform_chain += clipper_chain(jx, ix, two_pass=two_pass, clip_nt=clip_nt, cpp=cpp)
         transform_chain += detrender_chain(ix, detrend_nt=detrend_nt, cpp=cpp)
 
     return transform_chain
