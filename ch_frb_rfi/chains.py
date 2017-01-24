@@ -84,6 +84,7 @@ class transform_parameters:
             self.plot_downsample_nt = 16
             self.plot_nxpix = 1200
             self.plot_nypix = 512
+            self.plot_nzoom = 1
         elif plot_type is 'web_viewer':
             self.plot_downsample_nt = 16
             self.plot_nxpix = 256
