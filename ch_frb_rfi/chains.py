@@ -41,8 +41,12 @@ class transform_parameters:
        - two_pass: if True, then the first round of clipper transforms will use a
             more numerically stable, but slightly slower, clipping algorithm.
 
+       - bonsai_output_plot_stem: if None, then no bonsai plots will be written. If a string is 
+            specified (e.g. 'triggers'), then a sequence of bonsai plots will be written with 
+            filenames beginning with the string (e.g. triggers_0_tree2.png).
+
        - bonsai_output_hdf5_filename: if a string is specified (e.g. 'triggers.hdf5'), then a 
-            sequence of hdf5 files will be written (with names like triggers_10_tree1.png).
+            sequence of hdf5 files will be written (with names like triggers_0.hdf5).
 
     The way the plotting parameters are determined deserves special explanation!
 
