@@ -10,7 +10,7 @@ def toy():
     filename_list = [ '00000327.h5', '00000344.h5' ]
     filename_list = [ os.path.join('/data/pathfinder/16-09-19-incoherent-without-noise-source',f) for f in filename_list ]
 
-    # Noise source was turned off in this acqusition, so no 'noise_source_align' argument here.
+    # Noise source was turned off in this acquisition, so no 'noise_source_align' argument here.
     return rf_pipelines.chime_stream_from_filename_list(filename_list, nt_chunk=1024)
 
 
@@ -25,12 +25,19 @@ def small():
     acqdir = '/data/pathfinder/16-09-19-incoherent-without-noise-source'
     filename_list = [ os.path.join(acqdir, basename) for basename in basename_list ]
 
-    # Noise source was turned off in this acqusition, so no 'noise_source_align' argument here.
+    # Noise source was turned off in this acquisition, so no 'noise_source_align' argument here.
     return rf_pipelines.chime_stream_from_filename_list(filename_list, nt_chunk=1024)
 
 
 def incoherent_16_09_19():
     """This is a large acquisition! (~50 GB)"""
 
-    # Noise source was turned off in this acqusition, so no 'noise_source_align' argument here.
+    # Noise source was turned off in this acquisition, so no 'noise_source_align' argument here.
     return rf_pipelines.chime_stream_from_acqdir('/data/pathfinder/16-09-19-incoherent-without-noise-source')
+
+
+def baseband_26m_b1937_16_04_22():
+    """Baseband 26m data with 16K upchannelization"""
+    
+    # PSR B1937+21 is supposed to be in this acquisition!
+    return rf_pipelines.chime_stream_from_acqdir('/data2/baseband_26m_b1937_16_04_22')
