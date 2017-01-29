@@ -25,4 +25,8 @@ Current contents:
     Slightly more complicated, also intended for RFI studies with 1024-frequency data.
     Searches with three dedispersion trees to max DM 552.
 
+  - bonsai_nfreq16K_3tree_v1.txt
+
+    Intended for RFI studies with 16K-frequency data.
+
 More to come!
