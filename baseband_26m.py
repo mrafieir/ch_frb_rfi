@@ -8,6 +8,6 @@ p = ch_frb_rfi.transform_parameters(plot_type = 'big',
 
 
 t = ch_frb_rfi.transform_chain(p)
-t += [ ch_frb_rfi.bonsai.nfreq1024_3tree(p) ]
+t += [ ch_frb_rfi.bonsai.nfreq16K_3tree(p) ]
 
 s.run(t, outdir='baseband_26m_b1937_pipeline_outputs')

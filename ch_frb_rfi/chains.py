@@ -7,16 +7,6 @@ import glob
 import rf_pipelines
 
 
-class new_transform(rf_pipelines.py_wi_transform):
-    """Ignore me!"""
-
-    def __init__(self):
-        pass
-
-
-####################################################################################################
-
-
 class transform_parameters:
     """
     transform_parameters: an aggregator class to hold parameters for initializing transforms.

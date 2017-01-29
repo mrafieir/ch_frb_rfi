@@ -22,8 +22,7 @@ The helper transform is well documented: help(ch_frb_rfi.helper_transform).
 from chains import clipper_chain, \
     detrender_chain, \
     transform_chain, \
-    transform_parameters, \
-    new_transform
+    transform_parameters
 
 from helper_transform import helper_transform
 
