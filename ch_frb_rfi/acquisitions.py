@@ -2,6 +2,7 @@
 # Most functions here return rf_pipelines.wi_stream objects.
 
 import os
+import glob
 import rf_pipelines
 
 def toy():
@@ -35,6 +36,12 @@ def incoherent_16_09_19():
     # Noise source was turned off in this acquisition, so no 'noise_source_align' argument here.
     return rf_pipelines.chime_stream_from_acqdir('/data/pathfinder/16-09-19-incoherent-without-noise-source')
 
+
+def baseband_26m_b1937_16_04_22_1K(n):
+    """A small sample of 1K-frequency data from the 26m telescope"""
+
+    filename_list = sorted(glob.glob('/data2/baseband_26m_b1937_16_04_22/1k/*.h5'))[:n]
+    return rf_pipelines.chime_stream_from_filename_list(filename_list, nt_chunk=1024)
 
 def baseband_26m_b1937_16_04_22():
     """Baseband 26m data with 16K upchannelization"""
