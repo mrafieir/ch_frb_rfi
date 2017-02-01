@@ -89,7 +89,7 @@ class transform_parameters:
         elif (plot_downsample_nt is None) and (plot_nxpix is None) and (plot_nypix is None) and (plot_nzoom is not None):
             # OK: no plots will be written
             self.make_plots = False
-        elif (plot_downsample is None) or (plot_nxpix is None) or (plot_nypix is None) or (plot_nzoom is None):
+        elif (plot_downsample_nt is None) or (plot_nxpix is None) or (plot_nypix is None) or (plot_nzoom is None):
             raise RuntimeError("transform_parameters: if plot_type is unspecified, then either all or none of"
                                + " (plot_downsample_nt, plot_nxpix, plot_nypix, plot_nzoom) must be specified")
 
