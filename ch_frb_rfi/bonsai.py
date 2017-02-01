@@ -23,10 +23,19 @@ def _make_dedisperser(parameters, bonsai_config_hdf5_basename):
     if parameters.make_plots:
         nt_per_file = parameters.plot_nxpix * parameters.plot_downsample_nt
 
-    return rf_pipelines.bonsai_dedisperser(config_hdf5_filename = os.path.join('/data/bonsai_configs', bonsai_config_hdf5_basename),
-                                           trigger_hdf5_filename = parameters.bonsai_output_hdf5_filename,
-                                           trigger_plot_stem = parameters.bonsai_output_plot_stem,
-                                           nt_per_file = nt_per_file)
+    # This block of code has been written in an awkward way, which happens to work
+    # in both rf_pipelines v11 (the current master branch) and v12_devel (in which case
+    # it returns the "old" C++ bonsai_dedisperser, not the "new" python version).
+    #
+    # When rf_pipelines v12 is finished and merged to master, we can replace this
+    # block of code by a call to rf_pipelines.bonsai_dedispeser(), which will return
+    # the "new" python transform.
+
+    import rf_pipelines.rf_pipelines_c
+    config_filename = os.path.join('/data/bonsai_configs', bonsai_config_hdf5_basename)
+    trigger_filename = parameters.bonsai_output_hdf5_filename if parameters.bonsai_output_hdf5_filename else ''
+    trigger_plot_stem = parameters.bonsai_output_plot_stem if parameters.bonsai_output_plot_stem else ''
+    return rf_pipelines.rf_pipelines_c.make_bonsai_dedisperser(config_filename, trigger_filename, trigger_plot_stem, nt_per_file)
 
 
 def nfreq1024_singletree(parameters):
