@@ -5,6 +5,7 @@ import os
 import glob
 import rf_pipelines
 
+
 def toy():
     """A small arbitrarily-chosen acquisition that we like to use for testing."""
 
@@ -37,14 +38,21 @@ def incoherent_16_09_19():
     return rf_pipelines.chime_stream_from_acqdir('/data/pathfinder/16-09-19-incoherent-without-noise-source')
 
 
-def baseband_26m_b1937_16_04_22_1K(n):
+def baseband_26m_b1937_16_04_22_1K():
     """A small sample of 1K-frequency data from the 26m telescope"""
 
-    filename_list = sorted(glob.glob('/data2/baseband_26m_b1937_16_04_22/1k/*.h5'))[:n]
-    return rf_pipelines.chime_stream_from_filename_list(filename_list, nt_chunk=1024)
+    return rf_pipelines.chime_stream_from_acqdir('/data2/baseband_26m_b1937_16_04_22/1k')
+
 
 def baseband_26m_b1937_16_04_22():
     """Baseband 26m data with 16K upchannelization"""
     
     # PSR B1937+21 is supposed to be in this acquisition!
     return rf_pipelines.chime_stream_from_acqdir('/data2/baseband_26m_b1937_16_04_22')
+
+
+def sample(path, n):
+    """This allows user to select the first 'n' files from 'path'"""
+
+    filename_list = sorted(glob.glob(path))[:n]
+    return rf_pipelines.chime_stream_from_filename_list(filename_list, nt_chunk=1024)

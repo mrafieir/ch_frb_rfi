@@ -6,3 +6,5 @@ TODO
 Makefile.local
 ch_frb_rfi/test_ig
 bonsai_configs/*.hdf5
+*_pipeline_outputs
+log

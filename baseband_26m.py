@@ -1,25 +1,35 @@
 #!/usr/bin/env python
 import ch_frb_rfi
 
-n = 20
-u16k = False
-web = True
+# Indicate whether you're using the 16K data.
+u16k = True
 
+# If True, then retrieve only the first 'n' files from 'path'.
+sample = True
+n = 200
+path = '/data2/baseband_26m_b1937_16_04_22/temp/core0/*.h5'
+
+# Set True for outputting to the web_viewer. If False, plot 'big'.
+web = True
 plot_type = 'web_viewer' if web else 'big'
 
+
+# Define transform parameters. See 'ch_frb_rfi/chain.py' for a list of available parameters.
 p = ch_frb_rfi.transform_parameters(plot_type=plot_type, bonsai_output_plot_stem='triggers')
 t = ch_frb_rfi.transform_chain(p)
 
+# Read filenames into a list; append bonsai_dedisperser to the list of transforms.
 if u16k:
-    s = ch_frb_rfi.acquisitions.baseband_26m_b1937_16_04_22()
+    s = ch_frb_rfi.acquisitions.sample(path, n) if sample else ch_frb_rfi.acquisitions.baseband_26m_b1937_16_04_22()
     t += [ ch_frb_rfi.bonsai.nfreq16K_3tree(p) ]
     dirname='16K_baseband_26m_b1937_pipeline_outputs'
 
 else:
-    s = ch_frb_rfi.acquisitions.baseband_26m_b1937_16_04_22_1K(n)
+    s = ch_frb_rfi.acquisitions.sample(path, n) if sample else ch_frb_rfi.acquisitions.baseband_26m_b1937_16_04_22_1K()
     t += [ ch_frb_rfi.bonsai.nfreq1024_3tree(p) ]
     dirname='1K_baseband_26m_b1937_pipeline_outputs'
 
+# Run rf_pipelines!
 if not web:
     s.run(t, outdir=dirname)
 else:
