@@ -37,9 +37,9 @@ class transform_parameters:
        - bonsai_output_hdf5_filename: if a string is specified (e.g. 'triggers.hdf5'), then a 
             sequence of hdf5 files will be written (with names like triggers_0.hdf5).
 
-       - badchannel_mask: If True, then a standard mask (based on previously identified RFI-contaminated channels)
-            is appended to the beginning of the transform chain. One can specify a mask via
-            the argument mask_path='/data/pathfinder/rfi_masks/rfi_20160705.dat' in 
+       - badchannel_mask: If True, then a standard mask (based on previously identified 
+            RFI-contaminated channels) is appended to the transform chain. One can specify 
+            a mask via the argument mask_path='/data/pathfinder/rfi_masks/rfi_20160705.dat' in 
             ch_frb_rfi.transforms_parameters.append_badchannel_mask().
     
     The way the plotting parameters are determined deserves special explanation!
