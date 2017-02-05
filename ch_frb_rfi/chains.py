@@ -14,7 +14,7 @@ class transform_parameters:
 
        p = transform_parameters(detrender_niter=2, clipper_niter=3, detrend_nt=2048, clip_nt=1024, cpp=True, two_pass=True, 
                                 plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, plot_nzoom=None,
-                                bonsai_output_plot_stem=None, bonsai_output_hdf5_filename=None, badchannel_mask=True)
+                                bonsai_output_plot_stem=None, bonsai_output_hdf5_filename=None, maskpath=None, mask=None)
     
     with arguments as follows:
 
@@ -37,11 +37,14 @@ class transform_parameters:
        - bonsai_output_hdf5_filename: if a string is specified (e.g. 'triggers.hdf5'), then a 
             sequence of hdf5 files will be written (with names like triggers_0.hdf5).
 
-       - badchannel_mask: If True, then a standard mask (based on previously identified 
-            RFI-contaminated channels) is appended to the transform chain. One can specify 
-            a mask via the argument mask_path='/data/pathfinder/rfi_masks/rfi_20160705.dat' in 
-            ch_frb_rfi.transforms_parameters.append_badchannel_mask().
-    
+       - maskpath: is a full path to the mask file which contains a list of previously-identified 
+            RFI-contaminated frequency channels. If None, then the argument 'mask' is used instead.
+        
+       - mask: is a list of to-be-masked frequency channels in this format: e.g. mask=[[401,413.7],[654,736.012]]
+            
+       Note: If both 'mask' and 'maskpath' are None, then the badchannel_mask transform is disabled. Otherwise,
+            the badchannel_mask transfrom can be appended to the transform chain via append_badchannel_mask().
+
     The way the plotting parameters are determined deserves special explanation!
 
        - If the four "fine-grained" plotting parameters (plot_downsample_nt, plot_nxpix, plot_nypix, plot_nzoom)
@@ -61,7 +64,7 @@ class transform_parameters:
 
     def __init__(self, detrender_niter=2, clipper_niter=3, detrend_nt=2048, clip_nt=1024, cpp=True, two_pass=True,
                  plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, plot_nzoom=None,
-                 bonsai_output_plot_stem=None, bonsai_output_hdf5_filename=None, badchannel_mask=True):
+                 bonsai_output_plot_stem=None, bonsai_output_hdf5_filename=None, maskpath=None, mask=None):
 
         self.detrender_niter = detrender_niter
         self.clipper_niter = clipper_niter
@@ -72,8 +75,9 @@ class transform_parameters:
 
         self.bonsai_output_plot_stem = bonsai_output_plot_stem
         self.bonsai_output_hdf5_filename = bonsai_output_hdf5_filename
-        
-        self.badchannel_mask = badchannel_mask
+       
+        self.maskpath = maskpath
+        self.mask = mask
 
         # The rest of the constructor initializes plotting parameters.
         # See docstring above for a description of the initialization logic!
@@ -114,9 +118,9 @@ class transform_parameters:
             t = rf_pipelines.plotter_transform(img_prefix, self.plot_nypix, self.plot_nxpix, self.plot_downsample_nt, self.plot_nzoom)
             transform_chain.append(t)
 
-    def append_badchannel_mask(self, transform_chain, mask_path='/data/pathfinder/rfi_masks/rfi_20160705.dat'):
-        if self.badchannel_mask:
-            t = rf_pipelines.badchannel_mask(mask_path, nt_chunk=self.clip_nt)
+    def append_badchannel_mask(self, transform_chain):
+        if (self.maskpath != None) or (self.mask != None):
+            t = rf_pipelines.badchannel_mask(maskpath=self.maskpath, nt_chunk=self.clip_nt, mask=self.mask)
             transform_chain.append(t)
 
 ####################################################################################################
