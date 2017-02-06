@@ -20,19 +20,21 @@ p = ch_frb_rfi.transform_parameters(plot_type=plot_type,
                                     clipper_niter=2,
                                     detrender_niter=2)
 
+# Define the chain of transforms.
 t = [ ch_frb_rfi.test_16k() ] 
 t += ch_frb_rfi.transform_chain(p)
 
 # Read filenames into a list; append bonsai_dedisperser to the list of transforms.
+
 if u16k:
     s = ch_frb_rfi.acquisitions.sample(path, n) if sample else ch_frb_rfi.acquisitions.baseband_26m_b1937_16_04_22()
     t += [ ch_frb_rfi.bonsai.nfreq16K_3tree(p) ]
-    dirname ='16K_baseband_26m_b1937_pipeline_outputs__d%d%dc' % (p.detrender_niter,p.clipper_niter)
+    dirname = '16K_baseband_26m_b1937_pipeline_outputs__d%d%dc' % (p.detrender_niter, p.clipper_niter)
 
 else:
     s = ch_frb_rfi.acquisitions.sample(path, n) if sample else ch_frb_rfi.acquisitions.baseband_26m_b1937_16_04_22_1K()
     t += [ ch_frb_rfi.bonsai.nfreq1024_3tree(p) ]
-    dirname='1K_baseband_26m_b1937_pipeline_outputs'
+    dirname = '1K_baseband_26m_b1937_pipeline_outputs__d%d%dc' % (p.detrender_niter, p.clipper_niter)
 
 # Run rf_pipelines!
 if not web:
