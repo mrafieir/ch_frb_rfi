@@ -23,20 +23,14 @@ Current contents:
   - bonsai_nfreq1024_3tree_v1.txt
 
     Slightly more complicated, also intended for RFI studies with 1024-frequency data.
-    Searches with three dedispersion trees to max DM 552.
-
-    dt_sample = 0.00131072
+    Searches with three dedispersion trees to max DM 552. `dt_sample = 0.00131072`
 
   - bonsai_nfreq16K_3tree_v1.txt
 
-    Intended for RFI studies with 16K-frequency data.
-    
-    dt_sample = 0.00098304
+    Intended for RFI studies with 16K-frequency data. `dt_sample = 0.00098304`
 
   - bonsai_nfreq1024_3tree_v2.txt
 
-    Intended for RFI studies with 1K-frequency data
-    
-    dt_sample = 0.00098304
+    Intended for RFI studies with 1K-frequency data. `dt_sample = 0.00098304`
 
 More to come!
