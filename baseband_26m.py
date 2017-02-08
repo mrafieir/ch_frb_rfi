@@ -2,12 +2,14 @@
 import ch_frb_rfi
 
 # Indicate whether you're using the 16K data.
-u16k = True
+u16k = False
 
 # If True, then retrieve only the first 'n' files from 'path'.
 sample = True
-n = 40
+start = 10
+end = 200
 path = '/data2/baseband_26m_b1937_16_04_22/*.h5'
+path = '/data2/baseband_26m_b1937_16_04_22/1k_B1937/*.h5'
 
 # Set True for outputting to the web_viewer. If False, plot 'big'.
 web = True
@@ -27,14 +29,14 @@ t += ch_frb_rfi.transform_chain(p)
 # Read filenames into a list; append bonsai_dedisperser to the list of transforms.
 
 if u16k:
-    s = ch_frb_rfi.acquisitions.sample(path, n) if sample else ch_frb_rfi.acquisitions.baseband_26m_b1937_16_04_22()
+    s = ch_frb_rfi.acquisitions.sample(path, start, end) if sample else ch_frb_rfi.acquisitions.baseband_26m_b1937_16_04_22()
     t += [ ch_frb_rfi.bonsai.nfreq16K_3tree(p) ]
     dirname = '16K_baseband_26m_b1937_pipeline_outputs__d%d%dc' % (p.detrender_niter, p.clipper_niter)
 
 else:
-    s = ch_frb_rfi.acquisitions.sample(path, n) if sample else ch_frb_rfi.acquisitions.baseband_26m_b1937_16_04_22_1K()
-    t += [ ch_frb_rfi.bonsai.nfreq1024_3tree(p) ]
-    dirname = '1K_baseband_26m_b1937_pipeline_outputs__d%d%dc' % (p.detrender_niter, p.clipper_niter)
+    s = ch_frb_rfi.acquisitions.sample(path, start, end) if sample else ch_frb_rfi.acquisitions.baseband_26m_b1937_16_04_22_1K()
+    t += [ ch_frb_rfi.bonsai.nfreq1024_3tree(p, v=2) ]
+    dirname = 'test__1K_baseband_26m_b1397_pipeline_outputs__d%d%dc' % (p.detrender_niter, p.clipper_niter)
 
 # Run rf_pipelines!
 if not web:
