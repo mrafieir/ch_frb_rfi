@@ -10,21 +10,25 @@ if sample == 1:
     path = '/data2/baseband_26m_b1937_16_04_22/*.h5'
     bonsai_v = 2
     kfreq = 16
+    nypix = 16384
 
 if sample == 2:
     path = '/data2/baseband_26m_b1937_16_04_22/1k_B1937/*.h5'
     bonsai_v = 2
     kfreq = 1
+    nypix = 1024
 
 if sample == 3:
     path = '/data2/acqhack_b1937_1K/*.h5'
     bonsai_v = 1
     kfreq = 1
+    nypix = 1024
 
 if sample == 4:
     path = '/data2/baseband_26m_b1937_16_04_22/128k/*.h5'
     bonsai_v = 1
     kfreq = 128
+    nypix = 131072
 
 # Define transform parameters. See 'ch_frb_rfi/chain.py' for a list of available parameters.
 p = ch_frb_rfi.transform_parameters(plot_type='web_viewer' if web else 'big', 
@@ -32,8 +36,8 @@ p = ch_frb_rfi.transform_parameters(plot_type='web_viewer' if web else 'big',
                                     mask=[[730,760]],
                                     clipper_niter=2,
                                     detrender_niter=2,
-                                    plot_nypix=131072,
-                                    plot_nxpix=100000,
+                                    plot_nypix=nypix,
+                                    plot_nxpix=10000,
                                     kfreq=kfreq)
 
 # Define the chain of transforms.
