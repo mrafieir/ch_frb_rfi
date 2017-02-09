@@ -1,0 +1,40 @@
+# This is a bonsai paramfile for the John A. Galt telescope,
+# also known as the 26m telescope.
+#
+# The search uses three 4K-trees:
+#   - one upsampled (nups=2, max DM 138)
+#   - one at native resolution (max DM 276)
+#   - one downsampled (nups=2, max DM 552)
+#
+
+tree_size = 4096
+nchan = 131072       # Number of frequency channels in input 
+
+nds = [ 1, 1, 2 ]
+nups = [ 2, 1, 1 ]
+
+# No spectral index or scattering search
+nsm = 1
+sm_depth = 0
+sm_max = 0
+nbeta = 1
+beta_depth = 0
+beta_min = 0
+beta_max = 0
+
+# The following numbers can be obtained from the hdf5 data files, using
+# the utility program 'ch-show-intensity-file' in the ch_frb_io github repo.
+
+freq_lo_MHz = 400.0
+freq_hi_MHz = 800.0
+dt_sample = 0.00098304   # sample length in seconds
+
+# See the bonsai documentation for more discussion of these numbers.
+# (For the most part these are reasonable defaults that can be changed freely.)
+
+nthreads = 1
+nt_ftree_pad = 16     # Has to be a multiple of 16, can't be zero, should be larger than 16 if scattering search enabled.
+ndm_per_trigger = 16  # Defines downsampling from fine-grained triggers to coarse-grained triggers
+nt_per_trigger = 64   # Defines downsampling from fine-grained triggers to coarse-grained triggers
+nt_tree = 512         # Used internally in bonsai
+nt_data = 1024        # This is the chunk size for moving data between the rf_pipelines buffer and the bonsai dedisperser.

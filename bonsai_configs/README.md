@@ -33,4 +33,8 @@ Current contents:
 
     Intended for RFI studies with 1K-frequency data. `dt_sample = 0.00098304`
 
+  - bonsai_nfreq128K_3tree_v1.txt
+
+    Intended for RFI studies with 128K-frequency data. `dt_sample = 0.00098304`
+
 More to come!

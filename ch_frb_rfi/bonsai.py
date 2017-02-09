@@ -47,3 +47,6 @@ def nfreq1024_3tree(parameters, v):
 
 def nfreq16K_3tree(parameters):
     return _make_dedisperser(parameters, 'bonsai_nfreq16K_3tree_v1.hdf5')
+
+def nfreq128K_3tree(parameters):
+    return _make_dedisperser(parameters, 'bonsai_nfreq128K_3tree_v1.hdf5')
