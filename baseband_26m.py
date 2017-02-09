@@ -3,7 +3,7 @@ import ch_frb_rfi
 
 sample = 4
 start = 0
-end = 100
+end = 30
 web = False
 
 if sample == 1:
@@ -37,7 +37,7 @@ p = ch_frb_rfi.transform_parameters(plot_type='web_viewer' if web else 'big',
                                     clipper_niter=2,
                                     detrender_niter=2,
                                     plot_nypix=nypix,
-                                    plot_nxpix=10000,
+                                    plot_nxpix=1200,
                                     kfreq=kfreq)
 
 # Define the chain of transforms.
@@ -45,7 +45,6 @@ t = [ ch_frb_rfi.test_16k() ]
 t += ch_frb_rfi.transform_chain(p)
 
 # Read filenames into a list; append bonsai_dedisperser to the list of transforms.
-
 s = ch_frb_rfi.acquisitions.sample(path, start, end)
 
 if kfreq == 128:
