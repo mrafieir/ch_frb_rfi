@@ -117,7 +117,6 @@ class transform_parameters:
         if plot_nzoom is not None:
             self.plot_nzoom = plot_nzoom
 
-
     def append_plotter_transform(self, transform_chain, img_prefix):
         if self.make_plots:
             t = rf_pipelines.plotter_transform(img_prefix, self.plot_nypix, self.plot_nxpix, self.plot_downsample_nt, self.plot_nzoom)
@@ -128,6 +127,16 @@ class transform_parameters:
             t = rf_pipelines.badchannel_mask(maskpath=self.maskpath, nt_chunk=self.clip_nt, mask=self.mask)
             transform_chain.append(t)
 
+# -------------------------------------------------------------------------------------------------------
+#                                       CHAIN VERSION NUMBER: 1.4 
+# -------------------------------------------------------------------------------------------------------
+# Version History:
+#
+#   1.4: Optimized for the 16K-upchannelized intensity data from the John A. Galt telescope (26m)
+#
+#   1.3: Implemented fast C++ algorithms; tested on incoherent-beam acquisitions by the CHIME Pathfinder.
+#        
+#   0.0 - 1.2: Early attempts based on 1K intensity data from the CHIME Pathfinder.
 # -------------------------------------------------------------------------------------------------------
 
 def detrender_chain(parameters, ix):
@@ -150,17 +159,6 @@ def clipper_chain(parameters, ix, kfreq):
              rf_pipelines.std_dev_clipper(sigma=3, axis=1, Df=1*kfreq, Dt=16, two_pass=two_pass, cpp=parameters.cpp),
              rf_pipelines.intensity_clipper(sigma=3, axis=0, niter=12, iter_sigma=3, nt_chunk=parameters.clip_nt, Df=2*kfreq, Dt=16, cpp=parameters.cpp) ]
 
-# -------------------------------------------------------------------------------------------------------
-#                                       CHAIN VERSION NUMBER: 1.4 
-# -------------------------------------------------------------------------------------------------------
-# Version History:
-#
-#   1.4: Optimized for the 16K-upchannelized intensity data from the John A. Galt telescope (26m)
-#
-#   1.3: Implemented fast C++ algorithms; tested on incoherent-beam acquisitions by the CHIME Pathfinder.
-#        
-#   0.0 - 1.2: Early attempts based on 1K intensity data from the CHIME Pathfinder.
-# -------------------------------------------------------------------------------------------------------
 def transform_chain(parameters):
     transform_chain = [ ]
     parameters.append_plotter_transform(transform_chain, 'raw')
