@@ -52,7 +52,7 @@ def baseband_26m_b1937_16_04_22():
 
 
 def sample(path, start, end):
-    """This allows user to select the first 'n' files from 'path'"""
+    """This is a very handy function which allows user to select a range of files from an input path"""
 
     filename_list = sorted(glob.glob(path))[start:end]
     return rf_pipelines.chime_stream_from_filename_list(filename_list, nt_chunk=1024)

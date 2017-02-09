@@ -1,3 +1,5 @@
+# This is a bonsai paramfile for the John A. Galt telescope,
+# also known as the 26m telescope.
 #
 # Since it assumes 1024 frequency channels (rather than 16K) the
 # computational cost is much lower than what we expect on the real
