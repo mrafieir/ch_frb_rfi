@@ -130,6 +130,7 @@ class transform_parameters:
 # -------------------------------------------------------------------------------------------------------
 #                                       CHAIN VERSION NUMBER: 1.4 
 # -------------------------------------------------------------------------------------------------------
+# 
 # Version History:
 #
 #   1.4: Optimized for the 16K-upchannelized intensity data from the John A. Galt telescope (26m)
@@ -137,6 +138,7 @@ class transform_parameters:
 #   1.3: Implemented fast C++ algorithms; tested on incoherent-beam acquisitions by the CHIME Pathfinder.
 #        
 #   0.0 - 1.2: Early attempts based on 1K intensity data from the CHIME Pathfinder.
+#  
 # -------------------------------------------------------------------------------------------------------
 
 def detrender_chain(parameters, ix):
@@ -147,7 +149,6 @@ def detrender_chain(parameters, ix):
 
     parameters.append_plotter_transform(transform_chain, 'dc_out%d' % ix)
     return transform_chain
-
 
 def clipper_chain(parameters, ix, kfreq):
     two_pass = parameters.two_pass and (ix == 0)
