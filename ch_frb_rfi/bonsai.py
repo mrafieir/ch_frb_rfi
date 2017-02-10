@@ -18,7 +18,6 @@ def _make_dedisperser(parameters, bonsai_config_hdf5_basename):
 
     # Default
     nt_per_file = 16384
-    ibeam = 0
 
     # If waterfall plots are being made, keep bonsai plots in sync.
     if parameters.make_plots:
@@ -36,17 +35,17 @@ def _make_dedisperser(parameters, bonsai_config_hdf5_basename):
     config_filename = os.path.join('/data/bonsai_configs', bonsai_config_hdf5_basename)
     trigger_filename = parameters.bonsai_output_hdf5_filename if parameters.bonsai_output_hdf5_filename else ''
     trigger_plot_stem = parameters.bonsai_output_plot_stem if parameters.bonsai_output_plot_stem else ''
-    return rf_pipelines.rf_pipelines_c.make_bonsai_dedisperser(config_filename, trigger_filename, trigger_plot_stem, nt_per_file, ibeam)
+    return rf_pipelines.rf_pipelines_c.make_bonsai_dedisperser(config_filename, trigger_filename, trigger_plot_stem, nt_per_file)
 
 
 def nfreq1024_singletree(parameters):
     return _make_dedisperser(parameters, 'bonsai_nfreq1024_singletree_v1.hdf5')
 
 def nfreq1K_3tree(parameters, v):
-    return _make_dedisperser(parameters, 'bonsai_nfreq1024_3tree_v%s.hdf5' %v)
+    return _make_dedisperser(parameters, 'bonsai_nfreq1024_3tree_v%s.hdf5' % v)
 
 def nfreq16K_3tree(parameters, v):
-    return _make_dedisperser(parameters, 'bonsai_nfreq16K_3tree_v%s.hdf5' %v)
+    return _make_dedisperser(parameters, 'bonsai_nfreq16K_3tree_v%s.hdf5' % v)
 
 def nfreq128K_3tree(parameters, v):
-    return _make_dedisperser(parameters, 'bonsai_nfreq128K_3tree_v%s.hdf5' %v)
+    return _make_dedisperser(parameters, 'bonsai_nfreq128K_3tree_v%s.hdf5' % v)
