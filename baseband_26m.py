@@ -2,7 +2,7 @@
 import ch_frb_rfi
 
 # From the list below, select a sample index to process.
-sample = 3
+sample = 5
 # The first file index (starts at 0).
 start = 0 
 # The last file index (has no limit; must be greater than 'start').
@@ -10,7 +10,7 @@ end = 400
 # Indicate whether to use the web_viewer as output.
 web = True
 
-assert end > start >=0, "baseband_26m: Invalid (start, end) file indeces"
+assert end > start >= 0, "baseband_26m: Invalid (start, end) file indeces"
 assert type(web) is bool
 
 # This is a constantly changing list of samples. We will hopefully incorporate 
@@ -40,6 +40,12 @@ if sample == 4:
     path = '/data2/baseband_26m_b1937_16_04_22/128k/*.h5'
     bonsai_v = 1
     nypix = 131072
+
+if sample == 5:
+    kfreq = 16
+    path = '/data2/baseband_26m_b1937_16_04_22/B0329_confirmed/*.h5'
+    bonsai_v = 1
+    nypix = 512
 
 # Define transform parameters. See 'ch_frb_rfi/chain.py' for a list of available parameters.
 p = ch_frb_rfi.transform_parameters(plot_type='web_viewer' if web else 'big', 
