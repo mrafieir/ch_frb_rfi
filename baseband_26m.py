@@ -48,14 +48,14 @@ if sample == 5:
     nypix = 512
 
 # Define transform parameters. See 'ch_frb_rfi/chain.py' for a list of available parameters.
-p = ch_frb_rfi.transform_parameters(plot_type='web_viewer' if web else 'big', 
-                                    bonsai_output_plot_stem='triggers', 
-                                    mask=[[730,760]],
-                                    clipper_niter=2,
-                                    detrender_niter=2,
-                                    plot_nypix=nypix,
-                                    plot_nxpix=1200,
-                                    kfreq=kfreq)
+p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer' if web else 'big', 
+                                    bonsai_output_plot_stem = 'triggers', 
+                                    mask = [[730,760]],
+                                    clipper_niter = 2,
+                                    detrender_niter = 2,
+                                    plot_nypix = nypix,
+                                    plot_nxpix = 1200,
+                                    kfreq = kfreq)
 
 # Define the chain of transforms. test_16k() is currently empty; it's a working template
 # for future developments.
