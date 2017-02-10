@@ -2,7 +2,7 @@
 import ch_frb_rfi
 
 # From the list below, select a sample index to process.
-sample = 2
+sample = 3
 # The first file index (starts at 0).
 start = 0 
 # The last file index (has no limit; must be greater than 'start').
@@ -60,12 +60,7 @@ t += ch_frb_rfi.transform_chain(p)
 s = ch_frb_rfi.acquisitions.sample(path, start, end)
 
 # Append a bonsai_dedisperser to the list of transforms.
-if kfreq == 128:
-    t += [ ch_frb_rfi.bonsai.nfreq128K_3tree(p, bonsai_v) ]
-if kfreq == 16:
-    t += [ ch_frb_rfi.bonsai.nfreq16K_3tree(p, bonsai_v) ]
-if kfreq == 1:
-    t += [ ch_frb_rfi.bonsai.nfreq1024_3tree(p, bonsai_v) ]
+t += [ eval('ch_frb_rfi.bonsai.nfreq%sK_3tree(p, bonsai_v)' % kfreq) ]
 
 # Create a name for the output directory.
 dirname = '%sK_baseband_26m_d%d%dc' % (kfreq, p.detrender_niter, p.clipper_niter)
