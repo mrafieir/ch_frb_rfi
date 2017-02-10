@@ -128,12 +128,12 @@ class transform_parameters:
             transform_chain.append(t)
 
 # -------------------------------------------------------------------------------------------------------
-#                                       CHAIN VERSION NUMBER: 1.4 
+#                                            CHAIN VERSION 1.4 
 # -------------------------------------------------------------------------------------------------------
 # 
 # Version History:
 #
-#   1.4: Optimized for the 16K-upchannelized intensity data from the John A. Galt telescope (26m)
+#   1.4: Intended for the 16K-upchannelized intensity data from the John A. Galt telescope (26m)
 #
 #   1.3: Implemented fast C++ algorithms; tested on incoherent-beam acquisitions by the CHIME Pathfinder.
 #        
@@ -150,15 +150,15 @@ def detrender_chain(parameters, ix):
     parameters.append_plotter_transform(transform_chain, 'dc_out%d' % ix)
     return transform_chain
 
-def clipper_chain(parameters, ix, kfreq):
+def clipper_chain(parameters, ix):
     two_pass = parameters.two_pass and (ix == 0)
 
     # No plotter transform
-    return [ rf_pipelines.intensity_clipper(sigma=3, niter=12, iter_sigma=3, axis=None, nt_chunk=parameters.clip_nt, Df=2*kfreq, Dt=16, cpp=parameters.cpp),
-             rf_pipelines.intensity_clipper(sigma=3, niter=12, iter_sigma=3, axis=0, nt_chunk=parameters.clip_nt, Df=1*kfreq, Dt=1, cpp=parameters.cpp),
-             rf_pipelines.intensity_clipper(sigma=3, niter=12, iter_sigma=3, axis=1, nt_chunk=parameters.clip_nt, Df=1*kfreq, Dt=1, two_pass=two_pass, cpp=parameters.cpp),
-             rf_pipelines.std_dev_clipper(sigma=3, axis=1, Df=1*kfreq, Dt=16, two_pass=two_pass, cpp=parameters.cpp),
-             rf_pipelines.intensity_clipper(sigma=3, axis=0, niter=12, iter_sigma=3, nt_chunk=parameters.clip_nt, Df=2*kfreq, Dt=16, cpp=parameters.cpp) ]
+    return [ rf_pipelines.intensity_clipper(sigma=3, niter=12, iter_sigma=3, axis=None, nt_chunk=parameters.clip_nt, Df=2*parameters.kfreq, Dt=16, cpp=parameters.cpp),
+             rf_pipelines.intensity_clipper(sigma=3, niter=12, iter_sigma=3, axis=0, nt_chunk=parameters.clip_nt, Df=1*parameters.kfreq, Dt=1, cpp=parameters.cpp),
+             rf_pipelines.intensity_clipper(sigma=3, niter=12, iter_sigma=3, axis=1, nt_chunk=parameters.clip_nt, Df=1*parameters.kfreq, Dt=1, two_pass=two_pass, cpp=parameters.cpp),
+             rf_pipelines.std_dev_clipper(sigma=3, axis=1, Df=1*parameters.kfreq, Dt=16, two_pass=two_pass, cpp=parameters.cpp),
+             rf_pipelines.intensity_clipper(sigma=3, axis=0, niter=12, iter_sigma=3, nt_chunk=parameters.clip_nt, Df=2*parameters.kfreq, Dt=16, cpp=parameters.cpp) ]
 
 def transform_chain(parameters):
     transform_chain = [ ]
@@ -167,7 +167,7 @@ def transform_chain(parameters):
 
     for ix in xrange(parameters.detrender_niter):
         for jx in xrange(parameters.clipper_niter):
-            transform_chain += clipper_chain(parameters, ix, parameters.kfreq)
+            transform_chain += clipper_chain(parameters, ix)
         transform_chain += detrender_chain(parameters, ix)
 
     return transform_chain
