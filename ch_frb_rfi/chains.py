@@ -66,9 +66,9 @@ class transform_parameters:
     """
 
     def __init__(self, detrender_niter=2, clipper_niter=3, detrend_nt=2048, clip_nt=1024, cpp=True, two_pass=True,
-                 plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, plot_nzoom=None,
-                 bonsai_output_plot_stem=None, bonsai_output_hdf5_filename=None, maskpath=None, mask=None, kfreq=1,
-                 new_bonsai_transform=True):
+                 plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, bonsai_plot_nypix=256, 
+                 plot_nzoom=None, bonsai_output_plot_stem=None, bonsai_output_hdf5_filename=None, maskpath=None, 
+                 mask=None, kfreq=1, new_bonsai_transform=True):
 
         self.detrender_niter = detrender_niter
         self.clipper_niter = clipper_niter
@@ -80,6 +80,7 @@ class transform_parameters:
         self.bonsai_output_plot_stem = bonsai_output_plot_stem
         self.bonsai_output_hdf5_filename = bonsai_output_hdf5_filename
         self.new_bonsai_transform = new_bonsai_transform
+        self.bonsai_plot_nypix = bonsai_plot_nypix
 
         self.maskpath = maskpath
         self.mask = mask

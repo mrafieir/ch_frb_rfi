@@ -39,7 +39,7 @@ def make_dedisperser(parameters, config_filename):
 
     return rf_pipelines.bonsai_dedisperser(config_hdf5_filename = config_filename, 
                                            img_prefix = parameters.bonsai_output_plot_stem, 
-                                           img_ndm = parameters.plot_nypix, 
+                                           img_ndm = parameters.bonsai_plot_nypix, 
                                            img_nt = parameters.plot_nxpix, 
                                            downsample_nt = parameters.plot_downsample_nt, 
                                            n_zoom = parameters.plot_nzoom, 
