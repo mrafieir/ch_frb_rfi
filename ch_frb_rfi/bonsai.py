@@ -45,9 +45,7 @@ def make_dedisperser(parameters, config_filename):
                                            n_zoom = parameters.plot_nzoom, 
                                            trigger_hdf5_filename = trigger_filename)
 
-
-####################################################################################################
-
+# -------------------------------------------------------------------------------------------------------
 
 def _config(basename):
     return os.path.join('/data/bonsai_configs', basename)

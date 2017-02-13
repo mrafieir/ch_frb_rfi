@@ -24,7 +24,6 @@ from chains import clipper_chain, \
     transform_chain, \
     transform_parameters
 
-from helper_transform import helper_transform
 from test_16k import test_16k
 
 from utils import run_for_web_viewer
