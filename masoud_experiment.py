@@ -14,9 +14,9 @@ assert end > start >= 0, "baseband_26m: Invalid (start, end) file indeces"
 assert type(web) is bool
 
 # This is a constantly changing list of samples. We will hopefully incorporate 
-# this (perhaps as a unified dictionary) in 'acquisitions.py' and 'bonsai.py'.
-# 'kfreq' is the upchannelization (from 1K=1024) factor. 'nypix' may be adjusted
-# so that each pixel (on waterfall plots) corresponds to a unique frequency channel.
+# this in 'acquisitions.py' and 'bonsai.py'. 'kfreq' is the upchannelization 
+# (from 1K=1024) factor. 'nypix' may be adjusted so that each pixel (on waterfall 
+# plots) corresponds to a unique frequency channel.
 
 # No pulses
 if sample == 1:
@@ -53,7 +53,7 @@ if sample == 5:
     bonsai_v = 1
     nypix = 512
 
-# CHIME Pathfinder; Pulses
+# B0329 is in this acquisition!
 if sample == 6:
     kfreq = 1
     path = '/data2/acqhack_confirmed_b0329_1K/*.h5'
