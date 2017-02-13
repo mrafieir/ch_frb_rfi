@@ -37,6 +37,10 @@ class transform_parameters:
        - bonsai_output_hdf5_filename: if a string is specified (e.g. 'triggers.hdf5'), then a 
             sequence of hdf5 files will be written (with names like triggers_0.hdf5).
 
+       - new_bonsai_transform: if True, enables the new bonsai transform. 
+
+       - bonsai_plot_nypix: is a bonsai plot argument. It specifies the number of pixels along the DM axis. 
+
        - maskpath: is a full path to the mask file which contains a list of previously-identified 
             RFI-contaminated frequency channels. If None, then the argument 'mask' is used instead.
         
