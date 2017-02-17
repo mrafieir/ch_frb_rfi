@@ -60,11 +60,18 @@ if sample == 6:
     bonsai_v = 1
     nypix = 512
 
+# confirmed B0329 16K
+if sample == 7:
+    kfreq = 16
+    path = '/data2/baseband_26m_b1937_16_04_22/confirmed_16k_faster3/*.h5'
+    bonsai_v = 1
+    nypix = 512
+
 # Define transform parameters. See 'ch_frb_rfi/chain.py' for a list of available parameters.
 p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer' if web else 'big', 
                                     bonsai_output_plot_stem = 'triggers', 
-                                    mask = [[730,760]] if sample != 6 else None,
-                                    maskpath = '/data/pathfinder/rfi_masks/rfi_20160705.dat' if sample == 6 else None,
+                                    mask = [[730,760]] if sample not in (6, 7) else None,
+                                    maskpath = '/data/pathfinder/rfi_masks/rfi_20160705.dat' if sample in (6, 7) else None,
                                     clipper_niter = 4,
                                     detrender_niter = 2,
                                     plot_nypix = nypix,
