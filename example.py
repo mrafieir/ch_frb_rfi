@@ -19,7 +19,7 @@ import ch_frb_rfi
 # See the ch_frb_rfi.transform_parameters docstring for more details, and a list
 # of all parameters available.
 
-p = ch_frb_rfi.transform_parameters(plot_type = 'big',                    # write size-(1200,512) waterfall plots
+p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',             # write plots with appropriate resolution for web viewer
                                     bonsai_output_plot_stem='triggers')   # write bonsai plots to filenames beginning with 'triggers_...'
 
 
@@ -40,10 +40,16 @@ s = ch_frb_rfi.acquisitions.small()   # A small example acq containing a few min
 # The submodule ch_frb_rfi.bonsai defines a few "standard" dedispersers that we sometimes use.
 # See bonsai_configs/README.md for a list!
 
-t = ch_frb_rfi.transform_chain(p)               # ch_frb_rfi.transform_chain() returns a list of transforms
-t += [ ch_frb_rfi.bonsai.nfreq1024_3tree(p) ]    # ch_frb_rfi.bonsai.nfreq1024_3tree() returns a single transform
+t = ch_frb_rfi.transform_chain(p)                   # ch_frb_rfi.transform_chain() returns a list of transforms
+t += [ ch_frb_rfi.bonsai.nfreq1K_3tree(p, v=1) ]    # ch_frb_rfi.bonsai.nfreq1K_3tree() returns a single transform
 
 
-# Fourth, run the pipeline!  (this is the usual rf_pipelines syntax, not anything defined in ch_frb_rfi)
+# Fourth, run the pipeline!
+#
+# One way of doing this would be to use the usual rf_pipelines syntax:
+#   s.run(t, outdir='example_pipeline_outputs')
+#
+# Here, we do it using the wrapper function ch_frb_rfi.utils.run_for_web_viewer(),
+# which automatically indexes the output plots into the web viewer on frb1.
 
-s.run(t, outdir='example_pipeline_outputs')
+ch_frb_rfi.utils.run_for_web_viewer('example_pipeline_outputs', s, t)
