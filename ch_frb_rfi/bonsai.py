@@ -17,22 +17,6 @@ from . import chains
 def make_dedisperser(parameters, config_filename):
     assert isinstance(parameters, chains.transform_parameters)
 
-    if not parameters.new_bonsai_transform:
-        # Logic for old bonsai transform (preserved but will be phased out soon)
-        #
-        # This block of code has been written in an awkward way, which happens to work
-        # in both rf_pipelines v11 (the current master branch) and v12_devel (in which case
-        # it returns the "old" C++ bonsai_dedisperser, not the "new" python version).
-
-        trigger_filename = ''
-        trigger_plot_stem = parameters.bonsai_output_plot_stem if parameters.bonsai_output_plot_stem else ''
-        nt_per_file = (parameters.plot_nxpix * parameters.plot_downsample_nt) if parameters.make_plots else 16384
-        ibeam = 0
-        
-        return rf_pipelines.rf_pipelines_c.make_bonsai_dedisperser(config_filename, trigger_filename, trigger_plot_stem, nt_per_file, ibeam)
-       
-    # New bonsai transform logic follows...
-
     if (parameters.bonsai_output_plot_stem is not None) and (not parameters.make_plots):
         raise RuntimeError("ch_frb_rfi.transform_parameters: it is now an error to specify 'bonsai_output_plot_stem' without specifying 'plot_type'")
 
