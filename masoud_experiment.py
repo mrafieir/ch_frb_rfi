@@ -41,9 +41,9 @@ p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer' if web else 'big',
                                     bonsai_output_plot_stem = 'triggers', 
                                     maskpath = '/data/pathfinder/rfi_masks/rfi_20160705.dat',
                                     clipper_niter = 4,
-                                    detrender_niter = 3,
+                                    detrender_niter = 2,
                                     kfreq = kfreq,
-                                    cf_thr = 1.2)
+                                    cf_thr = 1.18)
 
 # Define the chain of transforms. test_16k() is currently empty; it's a working template
 # for future developments.
