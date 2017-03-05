@@ -1,4 +1,4 @@
-ch_frb_rfi: A library for RFI analysis in the CHIMEFRB L1 node.
+ch_frb_rfi: A library for RFI analysis in the [rf_pipelines](https://github.com/kmsmith137/rf_pipelines).
 
 ### INSTALLATION
 
