@@ -4,6 +4,7 @@
 import os
 import sys
 import glob
+import numpy as np
 import rf_pipelines
 
 class transform_parameters:
@@ -14,7 +15,7 @@ class transform_parameters:
 
        p = transform_parameters(detrender_niter=2, clipper_niter=3, detrend_nt=2048, clip_nt=1024, cpp=True, two_pass=True, 
                                 plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, plot_nzoom=None,
-                                bonsai_output_plot_stem=None, maskpath=None, mask=None, kfreq=1)
+                                bonsai_output_plot_stem=None, maskpath=None, mask=None, kfreq=1, cf_thr=1)
     
     with arguments as follows:
 
@@ -47,6 +48,8 @@ class transform_parameters:
        - kfreq: is a multiplicative factor for the Df argument in clipper transforms. 
             e.g., if 16K data is used, then kfreq should be 16. The default value (kfreq=1) assumes 1K frequency channels.
 
+       - cf_thr: TODO
+
     The way the plotting parameters are determined deserves special explanation!
 
        - If the four "fine-grained" plotting parameters (plot_downsample_nt, plot_nxpix, plot_nypix, plot_nzoom)
@@ -66,7 +69,7 @@ class transform_parameters:
 
     def __init__(self, detrender_niter=2, clipper_niter=3, detrend_nt=2048, clip_nt=1024, cpp=True, two_pass=True,
                  plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, bonsai_plot_nypix=256, 
-                 plot_nzoom=None, bonsai_output_plot_stem=None, maskpath=None, mask=None, kfreq=1):
+                 plot_nzoom=None, bonsai_output_plot_stem=None, maskpath=None, mask=None, kfreq=1, cf_thr=1):
                  
 
         self.detrender_niter = detrender_niter
@@ -83,6 +86,7 @@ class transform_parameters:
         self.mask = mask
 
         self.kfreq = kfreq
+        self.cf_thr = cf_thr
 
         # The rest of the constructor initializes plotting parameters.
         # See docstring above for a description of the initialization logic!
@@ -140,10 +144,14 @@ def detrender_chain(parameters, ix):
 
 def clipper_chain(parameters, ix):
     two_pass = parameters.two_pass and (ix == 0)
+    
+    si = 5 / parameters.cf_thr**np.log2(2*parameters.kfreq * 16)
 
     return [ rf_pipelines.std_dev_clipper(sigma=3, axis=1, Df=1*parameters.kfreq, Dt=16, two_pass=two_pass, cpp=parameters.cpp),
-             rf_pipelines.intensity_clipper(sigma=3, niter=12, iter_sigma=3, axis=None, nt_chunk=parameters.clip_nt, Df=2*parameters.kfreq, Dt=16, cpp=parameters.cpp),
-             rf_pipelines.intensity_clipper(sigma=3, axis=0, niter=12, iter_sigma=3, nt_chunk=parameters.clip_nt, Df=2*parameters.kfreq, Dt=16, cpp=parameters.cpp),
+
+             rf_pipelines.intensity_clipper(sigma=5, niter=12, iter_sigma=si, axis=None, nt_chunk=parameters.clip_nt, Df=2*parameters.kfreq, Dt=16, cpp=parameters.cpp),
+             rf_pipelines.intensity_clipper(sigma=5, niter=12, iter_sigma=si, axis=0, nt_chunk=parameters.clip_nt, Df=2*parameters.kfreq, Dt=16, cpp=parameters.cpp),
+             
              rf_pipelines.intensity_clipper(sigma=5, niter=12, iter_sigma=5, axis=0, nt_chunk=parameters.clip_nt, Df=1*parameters.kfreq, Dt=1, cpp=parameters.cpp),
              rf_pipelines.intensity_clipper(sigma=5, niter=12, iter_sigma=5, axis=1, nt_chunk=parameters.clip_nt, Df=1*parameters.kfreq, Dt=1, two_pass=two_pass, cpp=parameters.cpp) ]
 
