@@ -143,8 +143,8 @@ def clipper_chain(parameters, ix):
 
     # No plotter transform
     return [ rf_pipelines.intensity_clipper(sigma=3, niter=12, iter_sigma=3, axis=None, nt_chunk=parameters.clip_nt, Df=2*parameters.kfreq, Dt=16, cpp=parameters.cpp),
-             rf_pipelines.intensity_clipper(sigma=3, niter=12, iter_sigma=5, axis=0, nt_chunk=parameters.clip_nt, Df=1*parameters.kfreq, Dt=1, cpp=parameters.cpp),
-             rf_pipelines.intensity_clipper(sigma=3, niter=12, iter_sigma=5, axis=1, nt_chunk=parameters.clip_nt, Df=1*parameters.kfreq, Dt=1, two_pass=two_pass, cpp=parameters.cpp),
+             rf_pipelines.intensity_clipper(sigma=5, niter=12, iter_sigma=5, axis=0, nt_chunk=parameters.clip_nt, Df=1*parameters.kfreq, Dt=1, cpp=parameters.cpp),
+             rf_pipelines.intensity_clipper(sigma=5, niter=12, iter_sigma=5, axis=1, nt_chunk=parameters.clip_nt, Df=1*parameters.kfreq, Dt=1, two_pass=two_pass, cpp=parameters.cpp),
              rf_pipelines.std_dev_clipper(sigma=3, axis=1, Df=1*parameters.kfreq, Dt=16, two_pass=two_pass, cpp=parameters.cpp),
              rf_pipelines.intensity_clipper(sigma=3, axis=0, niter=12, iter_sigma=3, nt_chunk=parameters.clip_nt, Df=2*parameters.kfreq, Dt=16, cpp=parameters.cpp) ]
 
