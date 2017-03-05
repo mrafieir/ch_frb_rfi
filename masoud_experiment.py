@@ -2,11 +2,11 @@
 import ch_frb_rfi
 
 # From the list below, select a sample index to process.
-sample = 1
+sample = 2
 # The first file index (starts at 0).
 start = 0
 # The last file index (has no limit; must be greater than 'start').
-end = 40
+end = 60
 # Indicate whether to use the web_viewer as output.
 web = True
 
