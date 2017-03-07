@@ -153,7 +153,10 @@ def clipper_chain(parameters, ix):
              rf_pipelines.intensity_clipper(sigma=5, niter=12, iter_sigma=5, axis=1, nt_chunk=parameters.clip_nt, Df=1*parameters.kfreq, Dt=1, two_pass=two_pass, cpp=parameters.cpp),
              
              rf_pipelines.intensity_clipper(sigma=5, niter=12, iter_sigma=si, axis=None, nt_chunk=parameters.clip_nt, Df=2*parameters.kfreq, Dt=16, cpp=parameters.cpp),
-             rf_pipelines.intensity_clipper(sigma=5, niter=12, iter_sigma=si, axis=0, nt_chunk=parameters.clip_nt, Df=2*parameters.kfreq, Dt=16, cpp=parameters.cpp) ]
+             rf_pipelines.intensity_clipper(sigma=5, niter=12, iter_sigma=si, axis=0, nt_chunk=parameters.clip_nt, Df=2*parameters.kfreq, Dt=16, cpp=parameters.cpp),
+             
+             rf_pipelines.mask_expander(thr=0.35, axis=1, nt_chunk=parameters.clip_nt),
+             rf_pipelines.mask_expander(thr=0.45, axis=1, nt_chunk=2*parameters.clip_nt) ]
              
 def transform_chain(parameters):
     transform_chain = [ ]

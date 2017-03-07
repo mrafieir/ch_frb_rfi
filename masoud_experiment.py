@@ -40,8 +40,8 @@ if sample == 3:
 p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer' if web else 'big', 
                                     bonsai_output_plot_stem = 'triggers', 
                                     maskpath = '/data/pathfinder/rfi_masks/rfi_20160705.dat',
-                                    clipper_niter = 4,
-                                    detrender_niter = 2,
+                                    clipper_niter = 6,
+                                    detrender_niter = 5,
                                     kfreq = kfreq,
                                     cf_thr = 1.18)
 
