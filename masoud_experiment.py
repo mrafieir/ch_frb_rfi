@@ -2,11 +2,11 @@
 import ch_frb_rfi
 
 # From the list below, select a sample index to process.
-sample = 1
+sample = 4
 # The first file index (starts at 0).
 start = 0
 # The last file index (has no limit; must be greater than 'start').
-end = 60
+end = 30
 # Indicate whether to use the web_viewer as output.
 web = True
 
@@ -36,14 +36,19 @@ if sample == 3:
     path = '/data2/baseband_26m_processed/16k_B1937/*.h5'
     bonsai_v = 1
 
+# incoherent-beam data from the pathfinder
+if sample == 4:
+    kfreq = 1
+    path = '/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_0/*.h5'
+    bonsai_v = 1
+
 # Define transform parameters. See 'ch_frb_rfi/chain.py' for a list of available parameters.
 p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer' if web else 'big', 
                                     bonsai_output_plot_stem = 'triggers', 
                                     maskpath = '/data/pathfinder/rfi_masks/rfi_20160705.dat',
-                                    clipper_niter = 6,
-                                    detrender_niter = 5,
-                                    kfreq = kfreq,
-                                    cf_thr = 1.18)
+                                    clipper_niter = 4,
+                                    detrender_niter = 2,
+                                    kfreq = kfreq)
 
 # Define the chain of transforms. test_16k() is currently empty; it's a working template
 # for future developments.
