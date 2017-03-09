@@ -36,7 +36,7 @@ if sample == 3:
     path = '/data2/baseband_26m_processed/16k_B1937/*.h5'
     bonsai_v = 1
 
-# incoherent-beam data from the pathfinder
+# incoherent-beam data from the pathfinder; weights are between 0.0 and 2.
 if sample == 4:
     kfreq = 1
     path = '/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_0/*.h5'
@@ -47,7 +47,7 @@ p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer' if web else 'big',
                                     bonsai_output_plot_stem = 'triggers', 
                                     maskpath = '/data/pathfinder/rfi_masks/rfi_20160705.dat',
                                     clipper_niter = 4,
-                                    detrender_niter = 2,
+                                    detrender_niter = 3,
                                     kfreq = kfreq)
 
 # Define the chain of transforms. test_16k() is currently empty; it's a working template
