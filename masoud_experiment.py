@@ -6,7 +6,7 @@ sample = 4
 # The first file index (starts at 0).
 start = 0
 # The last file index (has no limit; must be greater than 'start').
-end = 30
+end = 60
 # Indicate whether to use the web_viewer as output.
 web = True
 
@@ -36,11 +36,41 @@ if sample == 3:
     path = '/data2/baseband_26m_processed/16k_B1937/*.h5'
     bonsai_v = 1
 
-# incoherent-beam data from the pathfinder; weights are between 0.0 and 2.
+# incoherent-beam data from the pathfinder; 0-7600
+# weights are between 0.0 and 2; tsample[-1] = pulsar;
 if sample == 4:
     kfreq = 1
     path = '/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_0/*.h5'
     bonsai_v = 1
+    tsample = [[2335.05292288, 2463.90194176],
+               [5169.73133824, 5341.53003008],
+               [14275.0620058, 14446.8606976],
+               [70882.7309670, 71054.5296589],
+               [84154.1799117, 84368.9282765],
+               [90811.7147648, 90983.5134566],
+               [96266.3232307, 96481.0715955],
+               [97984.3101491, 98156.1088410],
+               [98499.7062246, 98671.5049165],
+               [119716.844667, 119974.542705],
+               [143897.510543, 144112.258908]]
+
+if sample == 5:
+    kfreq = 1
+    path = '/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_1/*.h5'
+    bonsai_v = 1
+    tsample = [[1207.79177984, 1379.59047168],
+               [2238.58393088, 2453.33229568],
+               [74694.6822144, 74866.4809062],
+               [47206.8915200, 47335.7405389],
+               [75811.3737114, 75983.1724032]]
+
+# tsample[0] = storm; 4000-5000
+if sample == 6:
+    kfreq = 1
+    path = '/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_0b/*.h5'
+    bonsai_v = 1
+    tsample = [[87586.4627610, 88359.5568742],
+               [103563.741102, 103778.489467]]
 
 # Define transform parameters. See 'ch_frb_rfi/chain.py' for a list of available parameters.
 p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer' if web else 'big', 
