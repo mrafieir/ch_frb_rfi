@@ -1,14 +1,17 @@
 #!/usr/bin/env python
 import ch_frb_rfi
+import rf_pipelines
 
 # From the list below, select a sample index to process.
-sample = 4
+sample = 5
 # The first file index (starts at 0).
 start = 0
 # The last file index (has no limit; must be greater than 'start').
 end = 60
 # Indicate whether to use the web_viewer as output.
 web = True
+# Enable time-selected samples
+st_mode = True
 
 assert end > start >= 0, "baseband_26m: Invalid (start, end) file indeces"
 assert type(web) is bool
@@ -86,7 +89,11 @@ t = [ ch_frb_rfi.test_16k() ]
 t += ch_frb_rfi.transform_chain(p)
 
 # Read filenames into a list
-s = ch_frb_rfi.acquisitions.sample(path, start, end)
+if st_mode:
+    path = path[:-4]
+    s = rf_pipelines.chime_stream_from_times(path, tsample[1][0], tsample[1][1])
+else:
+    s = ch_frb_rfi.acquisitions.sample(path, start, end)
 
 # Append a bonsai_dedisperser to the list of transforms.
 t += [ eval('ch_frb_rfi.bonsai.nfreq%sK_3tree(p, bonsai_v)' % kfreq) ]
