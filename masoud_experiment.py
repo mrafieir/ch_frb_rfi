@@ -2,16 +2,20 @@
 import ch_frb_rfi
 import rf_pipelines
 
+# Indicate whether to use the web_viewer as output.
+web = True
+
 # From the list below, select a sample index to process.
 sample = 4
+
 # The first file index (starts at 0).
 start = 0
 # The last file index (has no limit; must be greater than 'start').
 end = 60
-# Indicate whether to use the web_viewer as output.
-web = True
+
 # Enable time-selected samples
 ts_mode = True
+ts_n = 5
 
 assert end > start >= 0, "baseband_26m: Invalid (start, end) file indeces"
 assert type(web) is bool
@@ -39,8 +43,8 @@ if sample == 3:
     path = '/data2/baseband_26m_processed/16k_B1937/*.h5'
     bonsai_v = 1
 
-# incoherent-beam data from the pathfinder; 0-7600
-# weights are between 0.0 and 2; tsample[-1] = pulsar;
+# incoherent-beam data from the pathfinder; processed 0-7600
+# weights are between 0.0 and 2; ts_n = -1 contains a pulsar;
 if sample == 4:
     kfreq = 1
     path = '/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_0/*.h5'
@@ -67,7 +71,7 @@ if sample == 5:
                [47206.8915200, 47335.7405389],
                [75811.3737114, 75983.1724032]]
 
-# tsample[0] = storm; 4000-5000
+# ts_n = 0 is an RFI storm; processed 4000-5000
 if sample == 6:
     kfreq = 1
     path = '/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_0b/*.h5'
@@ -91,8 +95,8 @@ t += ch_frb_rfi.transform_chain(p)
 # Read filenames into a list
 if ts_mode:
     path = path[:-4]
-    print tsample[-1][0], tsample[-1][1]
-    s = rf_pipelines.chime_stream_from_times(path, tsample[-1][0], tsample[-1][1])
+    print "processing tsample(%s, %s)" % (tsample[ts_n][0], tsample[ts_n][1])
+    s = rf_pipelines.chime_stream_from_times(path, tsample[ts_n][0], tsample[ts_n][1])
 else:
     s = ch_frb_rfi.acquisitions.sample(path, start, end)
 
