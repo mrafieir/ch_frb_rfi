@@ -1,17 +1,13 @@
 This directory contains a few "standard" bonsai config files that we use
 when testing RFI removal.
 
-I only put the .txt files in git, but the hdf5 files (currently needed to
-create a bonsai_dedisperser, although this is a temporary kludge that will
-be fixed soon I hope) can be generated with:
+The hdf5 files may be made (but not required) in advance.
 ```
-bonsai-mkweight bonsai_nfreq1024_singletree_v1.txt bonsai_nfreq1024_singletree_v1.hdf5
-bonsai-mkweight bonsai_nfreq1024_3tree_v1.txt bonsai_nfreq1024_3tree_v1.hdf5
+bonsai-mkweight bonsai_nfreq16K_3tree_v1.txt bonsai_nfreq16K_3tree_v1.hdf5
 ```
 
 On frb1, the directory /data/bonsai_configs contains up-to-date copies of
-these files, along with the corresponding hdf5 files.  The functions in
-`ch_frb_rfi.bonsai` assume that you're running on frb1.
+these files.  The functions in `ch_frb_rfi.bonsai` assume that you're running on frb1.
 
 Current contents:
 
