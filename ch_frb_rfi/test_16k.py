@@ -6,7 +6,9 @@ class test_16k(rf_pipelines.py_wi_transform):
 
     def __init__(self, nt_chunk=1024):
         
-        self.name = 'test_16k'
+        name = 'test_16k()'
+        rf_pipelines.py_wi_transform.__init__(self, name)
+        
         self.nt_chunk = nt_chunk
 
     def set_stream(self, stream):
