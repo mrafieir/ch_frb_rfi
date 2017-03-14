@@ -80,8 +80,8 @@ if sample == 6:
     tsample = [[87586.4627610, 88359.5568742],
                [103563.741102, 103778.489467]]
 
-# Define transform parameters. See 'ch_frb_rfi/chain.py' for a list of available parameters.
-p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer' if web else 'big', 
+# Define transform parameters. See 'ch_frb_rfi/chain.py' for a list of available parameters. (l, m, h) = (13, 23, 24)
+p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer' if web else 'big',
                                     bonsai_output_plot_stem = 'triggers', 
                                     maskpath = '/data/pathfinder/rfi_masks/rfi_20160705.dat',
                                     clipper_niter = 3,
