@@ -55,3 +55,10 @@ def sample(path, start, end):
 
     filename_list = sorted(glob.glob(path))[start:end]
     return rf_pipelines.chime_stream_from_filename_list(filename_list, nt_chunk=1024)
+
+def ex_pulsar():
+    return rf_pipelines.chime_stream_from_times('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_0', 143897.510543, 144112.258908)
+
+def ex_storm():
+    return rf_pipelines.chime_stream_from_times('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_0b', 87586.4627610, 88359.5568742)
+

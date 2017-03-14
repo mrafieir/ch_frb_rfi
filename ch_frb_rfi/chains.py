@@ -13,7 +13,7 @@ class transform_parameters:
 
     Constructor syntax:
 
-       p = transform_parameters(detrender_niter=2, clipper_niter=3, detrend_nt=2048, clip_nt=1024, cpp=True, two_pass=True, 
+       p = transform_parameters(detrender_niter=2, clipper_niter=3, detrend_nt=1024, clip_nt=1024, cpp=True, two_pass=True, 
                                 plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, plot_nzoom=None,
                                 bonsai_output_plot_stem=None, maskpath=None, mask=None, kfreq=1)
     
@@ -65,7 +65,7 @@ class transform_parameters:
     By default (if no plotting-related constructor arguments are specified), plotting is disabled.
     """
 
-    def __init__(self, detrender_niter=2, clipper_niter=3, detrend_nt=2048, clip_nt=1024, cpp=True, two_pass=True,
+    def __init__(self, detrender_niter=2, clipper_niter=3, detrend_nt=1024, clip_nt=1024, cpp=True, two_pass=True,
                  plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, bonsai_plot_nypix=256, 
                  plot_nzoom=None, bonsai_output_plot_stem=None, maskpath=None, mask=None, kfreq=1):
                  
@@ -134,7 +134,7 @@ def detrender_chain(parameters, ix):
     assert isinstance(parameters, transform_parameters)
 
     transform_chain = [ rf_pipelines.polynomial_detrender(deg=4, axis=1, nt_chunk=parameters.detrend_nt, cpp=parameters.cpp),
-                        rf_pipelines.polynomial_detrender(deg=8, axis=0, nt_chunk=parameters.detrend_nt, cpp=parameters.cpp) ]
+                        rf_pipelines.polynomial_detrender(deg=12, axis=0, nt_chunk=parameters.detrend_nt, cpp=parameters.cpp) ]
 
     parameters.append_plotter_transform(transform_chain, 'dc_out%d' % ix)
     return transform_chain
@@ -142,16 +142,18 @@ def detrender_chain(parameters, ix):
 def clipper_chain(parameters, ix):
     two_pass = parameters.two_pass and (ix == 0)
     
-    return [ rf_pipelines.std_dev_clipper(sigma=3, axis=1, Df=1*parameters.kfreq, Dt=16, two_pass=two_pass, cpp=parameters.cpp),
+    return [ rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=parameters.clip_nt, Df=1*parameters.kfreq, Dt=1, two_pass=two_pass, cpp=parameters.cpp),
+             rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=2*parameters.clip_nt, Df=1*parameters.kfreq, Dt=1, two_pass=two_pass, cpp=parameters.cpp),
+             rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=6*parameters.clip_nt, Df=1*parameters.kfreq, Dt=1, two_pass=two_pass, cpp=parameters.cpp),
+
+             rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=6*parameters.clip_nt, Df=1*parameters.kfreq, Dt=1, cpp=parameters.cpp),
+             rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=6*parameters.clip_nt, Df=1*parameters.kfreq, Dt=1, cpp=parameters.cpp),
              
-             rf_pipelines.intensity_clipper(sigma=5, niter=12, iter_sigma=5, axis=0, nt_chunk=parameters.clip_nt, Df=1*parameters.kfreq, Dt=1, cpp=parameters.cpp),
-             rf_pipelines.intensity_clipper(sigma=5, niter=12, iter_sigma=5, axis=1, nt_chunk=parameters.clip_nt, Df=1*parameters.kfreq, Dt=1, two_pass=two_pass, cpp=parameters.cpp),
-             
-             rf_pipelines.intensity_clipper(sigma=5, niter=12, iter_sigma=3, axis=None, nt_chunk=parameters.clip_nt, Df=2*parameters.kfreq, Dt=16, cpp=parameters.cpp),
-             rf_pipelines.intensity_clipper(sigma=5, niter=12, iter_sigma=3, axis=0, nt_chunk=parameters.clip_nt, Df=2*parameters.kfreq, Dt=16, cpp=parameters.cpp),
-             
-             rf_pipelines.mask_expander(thr=0.35, axis=1, nt_chunk=parameters.clip_nt),
-             rf_pipelines.mask_expander(thr=0.45, axis=1, nt_chunk=2*parameters.clip_nt) ]
+             rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=5, axis=0, nt_chunk=parameters.clip_nt, Df=1*parameters.kfreq, Dt=1, cpp=parameters.cpp),
+             rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=5, axis=1, nt_chunk=parameters.clip_nt, Df=1*parameters.kfreq, Dt=1, two_pass=two_pass, cpp=parameters.cpp),
+
+             rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=3, axis=None, nt_chunk=parameters.clip_nt, Df=2*parameters.kfreq, Dt=16, cpp=parameters.cpp),
+             rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=3, axis=0, nt_chunk=parameters.clip_nt, Df=2*parameters.kfreq, Dt=16, cpp=parameters.cpp) ]
              
 def transform_chain(parameters):
     transform_chain = [ ]
