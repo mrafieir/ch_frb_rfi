@@ -7,7 +7,7 @@ import rf_pipelines
 
 
 def toy():
-    """A small arbitrarily-chosen acquisition that we like to use for testing."""
+    """A small arbitrarily-chosen acquisition that we like to use for testing. (1K freq)"""
 
     filename_list = [ '00000327.h5', '00000344.h5' ]
     filename_list = [ os.path.join('/data/pathfinder/16-09-19-incoherent-without-noise-source',f) for f in filename_list ]
@@ -17,7 +17,7 @@ def toy():
 
 
 def small():
-    """A small arbitrarily-chosen acquisition for testing, a little larger than toy()."""
+    """A small arbitrarily-chosen acquisition for testing, a little larger than toy(). (1K freq)"""
 
     basename_list = [ '00000327.h5', '00000344.h5', '00000360.h5', '00000376.h5', '00000393.h5', '00000409.h5',
                       '00000426.h5', '00000442.h5', '00000458.h5', '00000475.h5', '00000491.h5', '00000508.h5',
@@ -32,7 +32,7 @@ def small():
 
 
 def incoherent_16_09_19():
-    """This is a large acquisition! (~50 GB)"""
+    """This is a large acquisition! (~50 GB, 1K freq)"""
 
     # Noise source was turned off in this acquisition, so no 'noise_source_align' argument here.
     return rf_pipelines.chime_stream_from_acqdir('/data/pathfinder/16-09-19-incoherent-without-noise-source')
@@ -57,8 +57,16 @@ def sample(path, start, end):
     return rf_pipelines.chime_stream_from_filename_list(filename_list, nt_chunk=1024)
 
 def ex_pulsar():
+    """Example: a pulsar in an incoherent-beam acquisition (1K freq)"""
+
     return rf_pipelines.chime_stream_from_times('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_0', 143897.510543, 144112.258908)
 
 def ex_storm():
+    """Example: an RFI storm in an incoherent-beam acquisition (1K freq)"""
+
     return rf_pipelines.chime_stream_from_times('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_0b', 87586.4627610, 88359.5568742)
 
+def incoherent_search0():
+    """A large acquisition in 1K-freq channels (~45 hours of data!)"""
+
+    return rf_pipelines.chime_stream_from_acqdir('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_0')
