@@ -13,17 +13,27 @@ class transform_parameters:
 
     Constructor syntax:
 
-       p = transform_parameters(detrender_niter=2, clipper_niter=3, detrend_nt=1024, clip_nt=1024, cpp=True, two_pass=True, 
+       p = transform_parameters(rfi_level=0, detrender_niter=None, clipper_niter=None, detrend_nt=1024, clip_nt=1024, kfreq=1, cpp=True, two_pass=True, 
                                 plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, plot_nzoom=None,
-                                bonsai_output_plot_stem=None, maskpath=None, mask=None, kfreq=1)
+                                bonsai_output_plot_stem=None, maskpath=None, mask=None)
     
     with arguments as follows:
+
+       - rfi_level: specifies the severity of the RF environment. Possible modes are           
+           0: is the base mode which is recommended for a relatively quiet environment. (detrender_niter=1, clipper_niter=3)
+           1: can handle some storms. (detrender_niter=2, clipper_niter=3)
+           2: is recommended for whiteout conditions! (detrender_niter=2, clipper_niter=4)
+            
+           Note: If detrender_niter and clipper_niter are specified explicitly, then these are used. 
 
        - detrender_niter/clipper_niter: 
            number of iterations of outer detrender loop and inner clipper loop.
 
        - detrend_nt/clip_nt: 
            chunk sizes (in time samples) for detrender transforms and clipper transforms respectively.
+
+       - kfreq: is a multiplicative factor for the Df argument in clipper transforms. 
+           e.g., if 16K data is used, then kfreq should be 16. The default value (kfreq=1) assumes 1K frequency channels. 
                              
        - cpp: if True, then fast C++ transforms will be used.
               if False, then reference python transforms will be used.
@@ -45,9 +55,6 @@ class transform_parameters:
        Note: If both 'mask' and 'maskpath' are None, then the badchannel_mask transform is disabled. Otherwise,
             the badchannel_mask transfrom can be appended to the transform chain via append_badchannel_mask().
 
-       - kfreq: is a multiplicative factor for the Df argument in clipper transforms. 
-            e.g., if 16K data is used, then kfreq should be 16. The default value (kfreq=1) assumes 1K frequency channels.
-
     The way the plotting parameters are determined deserves special explanation!
 
        - If the four "fine-grained" plotting parameters (plot_downsample_nt, plot_nxpix, plot_nypix, plot_nzoom)
@@ -65,15 +72,14 @@ class transform_parameters:
     By default (if no plotting-related constructor arguments are specified), plotting is disabled.
     """
 
-    def __init__(self, detrender_niter=2, clipper_niter=3, detrend_nt=1024, clip_nt=1024, cpp=True, two_pass=True,
+    def __init__(self, rfi_level=0, detrender_niter=None, clipper_niter=None, detrend_nt=1024, clip_nt=1024, kfreq=1, cpp=True, two_pass=True,
                  plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, bonsai_plot_nypix=256, 
-                 plot_nzoom=None, bonsai_output_plot_stem=None, maskpath=None, mask=None, kfreq=1):
+                 plot_nzoom=None, bonsai_output_plot_stem=None, maskpath=None, mask=None):
                  
-
-        self.detrender_niter = detrender_niter
-        self.clipper_niter = clipper_niter
         self.detrend_nt = detrend_nt
         self.clip_nt = clip_nt
+        self.kfreq = kfreq
+
         self.two_pass = two_pass
         self.cpp = cpp
 
@@ -82,9 +88,24 @@ class transform_parameters:
 
         self.maskpath = maskpath
         self.mask = mask
+        
+        # This block of code selects a pair of (detrender_niter, clipper_nitr) 
+        # values based on input parameters. See docstring above!
 
-        self.kfreq = kfreq
-
+        if (detrender_niter is not None) and (clipper_niter is not None):
+           print "transform_parameters: the preset rfi_level is disabled."
+           self.detrender_niter = detrender_niter
+           self.clipper_niter = clipper_niter
+        elif rfi_level == 0:
+           (self.detrender_niter, self.clipper_niter) = (1, 3)
+        elif rfi_level == 1:
+           (self.detrender_niter, self.clipper_niter) = (2, 3)
+        elif rfi_level == 2:
+           (self.detrender_niter, self.clipper_niter) = (2, 4)
+        else:
+           raise RuntimeError("transform_parameters: either a valid rfi_level (0, 1, or 2) or a (detrender_niter, clipper_nitr)" 
+                              + " pair must be specified.")
+ 
         # The rest of the constructor initializes plotting parameters.
         # See docstring above for a description of the initialization logic!
 
