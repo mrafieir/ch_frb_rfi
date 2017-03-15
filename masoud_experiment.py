@@ -62,6 +62,7 @@ if sample == 4:
                [119716.844667, 119974.542705],
                [143897.510543, 144112.258908]]
 
+# processed 0-3000
 if sample == 5:
     kfreq = 1
     path = '/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_1/*.h5'
@@ -84,8 +85,9 @@ if sample == 6:
 p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer' if web else 'big',
                                     bonsai_output_plot_stem = 'triggers', 
                                     maskpath = '/data/pathfinder/rfi_masks/rfi_20160705.dat',
-                                    clipper_niter = 3,
-                                    detrender_niter = 2,
+                                    clipper_niter = None,
+                                    detrender_niter = None,
+                                    rfi_level = 0,
                                     kfreq = kfreq)
 
 # Define the chain of transforms. test_16k() is currently empty; it's a working template
