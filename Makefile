@@ -9,7 +9,7 @@ PYFILES=ch_frb_rfi/__init__.py \
 	ch_frb_rfi/bonsai.py \
 	ch_frb_rfi/chains.py \
 	ch_frb_rfi/utils.py \
-	ch_frb_rfi/test_16k.py
+	ch_frb_rfi/transform_template.py
 
 all:
 	@echo "Nothing to do for 'make all'.  This is a python-only library, so 'make install' is the only makefile target!"
