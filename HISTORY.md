@@ -1,7 +1,10 @@
 - Version 4:
 
    - New transform chain (v1.5)
-   
+
+   - New transform parameter `rfi_level` which allows user to select an appropriate
+   chain of transforms based on the severity of the RF environment
+
 - Version 3:
 
    - Minor updates reflecting API changes in bonsai_v8, rf_pipelines_v13
