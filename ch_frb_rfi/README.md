@@ -1,6 +1,8 @@
-### Transform Chain Version 1.4
+### Transform Chain Version 1.5
 
 Version History:
+
+   - 1.5: An advanced chain with fine-tuned parameters; tested on over 50 hours of incoherent-beam acquisitions by the CHIME Pathfinder. Introduced the preset `rfi_level` paramater.
 
    - 1.4: Intended for the 16K-upchannelized intensity data from the John A. Galt telescope (26m)
 

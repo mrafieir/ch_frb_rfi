@@ -1,6 +1,10 @@
+- Version 4:
+
+   - New transform chain (v1.5)
+   
 - Version 3:
 
-   - Minor updates reflecting API changes in bonsai_v8, rf_pipelines_v13.
+   - Minor updates reflecting API changes in bonsai_v8, rf_pipelines_v13
  
 - Version 2:
 
