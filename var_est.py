@@ -22,7 +22,7 @@ p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
 t = ch_frb_rfi.transform_chain(p)
 
 # Append variance estimator to the chain
-t += [ rf_pipelines.variance_estimator(v1_chunk=128, v2_chunk=80, nt_chunk=1024, fname=None) ]
+t += [ rf_pipelines.variance_estimator(v1_chunk=128, v2_chunk=80, nt_chunk=1024, fname='sample01', outdir='/data2/var_est') ]
 
 # Append bonsai dedisperser
 if test_bonsai:
