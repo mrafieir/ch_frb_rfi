@@ -75,7 +75,8 @@ class transform_parameters:
     def __init__(self, rfi_level=0, detrender_niter=None, clipper_niter=None, detrend_nt=1024, clip_nt=1024, kfreq=1, cpp=True, two_pass=True,
                  plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, bonsai_plot_nypix=256, 
                  plot_nzoom=None, bonsai_output_plot_stem=None, maskpath=None, mask=None):
-                 
+
+        self.rfi_level = rfi_level
         self.detrend_nt = detrend_nt
         self.clip_nt = clip_nt
         self.kfreq = kfreq
@@ -96,11 +97,11 @@ class transform_parameters:
            print "transform_parameters: the preset rfi_level is disabled."
            self.detrender_niter = detrender_niter
            self.clipper_niter = clipper_niter
-        elif rfi_level == 0:
+        elif self.rfi_level == 0:
            (self.detrender_niter, self.clipper_niter) = (1, 3)
-        elif rfi_level == 1:
+        elif self.rfi_level == 1:
            (self.detrender_niter, self.clipper_niter) = (2, 3)
-        elif rfi_level == 2:
+        elif self.rfi_level == 2:
            (self.detrender_niter, self.clipper_niter) = (2, 4)
         else:
            raise RuntimeError("transform_parameters: either a valid rfi_level (0, 1, or 2) or a (detrender_niter, clipper_nitr)" 
