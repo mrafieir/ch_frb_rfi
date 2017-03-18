@@ -56,15 +56,23 @@ def sample(path, start, end):
     filename_list = sorted(glob.glob(path))[start:end]
     return rf_pipelines.chime_stream_from_filename_list(filename_list, nt_chunk=1024)
 
-def ex_pulsar():
+
+def ex_pulsar_search0():
     """Example: a pulsar in an incoherent-beam acquisition (1K freq)"""
 
     return rf_pipelines.chime_stream_from_times('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_0', 143897.510543, 144112.258908)
 
-def ex_storm():
+
+def ex_storm_0b():
     """Example: an RFI storm in an incoherent-beam acquisition (1K freq)"""
 
     return rf_pipelines.chime_stream_from_times('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_0b', 87586.4627610, 88359.5568742)
+
+
+def ex_storm_1c():
+    """Example: an intense RFI storm in an incoherent-beam acquisition (1K freq)"""
+
+    return rf_pipelines.chime_stream_from_times('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_1c', 117974.363013, 118103.212032)
 
 
 ######################################## INCOHERENT-BEAM DATA AVALANCHE ########################################
@@ -74,10 +82,12 @@ def incoherent_search0():
 
     return rf_pipelines.chime_stream_from_acqdir('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_0')
 
+
 def incoherent_search1():
     """A large acquisition in 1K freq channels (~21 hours of data!)"""
 
     return rf_pipelines.chime_stream_from_acqdir('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_1')
+
 
 def incoherent_1c():
     """A large acquisition in 1K freq channels (~44 hours of data!)"""
