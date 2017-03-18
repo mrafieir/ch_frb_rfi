@@ -66,12 +66,20 @@ def ex_storm():
 
     return rf_pipelines.chime_stream_from_times('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_0b', 87586.4627610, 88359.5568742)
 
+
+######################################## INCOHERENT-BEAM DATA AVALANCHE ########################################
+
 def incoherent_search0():
-    """A large acquisition in 1K-freq channels (~45 hours of data!)"""
+    """A large acquisition in 1K freq channels (~45 hours of data!)"""
 
     return rf_pipelines.chime_stream_from_acqdir('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_0')
 
 def incoherent_search1():
-    """A large acquisition in 1K-freq channels (~21 hours of data!)"""
+    """A large acquisition in 1K freq channels (~21 hours of data!)"""
 
     return rf_pipelines.chime_stream_from_acqdir('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_1')
+
+def incoherent_1c():
+    """A large acquisition in 1K freq channels (~44 hours of data!)"""
+
+    return rf_pipelines.chime_stream_from_acqdir('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_1c')
