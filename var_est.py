@@ -10,10 +10,9 @@ norm_trig = False
 
 v1_chunk = 128
 v2_chunk = 80
-fname = 'acq%s' % acquisition_index
 outdir = '/data2/var_est'
 
-w_cutoff = 0
+w_cutoff = XXX
 
 # -------------------------------------------------------------------
 
@@ -32,11 +31,16 @@ elif acquisition_index == 3:
 else:
     raise RuntimeError("var_est: invalid acquisition index!")
 
+fname = 'acq%s' % acquisition_index
+
 # Define transform parameters
 p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer', 
                                     bonsai_output_plot_stem = 'triggers', 
                                     maskpath = '/data/pathfinder/rfi_masks/rfi_20160705.dat',
                                     rfi_level = 1,
+                                    bonsai_use_analytic_normalization = XXX,
+                                    bonsai_hdf5_output_filename = XXX,
+                                    bonsai_nt_per_hdf5_file = XXX,
                                     kfreq = 1)
 
 # Transform chain
