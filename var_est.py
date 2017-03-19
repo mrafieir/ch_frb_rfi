@@ -5,10 +5,18 @@ import rf_pipelines
 
 test_script = True
 
-acquisition_index = 0
+acquisition_index = 3
 norm_trig = False
 
-# Select an acquisition
+v1_chunk = 128
+v2_chunk = 80
+fname = 'acq%s' % acquisition_index
+outdir = '/data2/var_est'
+
+w_cutoff = 0
+
+# -------------------------------------------------------------------
+
 if test_script is True:
     print "var_est: test in progress"
     acquisition_index = 'test'
@@ -19,6 +27,8 @@ elif acquisition_index == 1:
     s = ch_frb_rfi.acquisitions.incoherent_search1()
 elif acquisition_index == 2:
     s = ch_frb_rfi.acquisitions.incoherent_1c()
+elif acquisition_index == 3:
+    s = ch_frb_rfi.acquisitions.ex_pulsar_search0()
 else:
     raise RuntimeError("var_est: invalid acquisition index!")
 
@@ -34,10 +44,10 @@ t = ch_frb_rfi.transform_chain(p)
 
 if not norm_trig:
     # Append a variance estimator to the chain
-    t += [ rf_pipelines.variance_estimator(v1_chunk=128, v2_chunk=80, nt_chunk=1024, fname='acq%s' % acquisition_index, outdir='/data2/var_est') ]
+    t += [ rf_pipelines.variance_estimator(v1_chunk=v1_chunk, v2_chunk=v2_chunk, fname=fname, outdir=outdir) ]
 else:
     # Append the mask filler and bonsai dedisperser
-    t += [ rf_pipelines.mask_filler() ]
+    t += [ rf_pipelines.mask_filler(var_file='%s/%s_v1_%d_v2_%d.h5' % (outdir, fname, v1_chunk, v2_chunk), w_cutoff=w_cutoff) ]
     t += [ ch_frb_rfi.bonsai.nfreq1K_3tree(p, 1) ]
 
 # Run the pipeline for web viewer
