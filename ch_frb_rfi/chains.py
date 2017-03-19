@@ -13,9 +13,11 @@ class transform_parameters:
 
     Constructor syntax:
 
-       p = transform_parameters(rfi_level=0, detrender_niter=None, clipper_niter=None, detrend_nt=1024, clip_nt=1024, kfreq=1, cpp=True, two_pass=True, 
-                                plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, plot_nzoom=None,
-                                bonsai_output_plot_stem=None, maskpath=None, mask=None)
+        p = transform_parameters(rfi_level=0, detrender_niter=None, clipper_niter=None, detrend_nt=1024, clip_nt=1024, 
+                                 kfreq=1, cpp=True, two_pass=True, plot_type=None, plot_downsample_nt=None, plot_nxpix=None, 
+                                 plot_nypix=None, bonsai_plot_nypix=256,  plot_nzoom=None, bonsai_output_plot_stem=None, 
+                                 bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None, bonsai_nt_per_hdf5_file=0, 
+                                 maskpath=None, mask=None)
     
     with arguments as follows:
 
@@ -44,6 +46,14 @@ class transform_parameters:
        - bonsai_output_plot_stem: if None, then no bonsai plots will be written. If a string is 
             specified (e.g. 'triggers'), then a sequence of bonsai plots will be written with 
             filenames beginning with the string (e.g. triggers_0_tree2.png).
+    
+       - bonsai_use_analytic_normalization: if True, then the dedisperser will use the exact trigger
+           normalization, assuming a toy model in which each input (frequency, time) sample is an
+           uncorrelated Gaussian.  Not suitable for real data!
+
+       - bonsai_hdf5_output_filename: If specified, HDF5 file(s) containing coarse-grained triggers will be written.
+
+       - bonsai_nt_per_hdf5_file: Only meaningful if bonsai_hdf5_output_filename=True.  Zero means "one big file".
 
        - bonsai_plot_nypix: is a bonsai plot argument. It specifies the number of pixels along the DM axis. 
 
@@ -72,9 +82,11 @@ class transform_parameters:
     By default (if no plotting-related constructor arguments are specified), plotting is disabled.
     """
 
-    def __init__(self, rfi_level=0, detrender_niter=None, clipper_niter=None, detrend_nt=1024, clip_nt=1024, kfreq=1, cpp=True, two_pass=True,
-                 plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, bonsai_plot_nypix=256, 
-                 plot_nzoom=None, bonsai_output_plot_stem=None, maskpath=None, mask=None):
+    def __init__(self, rfi_level=0, detrender_niter=None, clipper_niter=None, detrend_nt=1024, clip_nt=1024, 
+                 kfreq=1, cpp=True, two_pass=True, plot_type=None, plot_downsample_nt=None, plot_nxpix=None, 
+                 plot_nypix=None, bonsai_plot_nypix=256,  plot_nzoom=None, bonsai_output_plot_stem=None, 
+                 bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None, bonsai_nt_per_hdf5_file=0, 
+                 maskpath=None, mask=None):
 
         self.rfi_level = rfi_level
         self.detrend_nt = detrend_nt
@@ -86,6 +98,9 @@ class transform_parameters:
 
         self.bonsai_output_plot_stem = bonsai_output_plot_stem
         self.bonsai_plot_nypix = bonsai_plot_nypix
+        self.bonsai_use_analytic_normalization = bonsai_use_analytic_normalization
+        self.bonsai_hdf5_output_filename = bonsai_hdf5_output_filename
+        self.bonsai_nt_per_hdf5_file = bonsai_nt_per_hdf5_file
 
         self.maskpath = maskpath
         self.mask = mask
