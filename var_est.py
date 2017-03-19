@@ -3,16 +3,16 @@ import numpy as np
 import ch_frb_rfi
 import rf_pipelines
 
-test_script = True
+test_script = False
 
-acquisition_index = 3
+acquisition_index = 1
 norm_trig = False
 
 v1_chunk = 128
 v2_chunk = 80
 outdir = '/data2/var_est'
 
-w_cutoff = XXX
+#w_cutoff = XXX
 
 # -------------------------------------------------------------------
 
@@ -38,9 +38,9 @@ p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                     bonsai_output_plot_stem = 'triggers', 
                                     maskpath = '/data/pathfinder/rfi_masks/rfi_20160705.dat',
                                     rfi_level = 1,
-                                    bonsai_use_analytic_normalization = XXX,
-                                    bonsai_hdf5_output_filename = XXX,
-                                    bonsai_nt_per_hdf5_file = XXX,
+                                    #bonsai_use_analytic_normalization = XXX, 
+                                    #bonsai_hdf5_output_filename = XXX,
+                                    #bonsai_nt_per_hdf5_file = XXX,
                                     kfreq = 1)
 
 # Transform chain
