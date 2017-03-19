@@ -93,3 +93,9 @@ def incoherent_1c():
     """A large acquisition in 1K freq channels (~44 hours of data!)"""
 
     return rf_pipelines.chime_stream_from_acqdir('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_1c')
+
+
+def incoherent_1d():
+    """The first 60 hours of a very large acquisition in 1K freq channels"""
+
+    return sample('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_1d/*.h5', 0, 10000)

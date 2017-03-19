@@ -28,6 +28,8 @@ elif acquisition_index == 2:
     s = ch_frb_rfi.acquisitions.incoherent_1c()
 elif acquisition_index == 3:
     s = ch_frb_rfi.acquisitions.ex_pulsar_search0()
+elif acquisition_index == 4:
+    s = ch_frb_rfi.acquisitions.incoherent_1d()
 else:
     raise RuntimeError("var_est: invalid acquisition index!")
 
