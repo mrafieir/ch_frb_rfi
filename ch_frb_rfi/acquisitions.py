@@ -75,6 +75,12 @@ def ex_storm_1c():
     return rf_pipelines.chime_stream_from_times('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_1c', 117974.363013, 118103.212032)
 
 
+def ex_storm_1d():
+    """Example: a very intense RFI storm in an incoherent-beam acquisition (1K freq)"""
+
+    return rf_pipelines.chime_stream_from_times('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_1d', 179651.435561, 179995.032945)
+
+
 ######################################## INCOHERENT-BEAM DATA AVALANCHE ########################################
 
 def incoherent_search0():
