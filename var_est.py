@@ -3,7 +3,7 @@ import numpy as np
 import ch_frb_rfi
 import rf_pipelines
 
-test_script = False
+test_script = True
 
 acquisition_index = 1
 norm_trig = False
@@ -33,17 +33,17 @@ elif acquisition_index == 4:
 else:
     raise RuntimeError("var_est: invalid acquisition index!")
 
-fname = 'acq%s' % acquisition_index
-
 # Define transform parameters
 p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer', 
                                     bonsai_output_plot_stem = 'triggers', 
                                     maskpath = '/data/pathfinder/rfi_masks/rfi_20160705.dat',
                                     rfi_level = 1,
-                                    #bonsai_use_analytic_normalization = XXX, 
+                                    bonsai_use_analytic_normalization = False, 
                                     #bonsai_hdf5_output_filename = XXX,
                                     #bonsai_nt_per_hdf5_file = XXX,
                                     kfreq = 1)
+
+fname = 'acq%s_r%d' % (acquisition_index, p.rfi_level)
 
 # Transform chain
 t = ch_frb_rfi.transform_chain(p)
