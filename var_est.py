@@ -3,7 +3,7 @@ import numpy as np
 import ch_frb_rfi
 import rf_pipelines
 
-test_script = True
+test_script = False
 
 acquisition_index = 1
 norm_trig = False
@@ -37,10 +37,10 @@ else:
 p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer', 
                                     bonsai_output_plot_stem = 'triggers', 
                                     maskpath = '/data/pathfinder/rfi_masks/rfi_20160705.dat',
-                                    rfi_level = 1,
+                                    rfi_level = 2,
                                     bonsai_use_analytic_normalization = False, 
-                                    #bonsai_hdf5_output_filename = XXX,
-                                    #bonsai_nt_per_hdf5_file = XXX,
+                                    bonsai_hdf5_output_filename = None,
+                                    bonsai_nt_per_hdf5_file = None,
                                     kfreq = 1)
 
 fname = 'acq%s_r%d' % (acquisition_index, p.rfi_level)
