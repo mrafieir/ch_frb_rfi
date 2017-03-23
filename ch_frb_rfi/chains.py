@@ -182,7 +182,7 @@ class transform_parameters:
             t = rf_pipelines.mask_filler(var_file=self.mask_filler, w_cutoff=self.mask_filler_w_cutoff, nt_chunk=self.clip_nt)
             transform_chain.append(t)
 
-##############################  T R A N S F R O M   C H A I N S  ##############################
+##############################  T R A N S F O R M   C H A I N S  ##############################
 
 def detrender_chain(parameters, ix):
     assert isinstance(parameters, transform_parameters)
