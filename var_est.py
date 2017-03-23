@@ -6,13 +6,13 @@ import rf_pipelines
 test_script = False
 
 acquisition_index = 1
-norm_trig = False
+norm_trig = True
 
 v1_chunk = 128
 v2_chunk = 80
 outdir = '/data2/var_est'
 
-#w_cutoff = XXX
+w_cutoff = 0.5
 
 # -------------------------------------------------------------------
 
