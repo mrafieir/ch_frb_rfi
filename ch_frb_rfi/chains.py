@@ -187,11 +187,10 @@ class transform_parameters:
 def detrender_chain(parameters, ix):
     assert isinstance(parameters, transform_parameters)
     
-    parameters.append_plotter_transform(transform_chain, 'dc_out%d' % ix)
-    
     transform_chain = [ rf_pipelines.polynomial_detrender(deg=4, axis=1, nt_chunk=parameters.detrend_nt, cpp=parameters.cpp),
                         rf_pipelines.polynomial_detrender(deg=12, axis=0, nt_chunk=parameters.detrend_nt, cpp=parameters.cpp) ]
 
+    parameters.append_plotter_transform(transform_chain, 'dc_out%d' % ix)
     return transform_chain
 
 def clipper_chain(parameters, ix):
