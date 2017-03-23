@@ -17,7 +17,7 @@ class transform_parameters:
                                  kfreq=1, cpp=True, two_pass=True, plot_type=None, plot_downsample_nt=None, plot_nxpix=None, 
                                  plot_nypix=None, bonsai_plot_nypix=256,  plot_nzoom=None, bonsai_output_plot_stem=None, 
                                  bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None, bonsai_nt_per_hdf5_file=0, 
-                                 maskpath=None, mask=None)
+                                 maskpath=None, mask=None, mask_filler=None, mask_filler_w_cutoff=0.5)
     
     with arguments as follows:
 
@@ -65,6 +65,15 @@ class transform_parameters:
        Note: If both 'mask' and 'maskpath' are None, then the badchannel_mask transform is disabled. Otherwise,
             the badchannel_mask transfrom can be appended to the transform chain via append_badchannel_mask().
 
+       - mask_filler: is None by default. If not None, then it must be a full path to the h5 file which contains
+            the output of the variance_estimator transform. Provided the full path, a mask_filler transform is
+            appended to the chain after all clippers but before the last detrenders (and the bonsai dedisperser). 
+            Hence, the chain would become [ .. , mask_filler , last detrenders (, bonsai_dedisperser) ]
+
+       - mask_filler_w_cutoff: is the cutoff value for weights in the mask_filler transform. Only meaningful if
+            mask_filler is not None. E.g., a w_cutoff value of 0.5 corresponds to a 25% w_cutoff in the 
+            incoherent-beam data.
+
     The way the plotting parameters are determined deserves special explanation!
 
        - If the four "fine-grained" plotting parameters (plot_downsample_nt, plot_nxpix, plot_nypix, plot_nzoom)
@@ -86,7 +95,7 @@ class transform_parameters:
                  kfreq=1, cpp=True, two_pass=True, plot_type=None, plot_downsample_nt=None, plot_nxpix=None, 
                  plot_nypix=None, bonsai_plot_nypix=256,  plot_nzoom=None, bonsai_output_plot_stem=None, 
                  bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None, bonsai_nt_per_hdf5_file=0, 
-                 maskpath=None, mask=None):
+                 maskpath=None, mask=None, mask_filler=None, mask_filler_w_cutoff=0.5):
 
         self.rfi_level = rfi_level
         self.detrend_nt = detrend_nt
@@ -104,6 +113,9 @@ class transform_parameters:
 
         self.maskpath = maskpath
         self.mask = mask
+
+        self.mask_filler = mask_filler
+        self.mask_filler_w_cutoff = mask_filler_w_cutoff
         
         # This block of code selects a pair of (detrender_niter, clipper_nitr) 
         # values based on input parameters. See docstring above!
@@ -165,15 +177,21 @@ class transform_parameters:
             t = rf_pipelines.badchannel_mask(maskpath=self.maskpath, nt_chunk=self.clip_nt, mask=self.mask)
             transform_chain.append(t)
 
-# -------------------------------------------------------------------------------------------------------
+    def append_mask_filler(self, transform_chain, ix):
+        if (self.mask_filler != None) and (ix == self.detrender_niter - 1):
+            t = rf_pipelines.mask_filler(var_file=self.mask_filler, w_cutoff=self.mask_filler_w_cutoff, nt_chunk=self.clip_nt)
+            transform_chain.append(t)
+
+##############################  T R A N S F R O M   C H A I N S  ##############################
 
 def detrender_chain(parameters, ix):
     assert isinstance(parameters, transform_parameters)
-
+    
+    parameters.append_plotter_transform(transform_chain, 'dc_out%d' % ix)
+    
     transform_chain = [ rf_pipelines.polynomial_detrender(deg=4, axis=1, nt_chunk=parameters.detrend_nt, cpp=parameters.cpp),
                         rf_pipelines.polynomial_detrender(deg=12, axis=0, nt_chunk=parameters.detrend_nt, cpp=parameters.cpp) ]
 
-    parameters.append_plotter_transform(transform_chain, 'dc_out%d' % ix)
     return transform_chain
 
 def clipper_chain(parameters, ix):
@@ -200,6 +218,7 @@ def transform_chain(parameters):
     for ix in xrange(parameters.detrender_niter):
         for jx in xrange(parameters.clipper_niter):
             transform_chain += clipper_chain(parameters, ix)
+        parameters.append_mask_filler(transform_chain, ix)
         transform_chain += detrender_chain(parameters, ix)
 
     return transform_chain
