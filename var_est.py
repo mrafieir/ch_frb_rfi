@@ -12,6 +12,7 @@ v1_chunk = 128
 v2_chunk = 80
 outdir = '/data2/var_est'
 
+# In the incoherent-beam data, weights are between 0 and 2.0.
 w_cutoff = 0.5
 
 # -------------------------------------------------------------------
@@ -30,6 +31,8 @@ elif acquisition_index == 3:
     s = ch_frb_rfi.acquisitions.ex_pulsar_search0()
 elif acquisition_index == 4:
     s = ch_frb_rfi.acquisitions.incoherent_1d()
+elif acquisition_index == 5:
+    s = ch_frb_rfi.acquisitions.ex_storm_1d()
 else:
     raise RuntimeError("var_est: invalid acquisition index!")
 
@@ -40,7 +43,7 @@ p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                     rfi_level = 2,
                                     bonsai_use_analytic_normalization = False, 
                                     bonsai_hdf5_output_filename = None,
-                                    bonsai_nt_per_hdf5_file = None,
+                                    bonsai_nt_per_hdf5_file = None, 
                                     kfreq = 1)
 
 fname = 'acq%s_r%d' % (acquisition_index, p.rfi_level)
