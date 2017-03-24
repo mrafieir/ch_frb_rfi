@@ -105,7 +105,7 @@ class transform_parameters:
                  kfreq=1, cpp=True, two_pass=True, plot_type=None, plot_downsample_nt=None, plot_nxpix=None, 
                  plot_nypix=None, bonsai_plot_nypix=256,  plot_nzoom=None, bonsai_output_plot_stem=None, 
                  bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None, bonsai_nt_per_hdf5_file=0, 
-                 maskpath=None, mask=None, ariance_estimator_v1_chunk=128, variance_estimator_v2_chunk=80, var_path=None,
+                 maskpath=None, mask=None, variance_estimator_v1_chunk=128, variance_estimator_v2_chunk=80, var_path=None,
                  var_est=False, mask_filler=None, mask_filler_w_cutoff=0.5):
         
         assert (var_est) and (mask_filler != None) is not True, ("transform_parameters:"
@@ -199,7 +199,7 @@ class transform_parameters:
     
     def append_variance_estimator(self, transform_chain, ix):
         if (self.var_est) and (ix == self.detrender_niter - 1):
-            t = rf_pipelines.variance_estimator(v1_chunk=self.v1_chunk, v2_chunk=self.v2_chunk, var_path=self.var_path) 
+            t = rf_pipelines.variance_estimator(v1_chunk=self.variance_estimator_v1_chunk, v2_chunk=self.variance_estimator_v2_chunk, var_path=self.var_path) 
             transform_chain.append(t)
 
     def append_mask_filler(self, transform_chain, ix):
