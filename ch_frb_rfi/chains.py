@@ -17,7 +17,8 @@ class transform_parameters:
                                  kfreq=1, cpp=True, two_pass=True, plot_type=None, plot_downsample_nt=None, plot_nxpix=None, 
                                  plot_nypix=None, bonsai_plot_nypix=256,  plot_nzoom=None, bonsai_output_plot_stem=None, 
                                  bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None, bonsai_nt_per_hdf5_file=0, 
-                                 maskpath=None, mask=None, mask_filler=None, mask_filler_w_cutoff=0.5)
+                                 maskpath=None, mask=None, variance_estimator_v1_chunk=128, variance_estimator_v2_chunk=80, 
+                                 var_path=None, var_est=False, mask_filler=None, mask_filler_w_cutoff=0.5)
     
     with arguments as follows:
 
@@ -64,11 +65,20 @@ class transform_parameters:
             
        Note: If both 'mask' and 'maskpath' are None, then the badchannel_mask transform is disabled. Otherwise,
             the badchannel_mask transfrom can be appended to the transform chain via append_badchannel_mask().
+       
+       - (variance_estimator_v1_chunk, variance_estimator_v2_chunk, var_path) = (128, 80, None)
+            define parameters for the variance estimator transform (see its doctring!).
+
+       - var_est: If True, then it appends a variance estimator transform to the chain before the last
+            detrenders (and the bonsai dedisperser). Hence, the chain would become 
+            [ .. , variance_estimator , last detrenders (, bonsai_dedisperser) ]
 
        - mask_filler: is None by default. If not None, then it must be a full path to the h5 file which contains
             the output of the variance_estimator transform. Provided the full path, a mask_filler transform is
             appended to the chain after all clippers but before the last detrenders (and the bonsai dedisperser). 
             Hence, the chain would become [ .. , mask_filler , last detrenders (, bonsai_dedisperser) ]
+
+       Note: the variance_estimator and mask_filler transforms are not allowed to be in the same chain!
 
        - mask_filler_w_cutoff: is the cutoff value for weights in the mask_filler transform. Only meaningful if
             mask_filler is not None. E.g., a w_cutoff value of 0.5 corresponds to a 25% w_cutoff in the 
@@ -95,7 +105,12 @@ class transform_parameters:
                  kfreq=1, cpp=True, two_pass=True, plot_type=None, plot_downsample_nt=None, plot_nxpix=None, 
                  plot_nypix=None, bonsai_plot_nypix=256,  plot_nzoom=None, bonsai_output_plot_stem=None, 
                  bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None, bonsai_nt_per_hdf5_file=0, 
-                 maskpath=None, mask=None, mask_filler=None, mask_filler_w_cutoff=0.5):
+                 maskpath=None, mask=None, ariance_estimator_v1_chunk=128, variance_estimator_v2_chunk=80, var_path=None,
+                 var_est=False, mask_filler=None, mask_filler_w_cutoff=0.5):
+        
+        assert (var_est) and (mask_filler != None) is not True, ("transform_parameters:"
+               + " the variance_estimator and mask_filler transforms are not allowed to be"
+               + " in the same chain! Modify either 'var_est' or 'mask_filler'.")
 
         self.rfi_level = rfi_level
         self.detrend_nt = detrend_nt
@@ -114,9 +129,14 @@ class transform_parameters:
         self.maskpath = maskpath
         self.mask = mask
 
+        self.variance_estimator_v1_chunk = variance_estimator_v1_chunk
+        self.variance_estimator_v2_chunk = variance_estimator_v2_chunk
+        self.var_path = var_path
+        self.var_est = var_est
+
         self.mask_filler = mask_filler
         self.mask_filler_w_cutoff = mask_filler_w_cutoff
-        
+
         # This block of code selects a pair of (detrender_niter, clipper_nitr) 
         # values based on input parameters. See docstring above!
 
@@ -176,6 +196,11 @@ class transform_parameters:
         if (self.maskpath != None) or (self.mask != None):
             t = rf_pipelines.badchannel_mask(maskpath=self.maskpath, nt_chunk=self.clip_nt, mask=self.mask)
             transform_chain.append(t)
+    
+    def append_variance_estimator(self, transform_chain, ix):
+        if (self.var_est) and (ix == self.detrender_niter - 1):
+            t = rf_pipelines.variance_estimator(v1_chunk=self.v1_chunk, v2_chunk=self.v2_chunk, var_path=self.var_path) 
+            transform_chain.append(t)
 
     def append_mask_filler(self, transform_chain, ix):
         if (self.mask_filler != None) and (ix == self.detrender_niter - 1):
@@ -189,6 +214,7 @@ def detrender_chain(parameters, ix):
 
     return [ rf_pipelines.polynomial_detrender(deg=4, axis=1, nt_chunk=parameters.detrend_nt, cpp=parameters.cpp),
              rf_pipelines.polynomial_detrender(deg=12, axis=0, nt_chunk=parameters.detrend_nt, cpp=parameters.cpp) ]
+
 
 def clipper_chain(parameters, ix):
     two_pass = parameters.two_pass and (ix == 0)
@@ -205,7 +231,8 @@ def clipper_chain(parameters, ix):
 
              rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=3, axis=None, nt_chunk=parameters.clip_nt, Df=2*parameters.kfreq, Dt=16, cpp=parameters.cpp),
              rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=3, axis=0, nt_chunk=parameters.clip_nt, Df=2*parameters.kfreq, Dt=16, cpp=parameters.cpp) ]
-             
+
+       
 def transform_chain(parameters):
     transform_chain = [ ]
     parameters.append_plotter_transform(transform_chain, 'raw')
@@ -218,6 +245,7 @@ def transform_chain(parameters):
         
         parameters.append_plotter_transform(transform_chain, 'dc_out_a%d' % ix)
         
+        parameters.append_variance_estimator(transform_chain, ix)
         parameters.append_mask_filler(transform_chain, ix)
         transform_chain += detrender_chain(parameters, ix)
         
