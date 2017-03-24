@@ -4,18 +4,12 @@ import ch_frb_rfi
 import rf_pipelines
 
 test_script = False
-
-acquisition_index = 1
 norm_trig = True
-
+acquisition_index = 5
 v1_chunk = 128
 v2_chunk = 80
 outdir = '/data2/var_est'
-
-# In the incoherent-beam data, weights are between 0 and 2.0.
-w_cutoff = 0.5
-
-# -------------------------------------------------------------------
+rfi_level = 2
 
 if test_script is True:
     print "var_est: test in progress"
@@ -36,28 +30,24 @@ elif acquisition_index == 5:
 else:
     raise RuntimeError("var_est: invalid acquisition index!")
 
-# Define transform parameters
+fname = 'acq%s_r%d' % (acquisition_index, rfi_level)
+
 p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer', 
                                     bonsai_output_plot_stem = 'triggers', 
                                     maskpath = '/data/pathfinder/rfi_masks/rfi_20160705.dat',
-                                    rfi_level = 2,
+                                    rfi_level = rfi_level,
                                     bonsai_use_analytic_normalization = False, 
                                     bonsai_hdf5_output_filename = None,
-                                    bonsai_nt_per_hdf5_file = None, 
+                                    bonsai_nt_per_hdf5_file = None,
+                                    mask_filler = '%s/%s_v1_%d_v2_%d.h5' % (outdir, fname, v1_chunk, v2_chunk) if norm_trig else None,
+                                    mask_filler_w_cutoff = 0.5,
                                     kfreq = 1)
 
-fname = 'acq%s_r%d' % (acquisition_index, p.rfi_level)
-
-# Transform chain
 t = ch_frb_rfi.transform_chain(p)
 
 if not norm_trig:
-    # Append a variance estimator to the chain
     t += [ rf_pipelines.variance_estimator(v1_chunk=v1_chunk, v2_chunk=v2_chunk, fname=fname, outdir=outdir) ]
 else:
-    # Append the mask filler and bonsai dedisperser
-    t += [ rf_pipelines.mask_filler(var_file='%s/%s_v1_%d_v2_%d.h5' % (outdir, fname, v1_chunk, v2_chunk), w_cutoff=w_cutoff) ]
     t += [ ch_frb_rfi.bonsai.nfreq1K_3tree(p, 1) ]
 
-# Run the pipeline for web viewer
 ch_frb_rfi.run_for_web_viewer('var_est', s, t)

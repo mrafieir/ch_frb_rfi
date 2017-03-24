@@ -186,12 +186,9 @@ class transform_parameters:
 
 def detrender_chain(parameters, ix):
     assert isinstance(parameters, transform_parameters)
-    
-    transform_chain = [ rf_pipelines.polynomial_detrender(deg=4, axis=1, nt_chunk=parameters.detrend_nt, cpp=parameters.cpp),
-                        rf_pipelines.polynomial_detrender(deg=12, axis=0, nt_chunk=parameters.detrend_nt, cpp=parameters.cpp) ]
 
-    parameters.append_plotter_transform(transform_chain, 'dc_out%d' % ix)
-    return transform_chain
+    return [ rf_pipelines.polynomial_detrender(deg=4, axis=1, nt_chunk=parameters.detrend_nt, cpp=parameters.cpp),
+             rf_pipelines.polynomial_detrender(deg=12, axis=0, nt_chunk=parameters.detrend_nt, cpp=parameters.cpp) ]
 
 def clipper_chain(parameters, ix):
     two_pass = parameters.two_pass and (ix == 0)
@@ -215,9 +212,15 @@ def transform_chain(parameters):
     parameters.append_badchannel_mask(transform_chain)
 
     for ix in xrange(parameters.detrender_niter):
+        
         for jx in xrange(parameters.clipper_niter):
             transform_chain += clipper_chain(parameters, ix)
+        
+        parameters.append_plotter_transform(transform_chain, 'dc_out_a%d' % ix)
+        
         parameters.append_mask_filler(transform_chain, ix)
         transform_chain += detrender_chain(parameters, ix)
+        
+        parameters.append_plotter_transform(transform_chain, 'dc_out_b%d' % ix)
 
     return transform_chain
