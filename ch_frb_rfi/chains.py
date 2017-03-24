@@ -108,9 +108,10 @@ class transform_parameters:
                  maskpath=None, mask=None, variance_estimator_v1_chunk=128, variance_estimator_v2_chunk=80, var_path=None,
                  var_est=False, mask_filler=None, mask_filler_w_cutoff=0.5):
         
-        assert (var_est) and (mask_filler != None) is not True, ("transform_parameters:"
-               + " the variance_estimator and mask_filler transforms are not allowed to be"
-               + " in the same chain! Modify either 'var_est' or 'mask_filler'.")
+        if ((var_est == True) and (mask_filler != None)):
+            raise RuntimeError("transform_parameters:"
+                               + " the variance_estimator and mask_filler transforms are not allowed to be"
+                               + " in the same chain! Modify either 'var_est' or 'mask_filler'.")
 
         self.rfi_level = rfi_level
         self.detrend_nt = detrend_nt

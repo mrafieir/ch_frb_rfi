@@ -15,7 +15,7 @@ rfi_level = 2
 if test_script is True:
     print ">>>>>>> var_est: test in progress >>>>>>>"
     acquisition_index = 'test'
-    s = ch_frb_rfi.acquisitions.sample('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_0/*.h5', 0, 1)
+    s = ch_frb_rfi.acquisitions.sample('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_0/*.h5', 0, 20)
 elif acquisition_index == 0:
     s = ch_frb_rfi.acquisitions.incoherent_search0()
 elif acquisition_index == 1:
