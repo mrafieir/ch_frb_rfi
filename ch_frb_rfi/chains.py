@@ -179,8 +179,13 @@ class transform_parameters:
 
     def append_mask_filler(self, transform_chain, ix):
         if (self.mask_filler != None) and (ix == self.detrender_niter - 1):
-            t = rf_pipelines.mask_filler(var_file=self.mask_filler, w_cutoff=self.mask_filler_w_cutoff, nt_chunk=self.clip_nt)
-            transform_chain.append(t)
+
+            t = [ rf_pipelines.mask_filler(var_file=self.mask_filler, w_cutoff=self.mask_filler_w_cutoff, nt_chunk=self.clip_nt),
+                  rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=4*self.clip_nt, Df=1*self.kfreq, Dt=1, cpp=self.cpp),
+                  rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=4*self.clip_nt, Df=1*self.kfreq, Dt=1, cpp=self.cpp),
+                  rf_pipelines.mask_filler(var_file=self.mask_filler, w_cutoff=self.mask_filler_w_cutoff, nt_chunk=self.clip_nt) ]
+
+            transform_chain.extend(t)
 
 ##############################  T R A N S F O R M   C H A I N S  ##############################
 
