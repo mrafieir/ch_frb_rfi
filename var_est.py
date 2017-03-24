@@ -13,7 +13,7 @@ v2_chunk = 80
 rfi_level = 2
 
 if test_script is True:
-    print "var_est: test in progress"
+    print ">>>>>>> var_est: test in progress >>>>>>>"
     acquisition_index = 'test'
     s = ch_frb_rfi.acquisitions.sample('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_0/*.h5', 0, 1)
 elif acquisition_index == 0:
@@ -42,8 +42,7 @@ p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                     var_path = '/data2/var_est/acq%s_r%d' % (acquisition_index, rfi_level),
                                     variance_estimator_v1_chunk = v1_chunk,
                                     variance_estimator_v2_chunk = v2_chunk,
-                                    mask_filler = '/data2/var_est/acq%s_r%d_v1_%d_v2_%d.h5' % \
-                                            (acquisition_index, rfi_level, v1_chunk, v2_chunk) if norm_trig else None,
+                                    mask_filler = '/data2/var_est/acq%s_r%d_v1_%d_v2_%d.h5' % (acquisition_index, rfi_level, v1_chunk, v2_chunk) if norm_trig else None,
                                     mask_filler_w_cutoff = 0.5,
                                     kfreq = 1)
 

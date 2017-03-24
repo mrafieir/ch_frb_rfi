@@ -199,7 +199,7 @@ class transform_parameters:
     
     def append_variance_estimator(self, transform_chain, ix):
         if (self.var_est) and (ix == self.detrender_niter - 1):
-            t = rf_pipelines.variance_estimator(v1_chunk=self.variance_estimator_v1_chunk, v2_chunk=self.variance_estimator_v2_chunk, var_path=self.var_path) 
+            t = rf_pipelines.variance_estimator(v1_chunk=self.variance_estimator_v1_chunk, v2_chunk=self.variance_estimator_v2_chunk, var_path=self.var_path, nt_chunk=self.clip_nt) 
             transform_chain.append(t)
 
     def append_mask_filler(self, transform_chain, ix):
