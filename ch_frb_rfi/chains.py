@@ -69,14 +69,14 @@ class transform_parameters:
        - (variance_estimator_v1_chunk, variance_estimator_v2_chunk, var_path) = (128, 80, None)
             define parameters for the variance estimator transform (see its doctring!).
 
-       - var_est: If True, then it appends a variance estimator transform to the chain before the last
-            detrenders (and the bonsai dedisperser). Hence, the chain would become 
-            [ .. , variance_estimator , last detrenders (, bonsai_dedisperser) ]
+       - var_est: If True, then it appends a variance estimator transform to the chain after all clippers but
+            before the last detrenders (and the bonsai dedisperser). Hence, the chain would become 
+            [ .. , variance_estimator , the last detrenders (, bonsai_dedisperser) ]
 
        - mask_filler: is None by default. If not None, then it must be a full path to the h5 file which contains
             the output of the variance_estimator transform. Provided the full path, a mask_filler transform is
             appended to the chain after all clippers but before the last detrenders (and the bonsai dedisperser). 
-            Hence, the chain would become [ .. , mask_filler , last detrenders (, bonsai_dedisperser) ]
+            Hence, the chain would become [ .. , mask_filler , the last detrenders (, bonsai_dedisperser) ]
 
        Note: the variance_estimator and mask_filler transforms are not allowed to be in the same chain!
 
