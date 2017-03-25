@@ -3,13 +3,14 @@ import numpy as np
 import ch_frb_rfi
 import rf_pipelines
 
-test_script = True
+test_script = False
 norm_trig = False
 
-acquisition_index = 5
+acquisition_index = 1
 
+# let's keep max(buffer) = 6 sec
 v1_chunk = 128
-v2_chunk = 80
+v2_chunk = 48
 rfi_level = 2
 
 if test_script is True:

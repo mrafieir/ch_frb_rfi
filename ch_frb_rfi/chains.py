@@ -71,7 +71,9 @@ class transform_parameters:
 
        - var_est: If True, then it appends a variance estimator transform to the chain after all clippers but
             before the last detrenders (and the bonsai dedisperser). Hence, the chain would become 
-            [ .. , variance_estimator , the last detrenders (, bonsai_dedisperser) ]
+            [ .. , variance_estimator , the last detrenders (, bonsai_dedisperser) ].
+       
+       Note: 'var_est=True' disables all plotter transforms!
 
        - mask_filler: is None by default. If not None, then it must be a full path to the h5 file which contains
             the output of the variance_estimator transform. Provided the full path, a mask_filler transform is
@@ -160,7 +162,9 @@ class transform_parameters:
 
         self.make_plots = True
 
-        if plot_type is 'big':
+        if var_est:
+            self.make_plots = False
+        elif plot_type is 'big':
             self.plot_downsample_nt = 16
             self.plot_nxpix = 1200
             self.plot_nypix = 512
