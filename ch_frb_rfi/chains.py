@@ -67,18 +67,17 @@ class transform_parameters:
             the badchannel_mask transfrom can be appended to the transform chain via append_badchannel_mask().
        
        - (variance_estimator_v1_chunk, variance_estimator_v2_chunk, var_path) = (128, 80, None)
-            define parameters for the variance estimator transform (see its doctring!).
+            define parameters for the variance_estimator transform (see its doctring!).
 
-       - var_est: If True, then it appends a variance estimator transform to the chain after all clippers but
-            before the last detrenders (and the bonsai dedisperser). Hence, the chain would become 
-            [ .. , variance_estimator , the last detrenders (, bonsai_dedisperser) ].
+       - var_est: If True, then it appends a variance_estimator transform to the chain after all clippers and 
+            detrenders. Hence, transform_chain = [ .. , the last detrenders, variance_estimator ].
        
        Note: 'var_est=True' disables all plotter transforms!
 
        - mask_filler: is None by default. If not None, then it must be a full path to the h5 file which contains
             the output of the variance_estimator transform. Provided the full path, a mask_filler transform is
             appended to the chain after all clippers but before the last detrenders (and the bonsai dedisperser). 
-            Hence, the chain would become [ .. , mask_filler , the last detrenders (, bonsai_dedisperser) ]
+            Hence, transform_chain = [ .. , mask_filler , the last detrenders (, bonsai_dedisperser) ].
 
        Note: the variance_estimator and mask_filler transforms are not allowed to be in the same chain!
 
@@ -250,10 +249,10 @@ def transform_chain(parameters):
         
         parameters.append_plotter_transform(transform_chain, 'dc_out_a%d' % ix)
         
-        parameters.append_variance_estimator(transform_chain, ix)
         parameters.append_mask_filler(transform_chain, ix)
         transform_chain += detrender_chain(parameters, ix)
-        
+        parameters.append_variance_estimator(transform_chain, ix)
+
         parameters.append_plotter_transform(transform_chain, 'dc_out_b%d' % ix)
 
     return transform_chain
