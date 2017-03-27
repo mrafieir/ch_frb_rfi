@@ -58,7 +58,7 @@ class transform_parameters:
 
        - bonsai_plot_nypix: is a bonsai plot argument. It specifies the number of pixels along the DM axis.
 
-       - (bonsai_plot_threshold1, bonsai_plot_threshold2) are bonsai plot arguments. They specify this color scheme:
+       - (bonsai_plot_threshold1, bonsai_plot_threshold2) are bonsai plot arguments. They specify the following color scheme:
             
             (X < threshold1) : (blue to red)
             (threshold1 < X < threshold2) : (yellow)
