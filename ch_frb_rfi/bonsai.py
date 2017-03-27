@@ -29,8 +29,9 @@ def make_dedisperser(parameters, config_filename):
                                            img_nt = parameters.plot_nxpix, 
                                            downsample_nt = parameters.plot_downsample_nt, 
                                            n_zoom = parameters.plot_nzoom,
-                                           plot_threshold1 = bonsai_plot_threshold1,
-                                           plot_threshold2 = bonsai_plot_threshold2)
+                                           plot_threshold1 = parameters.bonsai_plot_threshold1,
+                                           plot_threshold2 = parameters.bonsai_plot_threshold2,
+                                           dynamic_plotter = parameters.bonsai_dynamic_plotter)
 
 # -------------------------------------------------------------------------------------------------------
 

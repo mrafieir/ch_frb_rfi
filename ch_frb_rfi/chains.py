@@ -13,11 +13,10 @@ class transform_parameters:
 
     Constructor syntax:
 
-        p = transform_parameters(rfi_level=0, detrender_niter=None, clipper_niter=None, detrend_nt=1024, clip_nt=1024, 
-                                 kfreq=1, cpp=True, two_pass=True, plot_type=None, plot_downsample_nt=None, plot_nxpix=None, 
-                                 plot_nypix=None, bonsai_plot_nypix=256,  plot_nzoom=None, bonsai_output_plot_stem=None, 
-                                 bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None, bonsai_nt_per_hdf5_file=0,
-                                 bonsai_plot_threshold1=6, bonsai_plot_threshold2=10, maskpath=None, mask=None, variance_estimator_v1_chunk=128, 
+        p = transform_parameters(rfi_level=0, detrender_niter=None, clipper_niter=None, detrend_nt=1024, clip_nt=1024, kfreq=1, cpp=True, two_pass=True, 
+                                 plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, bonsai_plot_nypix=256,  plot_nzoom=None, 
+                                 bonsai_output_plot_stem=None, bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None, bonsai_nt_per_hdf5_file=0, 
+                                 bonsai_plot_threshold1=6, bonsai_plot_threshold2=10, bonsai_dynamic_plotter=False, maskpath=None, mask=None, variance_estimator_v1_chunk=128, 
                                  variance_estimator_v2_chunk=80, var_path=None, var_est=False, mask_filler=None, mask_filler_w_cutoff=0.5)
     
     with arguments as follows:
@@ -64,6 +63,8 @@ class transform_parameters:
             (threshold1 < X < threshold2) : (yellow)
             (threshold2 < X) : (light green)
 
+       - bonsai_dynamic_plotter: If True, then the old color scheme (with a higher dynamic range from blue to red) is used.
+
        - maskpath: is a full path to the mask file which contains a list of previously-identified 
             RFI-contaminated frequency channels. If None, then the argument 'mask' is used instead.
         
@@ -108,11 +109,10 @@ class transform_parameters:
     By default (if no plotting-related constructor arguments are specified), plotting is disabled.
     """
 
-    def __init__(self, rfi_level=0, detrender_niter=None, clipper_niter=None, detrend_nt=1024, clip_nt=1024, 
-                 kfreq=1, cpp=True, two_pass=True, plot_type=None, plot_downsample_nt=None, plot_nxpix=None, 
-                 plot_nypix=None, bonsai_plot_nypix=256,  plot_nzoom=None, bonsai_output_plot_stem=None, 
-                 bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None, bonsai_nt_per_hdf5_file=0,
-                 bonsai_plot_threshold1=6, bonsai_plot_threshold2=10, maskpath=None, mask=None, variance_estimator_v1_chunk=128, 
+    def __init__(self, rfi_level=0, detrender_niter=None, clipper_niter=None, detrend_nt=1024, clip_nt=1024, kfreq=1, cpp=True, two_pass=True, 
+                 plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, bonsai_plot_nypix=256,  plot_nzoom=None, 
+                 bonsai_output_plot_stem=None, bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None, bonsai_nt_per_hdf5_file=0,
+                 bonsai_plot_threshold1=6, bonsai_plot_threshold2=10, bonsai_dynamic_plotter=False, maskpath=None, mask=None, variance_estimator_v1_chunk=128, 
                  variance_estimator_v2_chunk=80, var_path=None, var_est=False, mask_filler=None, mask_filler_w_cutoff=0.5):
         
         if ((var_est == True) and (mask_filler != None)):
@@ -135,6 +135,7 @@ class transform_parameters:
         self.bonsai_nt_per_hdf5_file = bonsai_nt_per_hdf5_file
         self.bonsai_plot_threshold1 = bonsai_plot_threshold1
         self.bonsai_plot_threshold2 = bonsai_plot_threshold2
+        self.bonsai_dynamic_plotter = bonsai_dynamic_plotter
 
         self.maskpath = maskpath
         self.mask = mask
