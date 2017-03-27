@@ -1,3 +1,9 @@
+- Version 5:
+
+   - Minor updates following API changes in bonsai v9.
+
+   - Integration of variance_estimator, mask_filler.
+
 - Version 4:
 
    - New transform chain (v1.5)
