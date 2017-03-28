@@ -17,7 +17,8 @@ s = ch_frb_rfi.acquisitions.ex_pulsar_search1()
 # The following paramaters are explained in 'ch_frb_rfi/chains.py'.
 (rfi_level, v1_chunk, v2_chunk) = (1, 32, 192)
 
-p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
+p = ch_frb_rfi.transform_parameters(plot_nzoom = 0, # disable plotter transforms
+                                    bonsai_plot_nypix = None,
                                     bonsai_output_plot_stem = 'triggers', 
                                     maskpath = '/data/pathfinder/rfi_masks/rfi_20160705.dat',
                                     rfi_level = rfi_level,
@@ -40,9 +41,11 @@ t = ch_frb_rfi.transform_chain(p)
 # The variance estimates are saved in 'p.var_path'.
 ch_frb_rfi.run_for_web_viewer('example2', s, t)
 
-# Modifying transform parameters remove the variance_estimator transform and append the mask_filler transform.
+# Remove the variance_estimator, append the mask_filler and plotter transforms.
 p.var_est = False
 p.mask_filler = '/data2/var_est/example2/acq%s_r%d_v1_%d_v2_%d.h5' % (acquisition_index, rfi_level, v1_chunk, v2_chunk)
+p.plot_type = 'web_viewer'
+
 t = ch_frb_rfi.transform_chain(p)
 t += [ ch_frb_rfi.bonsai.nfreq1K_3tree(p, 1) ]
 

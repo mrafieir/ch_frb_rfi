@@ -110,8 +110,8 @@ class transform_parameters:
     def __init__(self, rfi_level=0, detrender_niter=None, clipper_niter=None, detrend_nt=1024, clip_nt=1024, kfreq=1, cpp=True, two_pass=True, 
                  plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, bonsai_plot_nypix=256,  plot_nzoom=None, 
                  bonsai_output_plot_stem=None, bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None, bonsai_nt_per_hdf5_file=0,
-                 bonsai_plot_threshold1=6, bonsai_plot_threshold2=10, bonsai_dynamic_plotter=False, maskpath=None, mask=None, variance_estimator_v1_chunk=128, 
-                 variance_estimator_v2_chunk=80, var_path=None, var_est=False, mask_filler=None, mask_filler_w_cutoff=0.5):
+                 bonsai_plot_threshold1=6, bonsai_plot_threshold2=10, bonsai_dynamic_plotter=False, maskpath=None, mask=None, variance_estimator_v1_chunk=32, 
+                 variance_estimator_v2_chunk=192, var_path=None, var_est=False, mask_filler=None, mask_filler_w_cutoff=0.5):
         
         if ((var_est == True) and (mask_filler != None)):
             raise RuntimeError("transform_parameters:"
@@ -165,20 +165,21 @@ class transform_parameters:
  
         # The rest of the constructor initializes plotting parameters.
         # See docstring above for a description of the initialization logic!
-
+        
+        self.plot_type = plot_type
         self.make_plots = True
 
-        if plot_type is 'big':
+        if self.plot_type is 'big':
             self.plot_downsample_nt = 16
             self.plot_nxpix = 1200
             self.plot_nypix = 512
             self.plot_nzoom = 1
-        elif plot_type is 'web_viewer':
+        elif self.plot_type is 'web_viewer':
             self.plot_downsample_nt = 16
             self.plot_nxpix = 256
             self.plot_nypix = 256
             self.plot_nzoom = 4
-        elif plot_type is not None:
+        elif self.plot_type is not None:
             raise RuntimeError("ch_frb_rfi.transform_parameters constructor: plot_type='%s' is unrecognized" % plot_type)
         elif (plot_downsample_nt is None) and (plot_nxpix is None) and (plot_nypix is None) and (plot_nzoom is not None):
             # OK: no plots will be written
