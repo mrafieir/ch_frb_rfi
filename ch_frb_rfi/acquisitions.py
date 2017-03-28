@@ -63,6 +63,12 @@ def ex_pulsar_search0():
     return rf_pipelines.chime_stream_from_times('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_0', 143897.510543, 144112.258908)
 
 
+def ex_pulsar_search1():
+    """Example: a pulsar in an incoherent-beam acquisition (1K freq)"""
+
+    return rf_pipelines.chime_stream_from_times('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_1', 64945.1064525, 65331.6535091)
+
+
 def ex_storm_0b():
     """Example: an RFI storm in an incoherent-beam acquisition (1K freq)"""
 
@@ -81,7 +87,7 @@ def ex_storm_1d():
     return rf_pipelines.chime_stream_from_times('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_1d', 179651.435561, 179995.032945)
 
 
-######################################## INCOHERENT-BEAM DATA AVALANCHE ########################################
+######################  I N C O H E R E N T - B E A M   D A T A   A V A L A N C H E  ######################
 
 def incoherent_search0():
     """A large acquisition in 1K freq channels (~45 hours of data!)"""
