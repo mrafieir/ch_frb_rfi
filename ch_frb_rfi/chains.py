@@ -211,14 +211,14 @@ class transform_parameters:
     def append_variance_estimator(self, transform_chain, ix):
         if (self.var_est) and (ix == self.detrender_niter - 1):
             if self.var_filename is None:
-                throw RuntimeError('ch_frb_rfi.parameters.append_variance_estimator() was called, but var_filename is None')
+                raise RuntimeError('ch_frb_rfi.parameters.append_variance_estimator() was called, but var_filename is None')
             t = rf_pipelines.variance_estimator(v1_chunk=self.variance_estimator_v1_chunk, v2_chunk=self.variance_estimator_v2_chunk, var_filename=self.var_filename, nt_chunk=self.clip_nt) 
             transform_chain.append(t)
 
     def append_mask_filler(self, transform_chain, ix):
         if (self.mask_filler) and (ix == self.detrender_niter - 1):
             if self.var_filename is None:
-                throw RuntimeError('ch_frb_rfi.parameters.append_mask_filler() was called, but var_filename is None')
+                raise RuntimeError('ch_frb_rfi.parameters.append_mask_filler() was called, but var_filename is None')
             t = rf_pipelines.mask_filler(var_file=self.var_filename, w_cutoff=self.mask_filler_w_cutoff, nt_chunk=self.clip_nt)            
             transform_chain.append(t)
 

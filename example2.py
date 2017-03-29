@@ -44,7 +44,7 @@ ch_frb_rfi.run_for_web_viewer('example2', s, t)
 
 # Remove the variance_estimator, append the mask_filler and plotter transforms.
 p.var_est = False
-p.mask_filler = './acq%s_r%d_v1_%d_v2_%d.h5' % (acquisition_index, rfi_level, v1_chunk, v2_chunk)
+p.mask_filler = False
 p.make_plots = True
 
 t = ch_frb_rfi.transform_chain(p)
