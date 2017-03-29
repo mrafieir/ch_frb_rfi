@@ -17,7 +17,7 @@ class transform_parameters:
                                  make_plots=True, plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, bonsai_plot_nypix=256,  plot_nzoom=None, 
                                  bonsai_output_plot_stem=None, bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None, bonsai_nt_per_hdf5_file=0, 
                                  bonsai_plot_threshold1=6, bonsai_plot_threshold2=10, bonsai_dynamic_plotter=False, maskpath=None, mask=None, variance_estimator_v1_chunk=128, 
-                                 variance_estimator_v2_chunk=80, var_path=None, var_est=False, mask_filler=None, mask_filler_w_cutoff=0.5)
+                                 variance_estimator_v2_chunk=80, var_filename=None, var_est=False, mask_filler=False, mask_filler_w_cutoff=0.5)
     
     with arguments as follows:
 
@@ -113,9 +113,9 @@ class transform_parameters:
                  make_plots=True, plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, bonsai_plot_nypix=256, plot_nzoom=None, 
                  bonsai_output_plot_stem=None, bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None, bonsai_nt_per_hdf5_file=0,
                  bonsai_plot_threshold1=6, bonsai_plot_threshold2=10, bonsai_dynamic_plotter=False, maskpath=None, mask=None, variance_estimator_v1_chunk=32, 
-                 variance_estimator_v2_chunk=192, var_path=None, var_est=False, mask_filler=None, mask_filler_w_cutoff=0.5):
+                 variance_estimator_v2_chunk=192, var_filename=None, var_est=False, mask_filler=False, mask_filler_w_cutoff=0.5):
         
-        if ((var_est == True) and (mask_filler != None)):
+        if var_est and mask_filler:
             raise RuntimeError("transform_parameters:"
                                + " the variance_estimator and mask_filler transforms are not allowed to be"
                                + " in the same chain! Modify either 'var_est' or 'mask_filler'.")
@@ -142,7 +142,7 @@ class transform_parameters:
 
         self.variance_estimator_v1_chunk = variance_estimator_v1_chunk
         self.variance_estimator_v2_chunk = variance_estimator_v2_chunk
-        self.var_path = var_path
+        self.var_filename = var_filename
         self.var_est = var_est
 
         self.mask_filler = mask_filler
@@ -210,12 +210,16 @@ class transform_parameters:
     
     def append_variance_estimator(self, transform_chain, ix):
         if (self.var_est) and (ix == self.detrender_niter - 1):
-            t = rf_pipelines.variance_estimator(v1_chunk=self.variance_estimator_v1_chunk, v2_chunk=self.variance_estimator_v2_chunk, var_path=self.var_path, nt_chunk=self.clip_nt) 
+            if self.var_filename is None:
+                throw RuntimeError('ch_frb_rfi.parameters.append_variance_estimator() was called, but var_filename is None')
+            t = rf_pipelines.variance_estimator(v1_chunk=self.variance_estimator_v1_chunk, v2_chunk=self.variance_estimator_v2_chunk, var_filename=self.var_filename, nt_chunk=self.clip_nt) 
             transform_chain.append(t)
 
     def append_mask_filler(self, transform_chain, ix):
-        if (self.mask_filler != None) and (ix == self.detrender_niter - 1):
-            t = rf_pipelines.mask_filler(var_file=self.mask_filler, w_cutoff=self.mask_filler_w_cutoff, nt_chunk=self.clip_nt)            
+        if (self.mask_filler) and (ix == self.detrender_niter - 1):
+            if self.var_filename is None:
+                throw RuntimeError('ch_frb_rfi.parameters.append_mask_filler() was called, but var_filename is None')
+            t = rf_pipelines.mask_filler(var_file=self.var_filename, w_cutoff=self.mask_filler_w_cutoff, nt_chunk=self.clip_nt)            
             transform_chain.append(t)
 
 ##############################  T R A N S F O R M   C H A I N S  ##############################
