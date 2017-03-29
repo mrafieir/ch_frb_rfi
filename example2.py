@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # This is an example script showing how to use ch_frb_rfi for properly removing RFI, 
-# estimating the varinace, and hence correctly normalizing the output of the bonsai
+# estimating the variance, and hence correctly normalizing the output of the bonsai
 # dedisperser. It is assumed that you have already studied 'example.py'.
 #
 # This script is intended to run on frb1.physics.mcgill.ca.
@@ -11,7 +11,7 @@ import ch_frb_rfi
 import rf_pipelines
 
 # Let's choose an acquisition with a real pulsar!
-acquisition_index = 'pulsar1'
+acquisition_index = '1'
 s = ch_frb_rfi.acquisitions.ex_pulsar_search1()
 
 # The following paramaters are explained in 'ch_frb_rfi/chains.py'.
@@ -26,7 +26,7 @@ p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                     bonsai_hdf5_output_filename = None,
                                     bonsai_nt_per_hdf5_file = None,
                                     var_est = True,
-                                    var_path = '/data2/var_est/example2/acq%s_r%d' % (acquisition_index, rfi_level),
+                                    var_path = './acq%s_r%d' % (acquisition_index, rfi_level),
                                     variance_estimator_v1_chunk = v1_chunk,
                                     variance_estimator_v2_chunk = v2_chunk,
                                     mask_filler_w_cutoff = 0.5,
@@ -43,7 +43,7 @@ ch_frb_rfi.run_for_web_viewer('example2', s, t)
 
 # Remove the variance_estimator, append the mask_filler and plotter transforms.
 p.var_est = False
-p.mask_filler = '/data2/var_est/example2/acq%s_r%d_v1_%d_v2_%d.h5' % (acquisition_index, rfi_level, v1_chunk, v2_chunk)
+p.mask_filler = './acq%s_r%d_v1_%d_v2_%d.h5' % (acquisition_index, rfi_level, v1_chunk, v2_chunk)
 p.make_plots = True
 
 t = ch_frb_rfi.transform_chain(p)
