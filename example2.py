@@ -11,11 +11,22 @@ import ch_frb_rfi
 import rf_pipelines
 
 # Let's choose an acquisition with a real pulsar!
-acquisition_index = '1'
 s = ch_frb_rfi.acquisitions.ex_pulsar_search1()
 
-# The following paramaters are explained in 'ch_frb_rfi/chains.py'.
+# The following parameters are explained in 'ch_frb_rfi/chains.py'.
 (rfi_level, v1_chunk, v2_chunk) = (1, 32, 192)
+
+# Two pipeline runs will be performed in this example.
+#
+# The first run will create a file in the current directory (./var_example2.h5)
+# which contains per-channel variance estimates.  The second run will use these
+# estimates to "fill in" the RFI mask with simulated Gaussian noise (via the
+# mask_filler transform).  
+#
+# This fill-in helps the bonsai dedisperser compute running trigger variance estimates.  
+# It's an open question whether we'll use it "in production" on the telescope, but our
+# working assumption is that we will do so, and will write a fast C++ implementation
+# at some point.
 
 p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                     make_plots = False,
@@ -27,7 +38,7 @@ p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                     bonsai_nt_per_hdf5_file = None,
                                     var_est = True,
                                     mask_filler = False,
-                                    var_filename = './acq%s_r%d.h5' % (acquisition_index, rfi_level),
+                                    var_filename = './var_example2.h5',
                                     variance_estimator_v1_chunk = v1_chunk,
                                     variance_estimator_v2_chunk = v2_chunk,
                                     mask_filler_w_cutoff = 0.5,
@@ -44,7 +55,7 @@ ch_frb_rfi.run_for_web_viewer('example2', s, t)
 
 # Remove the variance_estimator, append the mask_filler and plotter transforms.
 p.var_est = False
-p.mask_filler = False
+p.mask_filler = True
 p.make_plots = True
 
 t = ch_frb_rfi.transform_chain(p)
