@@ -4,11 +4,18 @@ import time
 import rf_pipelines
 
 
-def make_rundir_for_web_viewer(name):
-    """Returns (dirname, basename) pair."""
+def make_rundir(topdir, run_name):
+    """
+    Returns (dirname, basename) pair.
 
-    basename = '%s-%s' % (name, time.strftime('%y-%m-%d-%X'))
-    dirname = os.path.join('/data2/web_viewer', os.environ['USER'])
+    The 'topdir' argument should be 'web_viewer' or 'scratch_pipelines' 
+    (These are subdirectories of /data2 on frb1.physics.mcgill.ca.)
+
+    The 'run_name' argument should be a descriptive string such as 'example2'.
+    """
+
+    basename = '%s-%s' % (run_name, time.strftime('%y-%m-%d-%X'))
+    dirname = os.path.join('/data2', topdir, os.environ['USER'])
     return (dirname, basename)
 
 
@@ -25,7 +32,7 @@ def run_for_web_viewer(run_name, stream, transform_chain):
     assert isinstance(stream, rf_pipelines.wi_stream)
     assert all(isinstance(t,rf_pipelines.wi_transform) for t in transform_chain)
 
-    (dirname, basename) = make_rundir_for_web_viewer(run_name)
+    (dirname, basename) = make_rundir('web_viewer', run_name)
 
     # Directory names beginning with underscore are pipeline runs in progress.
     temp_dir = os.path.join(dirname, '_' + basename)
@@ -40,3 +47,23 @@ def run_for_web_viewer(run_name, stream, transform_chain):
     print >>sys.stderr, 'renaming %s -> %s' % (temp_dir, final_dir)
     os.rename(temp_dir, final_dir)
 
+
+def run_in_scratch_dir(run_name, stream, transform_chain):
+    """
+    Runs a pipeline in a subdirectory of /data2/scratch_pipelines.
+    
+    Pipeline runs in this directory will not be indexed by the web viewer, but they
+    will stay on disk so that their outputs can be processed by hand if needed.
+    """
+
+    assert isinstance(run_name, basestring)
+    assert isinstance(stream, rf_pipelines.wi_stream)
+    assert all(isinstance(t,rf_pipelines.wi_transform) for t in transform_chain)
+
+    (dirname, basename) = make_rundir('scratch_pipelines', run_name)
+    outdir = os.path.join(dirname, basename)
+
+    print >>sys.stderr, "creating temporary directory '%s' for running pipeline" % outdir
+    os.makedirs(outdir)
+
+    stream.run(transform_chain, outdir=outdir, clobber=False)

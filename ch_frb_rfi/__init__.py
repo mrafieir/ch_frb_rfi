@@ -26,7 +26,7 @@ from chains import clipper_chain, \
 
 from transform_template import transform_template
 
-from utils import run_for_web_viewer
+from utils import run_for_web_viewer, run_in_scratch_dir
 
 # Example syntax: ch_frb_rfi.acquisitions.toy()
 from . import acquisitions

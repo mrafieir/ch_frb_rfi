@@ -50,8 +50,10 @@ p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
 # Using the specified parameters make a chain of transforms for estimating the variance.
 t = ch_frb_rfi.transform_chain(p)
 
-# The variance estimates are saved in 'p.var_path'.
-ch_frb_rfi.run_for_web_viewer('example2', s, t)
+# The purpose of the first pipeline run is to create the h5 file containing variance
+# estimates (p.var_fileanme = './var_example2.h5').  We do this pipeline run using the
+# wrapper function run_in_scratch_dir(), which does not index the run with the web viewer.
+ch_frb_rfi.run_in_scratch_dir('example2', s, t)
 
 # Remove the variance_estimator, append the mask_filler and plotter transforms.
 p.var_est = False
@@ -61,5 +63,11 @@ p.make_plots = True
 t = ch_frb_rfi.transform_chain(p)
 t += [ ch_frb_rfi.bonsai.nfreq1K_3tree(p, 1) ]
 
+# Second pipeline run: we use the wrapper function run_for_web_viewer().
 # Run the pipeline (again) but now with the mask_filler and bonsai dedisperser.
 ch_frb_rfi.run_for_web_viewer('example2', s, t)
+
+print "example2.py: pipeline run successful!"
+print "You can view the result at http://frb1.physics.mcgill.ca:5000/"
+print "Note that you'll probably need to click the update link (either 'Update directories'"
+print "or 'Don't see your directory? Click here to update') before the new pipeline run appears."
