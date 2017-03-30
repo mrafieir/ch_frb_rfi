@@ -50,7 +50,7 @@ p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
 # Using the specified parameters make a chain of transforms for estimating the variance.
 t = ch_frb_rfi.transform_chain(p)
 
-# The variance estimates are saved in 'p.var_path'.
+# The variance estimates are saved in 'p.var_filename'.
 ch_frb_rfi.run_for_web_viewer('example2', s, t)
 
 # Remove the variance_estimator, append the mask_filler and plotter transforms.
