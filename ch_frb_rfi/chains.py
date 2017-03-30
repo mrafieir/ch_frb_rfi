@@ -73,16 +73,15 @@ class transform_parameters:
        Note: If both 'mask' and 'maskpath' are None, then the badchannel_mask transform is disabled. Otherwise,
             the badchannel_mask transfrom can be appended to the transform chain via append_badchannel_mask().
        
-       - (variance_estimator_v1_chunk, variance_estimator_v2_chunk, var_path) = (128, 80, None)
-            define parameters for the variance_estimator transform (see its doctring!).
+       - (variance_estimator_v1_chunk, variance_estimator_v2_chunk, var_filename) = (128, 80, None)
+            define parameters for the variance_estimator transform (see its docstrings!).
 
-       - var_est: If True, then it appends a variance_estimator transform to the chain after all clippers and 
+       - var_est: if True, then it appends a variance_estimator transform to the chain after all clippers and 
             detrenders. Hence, transform_chain = [ .. , the last detrenders, variance_estimator ].
        
-       - mask_filler: is None by default. If not None, then it must be a full path to the h5 file which contains
-            the output of the variance_estimator transform. Provided the full path, a mask_filler transform is
-            appended to the chain after all clippers but before the last detrenders (and the bonsai dedisperser). 
-            Hence, transform_chain = [ .. , mask_filler , the last detrenders (, bonsai_dedisperser) ].
+       - mask_filler: if True, then a mask_filler transform is appended to the chain after all clippers but 
+            before the last detrenders (and the bonsai dedisperser). Hence, 
+            transform_chain = [ .. , mask_filler , the last detrenders (, bonsai_dedisperser) ].
 
        Note: the variance_estimator and mask_filler transforms are not allowed to be in the same chain!
 
