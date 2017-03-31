@@ -31,7 +31,8 @@ def make_dedisperser(parameters, config_filename):
                                            n_zoom = parameters.plot_nzoom,
                                            plot_threshold1 = parameters.bonsai_plot_threshold1,
                                            plot_threshold2 = parameters.bonsai_plot_threshold2,
-                                           dynamic_plotter = parameters.bonsai_dynamic_plotter)
+                                           dynamic_plotter = parameters.bonsai_dynamic_plotter, 
+                                           event_outfile = parameters.bonsai_event_outfile)
 
 # -------------------------------------------------------------------------------------------------------
 
