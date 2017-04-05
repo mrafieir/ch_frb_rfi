@@ -86,6 +86,10 @@ def ex_storm_1d():
 
     return rf_pipelines.chime_stream_from_times('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_1d', 179651.435561, 179995.032945)
 
+def ex_pulsar2_search0():
+    """Example: ..."""
+
+    return rf_pipelines.chime_stream_from_times('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_0', 64612.0787149, 64869.7767526)
 
 ######################  I N C O H E R E N T - B E A M   D A T A   A V A L A N C H E  ######################
 
