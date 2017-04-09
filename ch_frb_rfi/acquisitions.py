@@ -93,6 +93,11 @@ def ex_storm_1d():
     return rf_pipelines.chime_stream_from_times('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_1d', 179651.435561, 179995.032945)
 
 
+def ex_crab_16k():
+    """Example: the Crab pulsar in a 16K freq-channel acquisition by the 26m telescope"""
+
+    return sample("/data2/17-03-31-crab-utkarsh-processed1/*.h5", 0, 300)
+
 ######################  I N C O H E R E N T - B E A M   D A T A   A V A L A N C H E  ######################
 
 def incoherent_search0():
