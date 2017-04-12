@@ -32,7 +32,10 @@ def make_dedisperser(parameters, config_filename):
                                            plot_threshold1 = parameters.bonsai_plot_threshold1,
                                            plot_threshold2 = parameters.bonsai_plot_threshold2,
                                            dynamic_plotter = parameters.bonsai_dynamic_plotter, 
-                                           event_outfile = parameters.bonsai_event_outfile)
+                                           event_outfile = parameters.bonsai_event_outfile,
+                                           L1Grouper_thr = parameters.L1Grouper_thr,
+                                           L1Grouper_beam = parameters.L1Grouper_beam,
+                                           L1Grouper_addr = parameters.L1Grouper_addr)
 
 # -------------------------------------------------------------------------------------------------------
 

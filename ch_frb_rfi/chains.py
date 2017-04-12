@@ -17,7 +17,8 @@ class transform_parameters:
                                  make_plots=True, plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, bonsai_plot_nypix=256,  plot_nzoom=None, 
                                  bonsai_output_plot_stem=None, bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None, bonsai_nt_per_hdf5_file=0, 
                                  bonsai_plot_threshold1=6, bonsai_plot_threshold2=10, bonsai_dynamic_plotter=False, maskpath=None, bonsai_event_outfile=None, mask=None, 
-                                 variance_estimator_v1_chunk=32, variance_estimator_v2_chunk=192, var_filename=None, var_est=False, mask_filler=False, mask_filler_w_cutoff=0.5)
+                                 variance_estimator_v1_chunk=32, variance_estimator_v2_chunk=192, var_filename=None, var_est=False, mask_filler=False, mask_filler_w_cutoff=0.5,
+                                 L1Grouper_thr=7, L1Grouper_beam=0, L1Grouper_addr=None)
     
     with arguments as follows:
 
@@ -91,6 +92,10 @@ class transform_parameters:
             mask_filler is not None. E.g., a w_cutoff value of 0.5 corresponds to a 25% w_cutoff in the 
             incoherent-beam data.
 
+       - (L1Grouper_thr, L1Grouper_beam, L1Grouper_addr) specify parameters for the L1Grouper which may be called
+            in the bonsai dedisperser transform. (see their docstrings!)
+            Note: 'bonsai_event_outfile' determines whether to en(/dis)able the L1Grouper.
+
     The way the plotting parameters are determined deserves special explanation!
 
        - If the four "fine-grained" plotting parameters (plot_downsample_nt, plot_nxpix, plot_nypix, plot_nzoom)
@@ -114,7 +119,8 @@ class transform_parameters:
                  make_plots=True, plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, bonsai_plot_nypix=256, plot_nzoom=None, 
                  bonsai_output_plot_stem=None, bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None, bonsai_nt_per_hdf5_file=0,
                  bonsai_plot_threshold1=6, bonsai_plot_threshold2=10, bonsai_dynamic_plotter=False, bonsai_event_outfile=None, maskpath=None, mask=None, 
-                 variance_estimator_v1_chunk=32, variance_estimator_v2_chunk=192, var_filename=None, var_est=False, mask_filler=False, mask_filler_w_cutoff=0.5):
+                 variance_estimator_v1_chunk=32, variance_estimator_v2_chunk=192, var_filename=None, var_est=False, mask_filler=False, mask_filler_w_cutoff=0.5,
+                 L1Grouper_thr=7, L1Grouper_beam=0, L1Grouper_addr=None):
         
         if var_est and mask_filler:
             raise RuntimeError("transform_parameters:"
@@ -138,6 +144,10 @@ class transform_parameters:
         self.bonsai_plot_threshold2 = bonsai_plot_threshold2
         self.bonsai_dynamic_plotter = bonsai_dynamic_plotter
         self.bonsai_event_outfile = bonsai_event_outfile
+
+        self.L1Grouper_thr = L1Grouper_thr
+        self.L1Grouper_beam = L1Grouper_beam
+        self.L1Grouper_addr = L1Grouper_addr
 
         self.maskpath = maskpath
         self.mask = mask
