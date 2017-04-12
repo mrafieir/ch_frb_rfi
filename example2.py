@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 #
 # This is an example script showing how to use ch_frb_rfi for properly removing RFI, 
-# estimating the variance, and hence correctly normalizing the output of the bonsai
-# dedisperser. It is assumed that you have already studied 'example.py'.
+# estimating the variance, hence correctly normalizing the output of the bonsai
+# dedisperser, and finally grouping all triggers above a 10-sigma threshold.
 #
-# This script is intended to run on frb1.physics.mcgill.ca.
+# It is assumed that you have already studied 'example.py'. This script is intended
+# to run on frb1.physics.mcgill.ca.
 
 import numpy as np
 import ch_frb_rfi
@@ -47,7 +48,7 @@ p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                     bonsai_plot_threshold2 = 10,
                                     bonsai_dynamic_plotter = False,
                                     bonsai_event_outfile = 'events_example2.txt',
-                                    L1Grouper_thr = 7,
+                                    L1Grouper_thr = 10,
                                     L1Grouper_beam = 0,
                                     L1Grouper_addr = None)
 
