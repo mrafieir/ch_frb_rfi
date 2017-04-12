@@ -56,7 +56,7 @@ p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
 t = ch_frb_rfi.transform_chain(p)
 
 # The purpose of the first pipeline run is to create the h5 file containing variance
-# estimates (p.var_fileanme = './var_example2.h5').  We do this pipeline run using the
+# estimates (p.var_filename = './var_example2.h5').  We do this pipeline run using the
 # wrapper function run_in_scratch_dir(), which does not index the run with the web viewer.
 ch_frb_rfi.run_in_scratch_dir('example2', s, t)
 
