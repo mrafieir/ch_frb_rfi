@@ -14,9 +14,6 @@ import rf_pipelines
 # Let's choose an acquisition with a real pulsar!
 s = ch_frb_rfi.acquisitions.ex_pulsar_search1()
 
-# FIXME remove the next line before merging to master!
-s = rf_pipelines.chime_stream_from_times('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_1', 64945.1064525, 65000)
-
 # The following parameters are explained in 'ch_frb_rfi/chains.py'.
 (rfi_level, v1_chunk, v2_chunk) = (1, 32, 192)
 
@@ -50,7 +47,7 @@ p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                     bonsai_plot_threshold1 = 7,
                                     bonsai_plot_threshold2 = 10,
                                     bonsai_dynamic_plotter = False,
-                                    bonsai_event_outfile = 'events_example2.txt',
+                                    bonsai_event_outfile = './events_example2.txt',
                                     L1Grouper_thr = 10,
                                     L1Grouper_beam = 0,
                                     L1Grouper_addr = None)
