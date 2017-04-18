@@ -3,6 +3,7 @@
 
 import os
 import glob
+from types import IntType
 import rf_pipelines
 
 
@@ -36,18 +37,6 @@ def incoherent_16_09_19():
 
     # Noise source was turned off in this acquisition, so no 'noise_source_align' argument here.
     return rf_pipelines.chime_stream_from_acqdir('/data/pathfinder/16-09-19-incoherent-without-noise-source')
-
-
-def baseband_26m_b1937_16_04_22_1K():
-    """A small sample of 1K-frequency data from the 26m telescope"""
-
-    return rf_pipelines.chime_stream_from_acqdir('/data2/baseband_26m_b1937_16_04_22/1k')
-
-
-def baseband_26m_b1937_16_04_22():
-    """Baseband 26m data with 16K upchannelization"""
-    
-    return rf_pipelines.chime_stream_from_acqdir('/data2/baseband_26m_b1937_16_04_22')
 
 
 def sample(path, start, end):
@@ -93,10 +82,12 @@ def ex_storm_1d():
     return rf_pipelines.chime_stream_from_times('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_1d', 179651.435561, 179995.032945)
 
 
-def ex_crab_16k():
-    """Example: the Crab pulsar in a 16K freq-channel acquisition by the 26m telescope"""
+def crab_16k(n=800):
+    """the Crab pulsar in a 16K freq-channel acquisition by the 26m telescope"""
+    
+    assert type(n) is IntType
 
-    return sample("/data2/17-03-31-crab-utkarsh-processed1/*.h5", 0, 300)
+    return sample("/data/baseband_26m_processed/17-03-31-crab-20150724T184301Z/*.h5", 0, n)
 
 ######################  I N C O H E R E N T - B E A M   D A T A   A V A L A N C H E  ######################
 
