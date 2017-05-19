@@ -56,5 +56,3 @@ ch_frb_rfi.utils.run_for_web_viewer('example_pipeline_outputs', s, t)
 
 print "example.py: pipeline run successful!"
 print "You can view the result at http://frb1.physics.mcgill.ca:5000/"
-print "Note that you'll probably need to click the update link (either 'Update directories'"
-print "or 'Don't see your directory? Click here to update') before the new pipeline run appears."
