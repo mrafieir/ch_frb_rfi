@@ -113,3 +113,27 @@ def incoherent_1d():
     """The first 60 hours of a very large acquisition in 1K freq channels"""
 
     return sample('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_1d/*.h5', 0, 10000)
+
+
+def incoherent_search3():
+    """A large acquisition in 1K freq channels (~64 hours of data!)"""
+
+    return rf_pipelines.chime_stream_from_acqdir('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_3')
+
+
+def incoherent_search2():
+    """A 6-hour acquisition in 1K freq channels"""
+
+    return rf_pipelines.chime_stream_from_acqdir('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_2')
+
+
+def incoherent_2b(): 
+    """A large acquisition in 1K freq channels (~27 hours of data!)"""
+
+    return rf_pipelines.chime_stream_from_acqdir('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_2b')
+
+
+def incoherent_2c():
+    """A large acquisition in 1K freq channels (~162 hours of data!)"""
+    
+    return rf_pipelines.chime_stream_from_acqdir('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_2c')
