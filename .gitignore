@@ -4,6 +4,6 @@
 *.pyc
 Makefile.local
 log*
-events*.txt
+*.dat
 exps
 *.h5
