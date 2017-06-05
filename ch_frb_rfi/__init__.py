@@ -1,6 +1,6 @@
 """
 ch_frb_rfi: currently defines an acqusition database, RFI-removing transform chains, 
-    and a helper transform.
+    and a transform template.
 
 Functions returning transform chains are imported at top level, e.g.
     ch_frb_rfi.clipper_chain()
@@ -14,8 +14,6 @@ Functions returning streams are in the 'acqusitions' sub-package, e.g.
     ch_frb_rfi.acquisitions.incoherent_16_09_19()
 
 For a list of all acquisitions available, see dir(ch_frb_rfi.acquisitions).
-
-The helper transform is well documented: help(ch_frb_rfi.helper_transform).
 """
 
 # These functions are imported to the top level of the ch_frb_rfi package.
