@@ -58,136 +58,60 @@ def ex_crab_search0():
     return rf_pipelines.chime_stream_from_times('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_0', 64612.0787149, 64869.7767526)
 
 
-def ex_pulsar_search1():
-    """Example: a pulsar in an incoherent-beam acquisition (1K freq)"""
-
-    return rf_pipelines.chime_stream_from_times('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_1', 64945.1064525, 65331.6535091)
-
-
-def ex_storm_0b():
-    """Example: an RFI storm in an incoherent-beam acquisition (1K freq)"""
-
-    return rf_pipelines.chime_stream_from_times('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_0b', 87586.4627610, 88359.5568742)
-
-
-def ex_storm_1c():
-    """Example: an intense RFI storm in an incoherent-beam acquisition (1K freq)"""
-
-    return rf_pipelines.chime_stream_from_times('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_1c', 117974.363013, 118103.212032)
-
-
-def ex_storm_1d():
-    """Example: a very intense RFI storm in an incoherent-beam acquisition (1K freq)"""
-
-    return rf_pipelines.chime_stream_from_times('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_1d', 179651.435561, 179995.032945)
-
-
 def crab_16k(n=800):
     """the Crab pulsar in a 16K freq-channel acquisition by the 26m telescope"""
     
     assert type(n) is IntType
-
     return sample("/data/baseband_26m_processed/17-03-31-crab-20150724T184301Z/*.h5", 0, n)
 
-######################  I N C O H E R E N T - B E A M   D A T A   A V A L A N C H E  ######################
 
-def incoherent_search0():
-    """A large acquisition in 1K freq channels (~45 hours of data!)"""
-
-    return rf_pipelines.chime_stream_from_acqdir('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_0')
-
-
-def incoherent_search1():
-    """A large acquisition in 1K freq channels (~21 hours of data!)"""
-
-    return rf_pipelines.chime_stream_from_acqdir('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_1')
-
-
-def incoherent_1c():
-    """A large acquisition in 1K freq channels (~44 hours of data!)"""
-
-    return rf_pipelines.chime_stream_from_acqdir('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_1c')
-
-
-def incoherent_1d():
-    """The first 60 hours of a very large acquisition in 1K freq channels"""
-
-    return sample('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_1d/*.h5', 0, 10000)
-
-
-def incoherent_search3():
-    """A large acquisition in 1K freq channels (~64 hours of data!)"""
-
-    return rf_pipelines.chime_stream_from_acqdir('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_3')
-
-
-def incoherent_search2():
-    """A 6-hour acquisition in 1K freq channels"""
-
-    return rf_pipelines.chime_stream_from_acqdir('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_2')
-
-
-def incoherent_2b(): 
-    """A large acquisition in 1K freq channels (~27 hours of data!)"""
-
-    return rf_pipelines.chime_stream_from_acqdir('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_2b')
-
-
-def incoherent_2c():
-    """A large acquisition in 1K freq channels (~162 hours of data!)"""
+def incoherent_pathfinder(path='/data2/17-02-08-incoherent-data-avalanche/', search_name=None, sample_index=None):
+    """The large catalog of incoherent-beam acquisitions (CHIME Pathfinder)"""
     
-    return rf_pipelines.chime_stream_from_acqdir('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_2c')
+    assert (sample_index == None) or ((type(sample_index) == IntType) and sample_index >= 0)
+    
+    search_path = os.path.join(path, search_name)
 
+    s = { 'frb_incoherent_search_0' : [ '045' , [] ],
+          'frb_incoherent_search_1' : [ '021' , [] ],
+          'frb_incoherent_search_2' : [ '006' , [] ],
+          'frb_incoherent_search_3' : [ '064' , [[165259.558300, 165265.262000],
+                                                 [179070.608343, 179628.954092],
+                                                 [158841.312379, 159356.708454],
+                                                 [222621.576724, 223094.023127],
+                                                 [165154.914304, 165412.612342],
+                                                 [166185.706455, 166744.052204],
+                                                 [197152.420659, 197453.068370]] ],
+          
+          'frb_incoherent_1c'       : [ '044' , [] ],
+          
+          'frb_incoherent_2b'       : [ '027' , [[80309.0097766, 80652.6071603],
+                                                 [94310.6031616, 94482.4018534],
+                                                 [82757.1411354, 82971.8895002],
+                                                 [18762.1284250, 19019.8264627],
+                                                 [3429.09517824, 3686.79321600]] ],
 
-def incoherent_2d():
-    """A large acquisition in 1K freq channels (~86 hours of data!)"""
+          'frb_incoherent_2c'       : [ '162' , [] ],
+          'frb_incoherent_2d'       : [ '086' , [[16340.5050675, 16555.2534323],
+                                                 [30127.3500877, 30256.1991066],
+                                                 [36612.7507046, 36784.5493965],
+                                                 [37557.6435098, 37686.4925286],
+                                                 [135654.696550, 135826.495242]] ],
 
-    return rf_pipelines.chime_stream_from_acqdir('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_2d')
+          'frb_incoherent_3b'       : [ '028' , [[32193.7997824, 32451.4978202]] ],
+          'frb_incoherent_3c'       : [ '060' , [] ],
 
+          'frb_incoherent_3d'       : [ '097' , [[9097.78092032, 9269.57961216],
+                                                 [134081.329234, 134210.178253],
+                                                 [181368.919163, 181497.768182],
+                                                 [197346.197504, 197517.996196],
+                                                 [196701.952410, 196916.700774]] ],
 
-def incoherent_3b():
-    """A large acquisition in 1K freq channels (~28 hours of data!)"""
+          'frb_incoherent_4b'       : [ '055' , [[143928.380621, 144143.128986]] ],
+          'frb_incoherent_4c'       : [ '142' , [] ],
+          'frb_incoherent_4d'       : [ '049' , [] ], }
 
-    return rf_pipelines.chime_stream_from_acqdir('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_3b')
-
-
-def incoherent_3c():
-    """A large acquisition in 1K freq channels (~60 hours of data!)"""
-
-    return rf_pipelines.chime_stream_from_acqdir('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_3c')
-
-
-def incoherent_3d():
-    """A large acquisition in 1K freq channels (~97 hours of data!)"""
-
-    return rf_pipelines.chime_stream_from_acqdir('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_3d')
-
-
-def incoherent_4b():
-    """A large acquisition in 1K freq channels (~55 hours of data!)"""
-
-    return rf_pipelines.chime_stream_from_acqdir('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_4b')
-
-
-def incoherent_4c():
-    """A large acquisition in 1K freq channels (~142 hours of data!)"""
-
-    return rf_pipelines.chime_stream_from_acqdir('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_4c')
-
-
-def incoherent_4d():
-    """A large acquisition in 1K freq channels (~49 hours of data!)"""
-
-    return rf_pipelines.chime_stream_from_acqdir('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_4d')
-
-
-def incoherent_5b():
-    """A large acquisition in 1K freq channels (~14 hours of data!)"""
-
-    return rf_pipelines.chime_stream_from_acqdir('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_5b')
-
-
-def incoherent_5c():
-    """A large acquisition in 1K freq channels (~104 hours of data!)"""
-
-    return rf_pipelines.chime_stream_from_acqdir('/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_5c')
+    if sample_index == None:
+        return rf_pipelines.chime_stream_from_acqdir(search_path)
+    else:
+        return rf_pipelines.chime_stream_from_times(search_path, s[search_name][1][sample_index][0], s[search_name][1][sample_index][1])
