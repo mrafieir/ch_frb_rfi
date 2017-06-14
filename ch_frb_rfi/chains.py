@@ -220,7 +220,7 @@ class transform_parameters:
 
     def append_badchannel_mask(self, transform_chain):
         if (self.maskpath != None) or (self.mask != None):
-            t = rf_pipelines.badchannel_mask(maskpath=self.maskpath, nt_chunk=self.clip_nt, mask=self.mask)
+            t = rf_pipelines.badchannel_mask(maskpath=self.maskpath, nt_chunk=self.clip_nt, mask=self.mask, cpp=self.cpp)
             transform_chain.append(t)
     
     def append_variance_estimator(self, transform_chain, ix):
