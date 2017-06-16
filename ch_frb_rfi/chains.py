@@ -25,7 +25,7 @@ class transform_parameters:
        - rfi_level: specifies the severity of the RF environment. Possible modes are           
            0: is the base mode which is recommended for a relatively quiet environment. (detrender_niter=1, clipper_niter=3)
            1: can handle some storms. (detrender_niter=2, clipper_niter=3)
-           2: is recommended for whiteout conditions! (detrender_niter=2, clipper_niter=4)
+           2: is recommended for obtaining very low false-positive rates. (detrender_niter=2, clipper_niter=6)
             
            Note: If detrender_niter and clipper_niter are specified explicitly, then these are used. 
 
@@ -175,7 +175,7 @@ class transform_parameters:
         elif self.rfi_level == 1:
            (self.detrender_niter, self.clipper_niter) = (2, 3)
         elif self.rfi_level == 2:
-           (self.detrender_niter, self.clipper_niter) = (2, 4)
+           (self.detrender_niter, self.clipper_niter) = (2, 6)
         else:
            raise RuntimeError("transform_parameters: either a valid rfi_level (0, 1, or 2) or a (detrender_niter, clipper_nitr)" 
                               + " pair must be specified.")
