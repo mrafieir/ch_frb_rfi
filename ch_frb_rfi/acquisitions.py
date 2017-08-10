@@ -5,6 +5,7 @@ import os
 import glob
 from types import IntType
 import rf_pipelines
+from utils import sample
 
 
 def toy():
@@ -39,13 +40,6 @@ def incoherent_16_09_19():
     return rf_pipelines.chime_stream_from_acqdir('/data/pathfinder/16-09-19-incoherent-without-noise-source')
 
 
-def sample(path, start, end):
-    """A handy function which allows user to select a range of files from an input path"""
-
-    filename_list = sorted(glob.glob(path))[start:end]
-    return rf_pipelines.chime_stream_from_filename_list(filename_list, nt_chunk=1024)
-
-
 def ex_pulsar_search0():
     """Example: a pulsar in an incoherent-beam acquisition (1K freq)"""
 
@@ -65,8 +59,14 @@ def crab_16k(n=800):
     return sample("/data/baseband_26m_processed/17-03-31-crab-20150724T184301Z/*.h5", 0, n)
 
 
-def incoherent_pathfinder(path='/data2/17-02-08-incoherent-data-avalanche/', search_name=None, sample_index=None):
-    """The large catalog of incoherent-beam acquisitions (CHIME Pathfinder)"""
+def incoherent_pathfinder(path='/data2/17-02-08-incoherent-data-avalanche/', search_name, sample_index=None):
+    """
+    The large catalog of incoherent-beam acquisitions (CHIME Pathfinder)
+
+    path : a full path to the directory of h5 files (str)
+    search_name : a search name (str)
+    sample_index : if None, then use the entire search. Otherwise, it must be an integer which corresponds to an interesting sample from the search!
+    """
     
     assert (sample_index == None) or ((type(sample_index) == IntType) and sample_index >= 0)
     
