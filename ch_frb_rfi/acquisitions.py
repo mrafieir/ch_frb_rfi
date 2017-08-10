@@ -59,17 +59,17 @@ def crab_16k(n=800):
     return sample("/data/baseband_26m_processed/17-03-31-crab-20150724T184301Z/*.h5", 0, n)
 
 
-def incoherent_pathfinder(path='/data2/17-02-08-incoherent-data-avalanche/', search_name, sample_index=None):
+def incoherent_pathfinder(search_name, sample_index=None, path='/data2/17-02-08-incoherent-data-avalanche/'):
     """
     The large catalog of incoherent-beam acquisitions obtained by the CHIME Pathfinder (1K freq)
 
     Input arguments:
 
-    - path: a full path to the directory of h5 files (str)
-
     - search_name: a search name (str)
 
     - sample_index: if None, then use the entire search. Otherwise, it must be an integer which corresponds to an interesting sample from the input search.
+
+    - path: a full path to the directory of h5 files (str)
     """
     
     assert (sample_index == None) or ((type(sample_index) == IntType) and sample_index >= 0)
