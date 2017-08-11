@@ -12,7 +12,7 @@ import ch_frb_rfi
 import rf_pipelines
 
 # Let's choose an acquisition with a real pulsar!
-s = ch_frb_rfi.acquisitions.ex_pulsar_search1()
+s = ch_frb_rfi.acquisitions.incoherent_pathfinder('frb_incoherent_search_1', sample_index=0)
 
 # The following parameters are explained in 'ch_frb_rfi/chains.py'.
 (rfi_level, v1_chunk, v2_chunk) = (1, 32, 192)

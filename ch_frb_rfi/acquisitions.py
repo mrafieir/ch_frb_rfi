@@ -77,8 +77,11 @@ def incoherent_pathfinder(search_name, sample_index=None, path='/data2/17-02-08-
     search_path = os.path.join(path, search_name)
 
     s = { 'frb_incoherent_search_0' : [ '045' , [] ],
-          'frb_incoherent_search_1' : [ '021' , [] ],
+
+          'frb_incoherent_search_1' : [ '021' , [[64945.1064525, 65331.6535091]] ],
+
           'frb_incoherent_search_2' : [ '006' , [] ],
+
           'frb_incoherent_search_3' : [ '064' , [[165259.558300, 165265.262000],
                                                  [179070.608343, 179628.954092],
                                                  [158841.312379, 159356.708454],
@@ -86,9 +89,9 @@ def incoherent_pathfinder(search_name, sample_index=None, path='/data2/17-02-08-
                                                  [165154.914304, 165412.612342],
                                                  [166185.706455, 166744.052204],
                                                  [197152.420659, 197453.068370]] ],
-          
+
           'frb_incoherent_1c'       : [ '044' , [] ],
-          
+
           'frb_incoherent_2b'       : [ '027' , [[80309.0097766, 80652.6071603],
                                                  [94310.6031616, 94482.4018534],
                                                  [82757.1411354, 82971.8895002],
@@ -96,6 +99,7 @@ def incoherent_pathfinder(search_name, sample_index=None, path='/data2/17-02-08-
                                                  [3429.09517824, 3686.79321600]] ],
 
           'frb_incoherent_2c'       : [ '162' , [] ],
+
           'frb_incoherent_2d'       : [ '086' , [[16340.5050675, 16555.2534323],
                                                  [30127.3500877, 30256.1991066],
                                                  [36612.7507046, 36784.5493965],
@@ -103,6 +107,7 @@ def incoherent_pathfinder(search_name, sample_index=None, path='/data2/17-02-08-
                                                  [135654.696550, 135826.495242]] ],
 
           'frb_incoherent_3b'       : [ '028' , [[32193.7997824, 32451.4978202]] ],
+
           'frb_incoherent_3c'       : [ '060' , [] ],
 
           'frb_incoherent_3d'       : [ '097' , [[9097.78092032, 9269.57961216],
@@ -112,7 +117,9 @@ def incoherent_pathfinder(search_name, sample_index=None, path='/data2/17-02-08-
                                                  [196701.952410, 196916.700774]] ],
 
           'frb_incoherent_4b'       : [ '055' , [[143928.380621, 144143.128986]] ],
+
           'frb_incoherent_4c'       : [ '142' , [] ],
+
           'frb_incoherent_4d'       : [ '049' , [] ], }
 
     if sample_index == None:
