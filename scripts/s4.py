@@ -1,9 +1,10 @@
 #!/usr/bin/env python
+"""
+This sample contains two major RFI events which result in a large fraction of
+zero weights along the time axis.
 
-# This sample contains two major RFI events which result in a large fraction of
-# zero weights along the time axis.
-#
-# NOTE: Zero false positive using (detrender_niter, clipper_niter) = (2, 6)
+Note: Zero false positive using (detrender_niter, clipper_niter) = (2, 6)
+"""
 
 import numpy as np
 import ch_frb_rfi

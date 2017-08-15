@@ -1,6 +1,7 @@
 #!/usr/bin/env python
-
-# Another highly active RF environment.
+"""
+Another highly active RF environment.
+"""
 
 import numpy as np
 import ch_frb_rfi

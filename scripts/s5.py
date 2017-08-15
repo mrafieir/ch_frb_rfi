@@ -1,7 +1,8 @@
 #!/usr/bin/env python
-
-# This example contains a pulsar. In addition, there seems to be a strange variation
-# in the overall intensity which can be revealed by using (detrender_niter, clipper_niter) = (1, 3)
+"""
+This example contains a pulsar. In addition, there seems to be a strange variation
+in the overall intensity which can be revealed by using (detrender_niter, clipper_niter) = (1, 3)
+"""
 
 import numpy as np
 import ch_frb_rfi

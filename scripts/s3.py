@@ -1,9 +1,10 @@
 #!/usr/bin/env python
+"""
+This sample contains a lot of problematic features! A periodic variation in intensity,
+combined with RFIs, makes it very hard to suppress all the false positives.
 
-# This sample contains a lot of problematic features! A periodic variation in intensity,
-# combined with RFIs, makes it very hard to suppress all the false positives.
-#
-# NOTE: L1b seems not triggering visually-detectable coarse-grained events.
+Note: L1b seems not triggering visually-detectable coarse-grained events.
+"""
 
 import numpy as np
 import ch_frb_rfi

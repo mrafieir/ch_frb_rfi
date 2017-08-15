@@ -1,7 +1,8 @@
 #!/usr/bin/env python
-
-# This is an interesting example: It contains an RFI storm, a few false positives,
-# and some significant changes in the running variance.
+"""
+This is an interesting example: It contains an RFI storm, a few false positives,
+and some significant changes in the running variance.
+"""
 
 import numpy as np
 import ch_frb_rfi

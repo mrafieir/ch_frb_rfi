@@ -1,6 +1,7 @@
 #!/usr/bin/env python
- 
-# This short sample represents a highly active RF environment!
+""" 
+This short sample represents a highly active RF environment!
+"""
 
 import numpy as np
 import ch_frb_rfi

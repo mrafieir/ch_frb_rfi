@@ -1,6 +1,7 @@
 #!/usr/bin/env python
-
-# B0329; rfi_level = 1
+"""
+B0329; rfi_level = 1
+"""
 
 import numpy as np
 import ch_frb_rfi

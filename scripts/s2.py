@@ -1,9 +1,10 @@
 #!/usr/bin/env python
+"""
+An RFI storm which results in a single false positive: (DM, SNR) = (77.62, 10.64)
 
-# An RFI storm which results in a single false positive: (DM, SNR) = (77.62, 10.64)
-#
-# NOTE: More false positives (all with about the same arrival time) can be triggered by lowering the 'L1Grouper_thr'. 
-#       This trick may be useful for discriminating between astrophysical sources and RFI in L1b-2
+Note: More false positives (all with about the same arrival time) can be triggered by lowering the 'L1Grouper_thr'. 
+      This trick may be useful for discriminating between astrophysical sources and RFI in L1b-2
+"""
 
 import numpy as np
 import ch_frb_rfi

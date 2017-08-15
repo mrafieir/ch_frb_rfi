@@ -1,6 +1,7 @@
 #!/usr/bin/env python
-
-# 4 hours of data
+"""
+4 hours of data
+"""
 
 import numpy as np
 import ch_frb_rfi

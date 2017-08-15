@@ -1,8 +1,9 @@
 #!/usr/bin/env python
+"""
+A faint source at low DM. 
 
-# A faint source at low DM.
-#
-# NOTE: L1Grouper_thr = 7
+Note: L1Grouper_thr = 7
+"""
 
 import numpy as np
 import ch_frb_rfi
