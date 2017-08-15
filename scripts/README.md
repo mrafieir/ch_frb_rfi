@@ -1,7 +1,5 @@
-### scripts
-
 These scripts are used for running rf_pipelines in order to e.g. inspect the variance
-estimator transform in the RFI chain. The scripts are written in the ch_frb_rfi format,
+estimator transform in the RFI chain. They are written in the ch_frb_rfi format,
 meaning that you may have to study [example2.py](../example2.py) in order to understand
 what they actually do.
 
