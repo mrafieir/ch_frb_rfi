@@ -13,7 +13,7 @@ class transform_parameters:
 
     Constructor syntax:
 
-        p = transform_parameters(rfi_level=0, detrender_niter=None, clipper_niter=None, detrend_nt=1024, clip_nt=1024, kfreq=1, cpp=True, two_pass=True, 
+        p = transform_parameters(rfi_level=0, detrender_niter=None, clipper_niter=None, detrend_nt=1024, clip_nt=1024, kfreq=1, cpp=True, two_pass=True, spline=False,
                                  make_plots=True, plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, bonsai_plot_nypix=256,  plot_nzoom=None, 
                                  bonsai_output_plot_stem=None, bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None, bonsai_nt_per_hdf5_file=0, 
                                  bonsai_plot_threshold1=6, bonsai_plot_threshold2=10, bonsai_dynamic_plotter=False, maskpath=None, bonsai_event_outfile=None, 
@@ -43,6 +43,10 @@ class transform_parameters:
 
        - two_pass: if True, then the first round of clipper transforms will use a
             more numerically stable, but slightly slower, clipping algorithm.
+
+       - spline: if True, then spline_detrender will be used instead of the polynomial_detrender.  (Experimental.)
+            Currently only for AXIS_FREQ!  If the results of this experiment look good, then I'll implement
+            AXIS_TIME and AXIS_NONE.
 
        - bonsai_output_plot_stem: if None, then no bonsai plots will be written. If a string is 
             specified (e.g. 'triggers'), then a sequence of bonsai plots will be written with 
@@ -119,7 +123,7 @@ class transform_parameters:
     By default (if no plotting-related constructor arguments are specified), plotting is disabled.
     """
 
-    def __init__(self, rfi_level=0, detrender_niter=None, clipper_niter=None, detrend_nt=1024, clip_nt=1024, kfreq=1, cpp=True, two_pass=True, 
+    def __init__(self, rfi_level=0, detrender_niter=None, clipper_niter=None, detrend_nt=1024, clip_nt=1024, kfreq=1, cpp=True, two_pass=True, spline=False,
                  make_plots=True, plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, bonsai_plot_nypix=256, plot_nzoom=None, 
                  bonsai_output_plot_stem=None, bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None, bonsai_nt_per_hdf5_file=0,
                  bonsai_plot_threshold1=6, bonsai_plot_threshold2=10, bonsai_dynamic_plotter=False, bonsai_event_outfile=None, bonsai_plot_all_trees=False,
@@ -140,6 +144,7 @@ class transform_parameters:
         self.kfreq = kfreq
 
         self.two_pass = two_pass
+        self.spline = spline
         self.cpp = cpp
 
         self.bonsai_output_plot_stem = bonsai_output_plot_stem
@@ -245,11 +250,20 @@ class transform_parameters:
 
 ##############################  T R A N S F O R M   C H A I N S  ##############################
 
+
 def detrender_chain(parameters, ix):
     assert isinstance(parameters, transform_parameters)
 
-    return [ rf_pipelines.polynomial_detrender(deg=4, axis=1, nt_chunk=parameters.detrend_nt, cpp=parameters.cpp),
-             rf_pipelines.polynomial_detrender(deg=12, axis=0, nt_chunk=parameters.detrend_nt, cpp=parameters.cpp) ]
+    # AXIS_TIME
+    ret = [ rf_pipelines.polynomial_detrender(deg=4, axis=1, nt_chunk=parameters.detrend_nt, cpp=parameters.cpp) ]
+
+    # AXIS_FREQ
+    if parameters.spline:
+        ret += [ rf_pipelines.spline_detrender(parameters.detrend_nt, 0, 6) ]
+    else:
+        ret += [ rf_pipelines.polynomial_detrender(deg=12, axis=0, nt_chunk=parameters.detrend_nt, cpp=parameters.cpp) ]
+
+    return ret
 
 
 def clipper_chain(parameters, ix):
