@@ -21,6 +21,7 @@ def make_dedisperser(parameters, config_filename):
         raise RuntimeError("ch_frb_rfi.transform_parameters: it is now an error to specify 'bonsai_output_plot_stem' without specifying 'plot_type'")
 
     return rf_pipelines.bonsai_dedisperser(config_filename = config_filename, 
+                                           fill_rfi_mask = parameters.bonsai_fill_rfi_mask,
                                            hdf5_output_filename = parameters.bonsai_hdf5_output_filename, 
                                            nt_per_hdf5_file = parameters.bonsai_nt_per_hdf5_file,
                                            use_analytic_normalization = parameters.bonsai_use_analytic_normalization,
