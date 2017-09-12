@@ -27,7 +27,7 @@ p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                     bonsai_dynamic_plotter = False,
                                     bonsai_plot_all_trees = True,
                                     L1Grouper_thr = 10,
-                                    bonsai_event_outfile = './events_s10.dat')
+                                    bonsai_event_outfile = 'events_s10')
 
 t = ch_frb_rfi.transform_chain(p)
 

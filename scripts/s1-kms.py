@@ -34,11 +34,11 @@ p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                     bonsai_dynamic_plotter = False,
                                     bonsai_plot_all_trees = True,
                                     L1Grouper_thr = 7,
-                                    bonsai_event_outfile = './events_s1.dat')
+                                    bonsai_event_outfile = 'events_s1-kms')
 
 t = ch_frb_rfi.transform_chain(p)
 t += [ ch_frb_rfi.bonsai.nfreq1K_7tree(p, v=3) ]
 
-ch_frb_rfi.run_for_web_viewer('s1_kms', s, t)
+ch_frb_rfi.run_for_web_viewer('s1-kms', s, t)
 
-print ":::::::::::: s1_kms done ::::::::::::"
+print ":::::::::::: s1-kms done ::::::::::::"
