@@ -259,7 +259,7 @@ def detrender_chain(parameters, ix):
 
     # AXIS_FREQ
     if parameters.spline:
-        ret += [ rf_pipelines.spline_detrender(parameters.detrend_nt, 0, 6) ]
+        ret += [ rf_pipelines.spline_detrender(parameters.detrend_nt, 0, 12) ]
     else:
         ret += [ rf_pipelines.polynomial_detrender(deg=12, axis=0, nt_chunk=parameters.detrend_nt, cpp=parameters.cpp) ]
 
