@@ -41,4 +41,4 @@ t += [ ch_frb_rfi.bonsai.nfreq1K_7tree(p, v=3) ]
 
 ch_frb_rfi.run_for_web_viewer('s1_kms', s, t)
 
-print ":::::::::::: s1 done ::::::::::::"
+print ":::::::::::: s1_kms done ::::::::::::"
