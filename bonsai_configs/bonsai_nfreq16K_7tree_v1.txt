@@ -1,0 +1,44 @@
+# This is a bonsai paramfile for RFI analysis in 16K
+#
+# The search uses seven trees with two trial spectral indices, 
+# in order to be slightly more representative of the 
+#
+#   - tree 0: upsampled by 2, ntree=4096, max DM 138
+#   - tree 1: native resolution, ntree=4096, max DM 276
+#   - tree 2: downsampled by 2, ntree=4096, max DM 552
+#   - tree 3: downsampled by 4, ntree=4096, max DM 1104
+#   - tree 4: downsampled by 8, ntree=4096, max DM 2208
+#   - tree 5: downsampled by 16, ntree=2048, max DM 2208
+#   - tree 6: downsampled by 32, ntree=1024, max DM 2208
+
+variance_timescale = 100.0
+reweighting_timescale = 100.0
+
+# Number of frequency channels in input
+nfreq = 16384
+
+tree_size = [ 4096, 4096, 4096, 4096, 4096, 2048, 1024 ]
+nds = [ 1, 1, 2, 4, 8, 16, 32 ]
+nups = [ 2, 1, 1, 1, 1, 1, 1 ]
+
+# Spectral index search with two trial spectral indices.
+nbeta = 2
+beta_depth = 2
+beta_min = -1.5
+beta_max = 1.5
+
+# No scattering search
+nsm = 1
+sm_depth = 0
+sm_max = 0
+
+# The following numbers can be obtained from the hdf5 data files, using
+# the utility program 'ch-show-intensity-file' in the ch_frb_io github repo.
+
+freq_lo_MHz = 400.0
+freq_hi_MHz = 800.0
+dt_sample = 0.00098304   # sample length in seconds
+
+nt_chunk = 2048
+dm_coarse_graining_factor = 16
+time_coarse_graining_factor = 64
