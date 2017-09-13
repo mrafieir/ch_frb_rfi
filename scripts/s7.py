@@ -9,7 +9,6 @@ import rf_pipelines
 
 s = ch_frb_rfi.acquisitions.incoherent_pathfinder(search_name='frb_incoherent_2d', sample_index=2)
 
-
 p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                     make_plots = True,
                                     bonsai_output_plot_stem = 'triggers',
