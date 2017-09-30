@@ -1,9 +1,5 @@
 #!/usr/bin/env python
-"""
-A faint source at low DM. 
-
-Note: L1Grouper_thr = 7
-"""
+"""A faint source at low DM. In this example we use the offline mask_filler."""
 
 import numpy as np
 import ch_frb_rfi
