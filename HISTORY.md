@@ -1,3 +1,11 @@
+- Version 6:
+
+   - From Alex: L1b functionality
+
+   - From Maya and Kendrick: Updates following API changes in rf_pipelines_v16
+
+   - New scripts for the verification of bonsai and rf_pipelines
+
 - Version 5:
 
    - Minor updates following API changes in bonsai v9.
