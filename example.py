@@ -47,7 +47,8 @@ t += [ ch_frb_rfi.bonsai.nfreq1K_3tree(p, v=1) ]    # ch_frb_rfi.bonsai.nfreq1K_
 # Fourth, run the pipeline!
 #
 # One way of doing this would be to use the usual rf_pipelines syntax:
-#   s.run(t, outdir='example_pipeline_outputs')
+#   p = rf_pipelines.pipeline([s] + t)
+#   p.run(outdir='example_pipeline_outputs')
 #
 # Here, we do it using the wrapper function ch_frb_rfi.utils.run_for_web_viewer(),
 # which automatically indexes the output plots into the web viewer on frb1.

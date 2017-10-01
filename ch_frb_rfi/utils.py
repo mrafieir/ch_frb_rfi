@@ -42,7 +42,8 @@ def run_for_web_viewer(run_name, stream, transform_chain):
     print >>sys.stderr, "creating temporary directory '%s' for running pipeline" % temp_dir
     os.makedirs(temp_dir)
 
-    stream.run(transform_chain, outdir=temp_dir, clobber=False)
+    p = rf_pipelines.pipeline([stream] + transform_chain)
+    p.run(outdir=temp_dir, clobber=False)
 
     # Pipeline done, remove underscore from directory name.
     print >>sys.stderr, 'renaming %s -> %s' % (temp_dir, final_dir)
@@ -67,7 +68,8 @@ def run_in_scratch_dir(run_name, stream, transform_chain):
     print >>sys.stderr, "creating temporary directory '%s' for running pipeline" % outdir
     os.makedirs(outdir)
 
-    stream.run(transform_chain, outdir=outdir, clobber=False)
+    p = rf_pipelines.pipeline([stream] + transform_chain)
+    p.run(outdir=outdir, clobber=False)
 
 
 def sample(path, start, end, nt_chunk=1024):
