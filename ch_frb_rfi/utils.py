@@ -57,6 +57,9 @@ def run_in_scratch_dir(run_name, stream, transform_chain):
     will stay on disk so that their outputs can be processed by hand if needed.
     """
 
+    for t in transform_chain:
+        print t.name, isinstance(t,rf_pipelines.wi_transform)
+
     assert isinstance(run_name, basestring)
     assert isinstance(stream, rf_pipelines.wi_stream)
     assert all(isinstance(t,rf_pipelines.wi_transform) for t in transform_chain)

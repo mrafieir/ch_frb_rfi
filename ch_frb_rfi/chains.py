@@ -250,14 +250,14 @@ class transform_parameters:
 def detrender_chain(parameters, ix):
     assert isinstance(parameters, transform_parameters)
 
-    # AXIS_TIME
-    ret = [ rf_pipelines.polynomial_detrender(deg=4, axis=1, nt_chunk=parameters.detrend_nt) ]
+    # AXIS_TIME (nt_chunk must be nonzero here)
+    ret = [ rf_pipelines.polynomial_detrender(polydeg=4, axis='time', nt_chunk=parameters.detrend_nt) ]
 
-    # AXIS_FREQ
+    # AXIS_FREQ (nt_chunk=0 is OK here)
     if parameters.spline:
-        ret += [ rf_pipelines.spline_detrender(parameters.detrend_nt, 0, 6) ]
+        ret += [ rf_pipelines.spline_detrender(nbins=6, axis='freq', nt_chunk=0) ]
     else:
-        ret += [ rf_pipelines.polynomial_detrender(deg=12, axis=0, nt_chunk=parameters.detrend_nt) ]
+        ret += [ rf_pipelines.polynomial_detrender(polydeg=12, axis='freq', nt_chunk=0) ]
 
     return ret
 
