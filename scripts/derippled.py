@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+"""This is to verify the goodness of derippled 16K upchannelized data which has been downsampled back to 1K channels."""
 
 import numpy as np
 import ch_frb_rfi
@@ -30,6 +31,6 @@ p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
 t = ch_frb_rfi.transform_chain(p)
 t += [ ch_frb_rfi.bonsai.nfreq1K_7tree(p, v=4) ]
 
-ch_frb_rfi.run_for_web_viewer('derippled, s, t')
+ch_frb_rfi.run_for_web_viewer('derippled', s, t)
 
 print ":::::::::::: derippled done ::::::::::::"
