@@ -2,6 +2,7 @@ import os
 import glob
 import sys
 import time
+import json
 import rf_pipelines
 
 
@@ -116,3 +117,24 @@ def sample(path, start, end, nt_chunk=1024):
 
     filename_list = sorted(glob.glob(path))[start:end]
     return rf_pipelines.chime_stream_from_filename_list(filename_list, nt_chunk=nt_chunk)
+
+
+def write_json(filename, p, clobber=False):
+    """This helper function is sometimes used to write json files."""
+
+    assert isinstance(filename, basestring)
+    assert isinstance(p, rf_pipelines.pipeline_object)
+    assert filename.endswith('.json')
+    
+    d = os.path.dirname(filename)
+    if (len(d) > 0) and (not os.path.exists(d)):
+        raise RuntimeError("ch_frb_rfi.write_json: directory '%s' does not exist" % d)
+
+    if (not clobber) and os.path.exists(filename):
+        raise RuntimeError("ch_frb_rfi.write_json: filename '%s' already exists.  If overwriting is intended, use write_json(clobber=True)" % filename)
+
+    j = p.jsonize()
+    f = open(filename, 'w')
+    json.dump(j, f, indent=4)
+    del f   # closes file
+    print 'wrote %s' % filename
