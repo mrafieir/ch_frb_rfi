@@ -126,3 +126,61 @@ def incoherent_pathfinder(search_name, sample_index=None, path='/data2/17-02-08-
         return rf_pipelines.chime_stream_from_acqdir(search_path)
     else:
         return rf_pipelines.chime_stream_from_times(search_path, s[search_name][1][sample_index][0], s[search_name][1][sample_index][1])
+
+
+def upchannelized_acquisition(acqdir, nfiles=0, deripple=True, deripple_fudge_factor=1.0):
+    """
+    Helper function which returns a 16K-channelized acquisition.
+
+       nfiles: If nonzero, then acquisition will be truncated to the 
+         specified number of HDF5 data files.
+
+       deripple: If true, the ripple correction will be applied.
+
+       deripple_fudge_factor: Amplitude of ripple correction (only
+         meaningful if deripple=True).
+    """
+
+    p = rf_pipelines.chime_stream_from_acqdir(acqdir, nfiles=nfiles)
+
+    if deripple:
+        # Append deripple transform.
+        q = rf_pipelines.chime_16k_derippler(fudge_factor=deripple_fudge_factor)
+        p = rf_pipelines.pipeline([p,q])
+
+    return p
+    
+
+def upchannelized_17_04_25(part, nfiles=0, deripple=True, deripple_fudge_factor=-0.2):
+    """
+    This 16K acquisition was taken with the 26-m telescope in baseband recording
+    mode, and upchannelized using Utkarsh's offline code.  The upchannelization
+    splits the data into 8 parts, so the 'part' index should satisfy 0 <= part <= 7.
+
+       nfiles: If nonzero, then acquisition will be truncated to the 
+         specified number of HDF5 data files.
+
+       deripple: If true, the ripple correction will be applied.
+
+       deripple_fudge_factor: Amplitude of ripple correction (only
+         meaningful if deripple=True).  Note that the default is -0.2,
+         i.e. a small ripple correction is applied with the wrong sign!
+
+         This is because Utkarsh's code applies the full ripple correction,
+         but empirically we find that this overcorrects by ~20%.
+    """
+
+    acqdir = '/data/17-10-01-16k-data/17-04-25-utkarsh-26m-part%d' % part
+    return upchannelized_acquisition(acqdir, nfiles, deripple, deripple_fudge_factor)
+
+
+def upchannelized_17_08_15(nfiles=0, deripple=True, deripple_fudge_factor=0.8):
+    """
+    This 16K acquisition was taken using Arun's real-time GPU upchannelization
+    code.  The conclusion of analyzing the acqusition is that the upchannelization
+    code currently has bugs, so this acquisition is not useful for testing RFI
+    removal algorithms!
+    """
+
+    acqdir = '/data/17-10-01-16k-data/17-08-15-arun'
+    return upchannelized_acquisition(acqdir, nfiles, deripple, deripple_fudge_factor)
