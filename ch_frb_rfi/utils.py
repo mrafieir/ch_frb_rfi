@@ -20,29 +20,66 @@ def make_rundir(topdir, run_name):
     return (dirname, basename)
 
 
-def run_for_web_viewer(run_name, stream, transform_chain):
+def _add_to_pipeline(p, *args):
+    """
+    Helper function which adds pipeline_objects to a pipeline.
+
+    The first argument 'p' should be an rf_pipelines.pipeline object.
+
+    Subsequent args should be either pipeline_objects to be appended,
+    or lists of pipeline_objects.
+    """
+
+    for arg in args:
+        if isinstance(arg, rf_pipelines.pipeline_object):
+            p.add(arg)
+        elif isinstance(arg, list):
+            _add_to_pipeline(p, *arg)
+        else:
+            raise RuntimeError('ch_frb_rfi: arguments to run_for_web_viewer() or run_in_scratch_dir() must be pipeline_objects, or lists of pipeline_objects')
+
+
+def make_pipeline(*args):
+    """
+    Helper function which combines pipeline_objects into a pipeline.
+
+    The syntax is flexible: arguments can be either pipeline_objects,
+    or lists of pipeline_objects.
+    """
+
+    p = rf_pipelines.pipeline()
+    _add_to_pipeline(p, *args)
+
+    if p.size == 0:
+        raise RuntimeError('ch_frb_rfi: in either run_for_web_viewer() or run_in_scratch_dir(), no pipeline_objects were specified')
+
+    return p
+
+
+def run_for_web_viewer(run_name, *args):
     """
     Runs a pipeline, with output directory chosen appropriately for the web viewer
     at frb1.physics.mcgill.ca.
 
     The 'run_name' argument should be a short descriptive string.  The pipeline rundir 
     will look schematically like "(username)/(run_name)_(time)".
+
+    Subsequent args must be either pipeline_objects, or lists of pipeline_objects.
+    These will be concatenated together to create the pipeline run.
     """
 
     assert isinstance(run_name, basestring)
-    assert isinstance(stream, rf_pipelines.wi_stream)
-    assert all(isinstance(t,rf_pipelines.wi_transform) for t in transform_chain)
 
-    (dirname, basename) = make_rundir('web_viewer', run_name)
+    p = make_pipeline(*args)
 
     # Directory names beginning with underscore are pipeline runs in progress.
+    (dirname, basename) = make_rundir('web_viewer', run_name)
     temp_dir = os.path.join(dirname, '_' + basename)
     final_dir = os.path.join(dirname, basename)
 
     print >>sys.stderr, "creating temporary directory '%s' for running pipeline" % temp_dir
     os.makedirs(temp_dir)
 
-    p = rf_pipelines.pipeline([stream] + transform_chain)
     p.run(outdir=temp_dir, clobber=False)
 
     # Pipeline done, remove underscore from directory name.
@@ -50,17 +87,20 @@ def run_for_web_viewer(run_name, stream, transform_chain):
     os.rename(temp_dir, final_dir)
 
 
-def run_in_scratch_dir(run_name, stream, transform_chain):
+def run_in_scratch_dir(run_name, *args):
     """
     Runs a pipeline in a subdirectory of /data2/scratch_pipelines.
     
     Pipeline runs in this directory will not be indexed by the web viewer, but they
     will stay on disk so that their outputs can be processed by hand if needed.
+
+    Subsequent args must be either pipeline_objects, or lists of pipeline_objects.
+    These will be concatenated together to create the pipeline run.
     """
 
     assert isinstance(run_name, basestring)
-    assert isinstance(stream, rf_pipelines.wi_stream)
-    assert all(isinstance(t,rf_pipelines.wi_transform) for t in transform_chain)
+
+    p = make_pipeline(*args)
 
     (dirname, basename) = make_rundir('scratch_pipelines', run_name)
     outdir = os.path.join(dirname, basename)
@@ -68,7 +108,6 @@ def run_in_scratch_dir(run_name, stream, transform_chain):
     print >>sys.stderr, "creating temporary directory '%s' for running pipeline" % outdir
     os.makedirs(outdir)
 
-    p = rf_pipelines.pipeline([stream] + transform_chain)
     p.run(outdir=outdir, clobber=False)
 
 
