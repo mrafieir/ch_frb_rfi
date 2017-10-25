@@ -69,23 +69,13 @@ def run_for_web_viewer(run_name, *args):
     These will be concatenated together to create the pipeline run.
     """
 
-    assert isinstance(run_name, basestring)
+    # run_for_web_viewer() has now been moved to rf_pipelines.utils,
+    # and the version in ch_frb_rfi.utils() is just a wrapper.  It's
+    # useful to keep this wrapper in place, to avoid breaking old
+    # scripts!
 
     p = make_pipeline(*args)
-
-    # Directory names beginning with underscore are pipeline runs in progress.
-    (dirname, basename) = make_rundir('web_viewer', run_name)
-    temp_dir = os.path.join(dirname, '_' + basename)
-    final_dir = os.path.join(dirname, basename)
-
-    print >>sys.stderr, "creating temporary directory '%s' for running pipeline" % temp_dir
-    os.makedirs(temp_dir)
-
-    p.run(outdir=temp_dir, clobber=False)
-
-    # Pipeline done, remove underscore from directory name.
-    print >>sys.stderr, 'renaming %s -> %s' % (temp_dir, final_dir)
-    os.rename(temp_dir, final_dir)
+    rf_pipelines.utils.run_for_web_viewer(run_name, p)
 
 
 def run_in_scratch_dir(run_name, *args):
