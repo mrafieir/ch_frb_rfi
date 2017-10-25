@@ -1,0 +1,8 @@
+{
+    "class_name": "chime_file_stream", 
+    "filename_list": [
+        "/data/17-10-01-16k-to-1k/17-04-25-utkarsh-26m-part1/00000000.h5"
+    ], 
+    "nt_chunk": 1024, 
+    "noise_source_align": 0
+}
