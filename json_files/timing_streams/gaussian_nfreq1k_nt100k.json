@@ -1,0 +1,11 @@
+{
+    "nfreq": 1024, 
+    "randomize_weights": false, 
+    "dt_sample": 0.00098304, 
+    "class_name": "gaussian_noise_stream", 
+    "nt_tot": 100000, 
+    "freq_lo_MHz": 400, 
+    "nt_chunk": 1024, 
+    "freq_hi_MHz": 800, 
+    "sample_rms": 1
+}
