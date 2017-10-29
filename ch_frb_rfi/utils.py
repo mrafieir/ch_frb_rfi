@@ -126,5 +126,6 @@ def write_json(filename, p, clobber=False):
     j = p.jsonize()
     f = open(filename, 'w')
     json.dump(j, f, indent=4)
-    del f   # closes file
+    print >>f, ''  # extra newline
+    del f          # close file
     print 'wrote %s' % filename

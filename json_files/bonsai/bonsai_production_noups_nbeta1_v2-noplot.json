@@ -1,0 +1,14 @@
+{
+    "class_name": "bonsai_dedisperser_cpp", 
+    "config_filename": "/data/bonsai_configs/bonsai_production_noups_nbeta1_v2.hdf5", 
+    "initializer": {
+        "fill_rfi_mask": true, 
+        "use_analytic_normalization": false, 
+        "file_type": "", 
+        "verbosity": 1, 
+        "force_unnormalized_triggers": false, 
+        "use_unnormalized_triggers": false, 
+        "allocate": false, 
+        "estimate_cumulative_variance": false
+    }
+}
