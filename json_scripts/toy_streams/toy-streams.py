@@ -18,7 +18,7 @@ for (nfreq, nfreq_s) in [ (1024,'1k'), (16384,'16k') ]:
                                            sample_rms = 1.0, 
                                            nt_chunk = 1024)
 
-    filename = '../../json_files/timing_streams/gaussian_nfreq%s_nt%s.json' % (nfreq_s, nt_s)
+    filename = '../../json_files/toy_streams/gaussian_nfreq%s_nt%s.json' % (nfreq_s, nt_s)
 
     ch_frb_rfi.utils.write_json(filename, p, clobber=clobber)
 
