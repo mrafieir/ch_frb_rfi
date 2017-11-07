@@ -40,5 +40,5 @@ for make_plots in [ False, True ]:
     for (pobj, suffix) in [ (p1k,'1k'), (p16k,'16k') ]:
         suffix2 = '' if make_plots else '-noplot'
         filename = '../../json_files/rfi/17-10-24-first-try-%s%s.json' % (suffix, suffix2)
-        ch_frb_rfi.utils.write_json(filename, pobj, clobber=clobber)
+        rf_pipelines.utils.json_write(filename, pobj, clobber=clobber)
 

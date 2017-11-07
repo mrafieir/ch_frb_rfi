@@ -20,5 +20,4 @@ for (nfreq, nfreq_s) in [ (1024,'1k'), (16384,'16k') ]:
 
     filename = '../../json_files/toy_streams/gaussian_nfreq%s_nt%s.json' % (nfreq_s, nt_s)
 
-    ch_frb_rfi.utils.write_json(filename, p, clobber=clobber)
-
+    rf_pipelines.utils.json_write(filename, p, clobber=clobber)

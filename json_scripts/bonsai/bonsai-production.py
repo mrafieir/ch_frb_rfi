@@ -36,7 +36,7 @@ for stem in stem_list:
     t2 = rf_pipelines.bonsai_dedisperser_cpp(config_filename = config_filename,
                                              fill_rfi_mask = True)
     
-    ch_frb_rfi.utils.write_json(json_filename1, t1, clobber=clobber)
-    ch_frb_rfi.utils.write_json(json_filename2, t2, clobber=clobber)
+    rf_pipelines.utils.json_write(json_filename1, t1, clobber=clobber)
+    rf_pipelines.utils.json_write(json_filename2, t2, clobber=clobber)
 
     

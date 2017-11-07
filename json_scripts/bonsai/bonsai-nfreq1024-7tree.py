@@ -22,4 +22,4 @@ for version in [ 3, 4 ]:
                                         plot_threshold2 = 10,
                                         plot_all_trees = True)
 
-    ch_frb_rfi.utils.write_json(json_filename, t, clobber=clobber)
+    rf_pipelines.utils.json_write(json_filename, t, clobber=clobber)
