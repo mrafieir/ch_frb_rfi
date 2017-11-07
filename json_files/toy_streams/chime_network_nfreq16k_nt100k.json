@@ -1,0 +1,7 @@
+{
+    "class_name": "chime_dummy_network_stream", 
+    "nt_tot": 100000, 
+    "fpga_counts_per_sample": 384, 
+    "nupfreq": 16, 
+    "pool_gb": 1
+}
