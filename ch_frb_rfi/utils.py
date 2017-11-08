@@ -23,29 +23,37 @@ def make_rundir(topdir, run_name):
 
 def _add_to_pipeline(p, *args):
     """
-    Helper function which adds pipeline_objects to a pipeline.
+    Helper function which appends pipeline_objects to a pipeline.
 
     The first argument 'p' should be an rf_pipelines.pipeline object.
 
-    Subsequent args should be either pipeline_objects to be appended,
-    or lists of pipeline_objects.
+    Subsequent args should be either:
+       - pipeline_objects
+       - filenames ending in .json
+       - lists of either of these
     """
 
     for arg in args:
         if isinstance(arg, rf_pipelines.pipeline_object):
             p.add(arg)
+        elif isinstance(arg, basestring) and arg.endswith('.json'):
+            j = json.load(open(arg))
+            x = rf_pipelines.pipeline_object.from_json(j)
+            p.add(x)
         elif isinstance(arg, list):
             _add_to_pipeline(p, *arg)
         else:
-            raise RuntimeError('ch_frb_rfi: arguments to run_for_web_viewer() or run_in_scratch_dir() must be pipeline_objects, or lists of pipeline_objects')
+            raise RuntimeError('ch_frb_rfi: arguments to run_for_web_viewer() or run_in_scratch_dir() must be pipeline_objects, filenames ending in .json, or lists of either of these')
 
 
 def make_pipeline(*args):
     """
-    Helper function which combines pipeline_objects into a pipeline.
+    Helper function which combines arguments into a pipeline.
 
-    The syntax is flexible: arguments can be either pipeline_objects,
-    or lists of pipeline_objects.
+    The syntax is flexible: arguments can be either
+       - pipeline_objects
+       - filenames ending in .json
+       - lists of either of these
     """
 
     p = rf_pipelines.pipeline()
@@ -65,7 +73,11 @@ def run_for_web_viewer(run_name, *args):
     The 'run_name' argument should be a short descriptive string.  The pipeline rundir 
     will look schematically like "(username)/(run_name)_(time)".
 
-    Subsequent args must be either pipeline_objects, or lists of pipeline_objects.
+    Subsequent arguments can be either
+       - pipeline_objects
+       - filenames ending in .json
+       - lists of either of these
+
     These will be concatenated together to create the pipeline run.
     """
 
@@ -85,7 +97,11 @@ def run_in_scratch_dir(run_name, *args):
     Pipeline runs in this directory will not be indexed by the web viewer, but they
     will stay on disk so that their outputs can be processed by hand if needed.
 
-    Subsequent args must be either pipeline_objects, or lists of pipeline_objects.
+    Subsequent arguments can be either
+       - pipeline_objects
+       - filenames ending in .json
+       - lists of either of the above
+
     These will be concatenated together to create the pipeline run.
     """
 
