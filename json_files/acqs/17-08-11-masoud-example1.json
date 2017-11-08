@@ -1,0 +1,22 @@
+{
+    "class_name": "chime_file_stream", 
+    "filename_list": [
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_3/00148915.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_3/00148931.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_3/00148948.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_3/00148964.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_3/00148980.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_3/00148997.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_3/00149013.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_3/00149030.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_3/00149046.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_3/00149062.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_3/00149079.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_3/00149095.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_3/00149111.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_3/00149128.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_search_3/00149144.h5"
+    ], 
+    "nt_chunk": 1024, 
+    "noise_source_align": 0
+}

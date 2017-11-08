@@ -1,0 +1,18 @@
+{
+    "class_name": "chime_file_stream", 
+    "filename_list": [
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_3d/00146335.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_3d/00146352.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_3d/00146368.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_3d/00146384.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_3d/00146401.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_3d/00146417.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_3d/00146433.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_3d/00146450.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_3d/00146466.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_3d/00146483.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_3d/00146499.h5"
+    ], 
+    "nt_chunk": 1024, 
+    "noise_source_align": 0
+}

@@ -1,0 +1,20 @@
+{
+    "class_name": "chime_file_stream", 
+    "filename_list": [
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_3b/00023658.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_3b/00023674.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_3b/00023691.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_3b/00023707.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_3b/00023724.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_3b/00023740.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_3b/00023756.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_3b/00023773.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_3b/00023789.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_3b/00023805.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_3b/00023822.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_3b/00023838.h5", 
+        "/data2/17-02-08-incoherent-data-avalanche/frb_incoherent_3b/00023855.h5"
+    ], 
+    "nt_chunk": 1024, 
+    "noise_source_align": 0
+}
