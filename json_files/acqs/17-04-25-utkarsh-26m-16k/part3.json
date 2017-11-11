@@ -1248,5 +1248,6 @@
             "fudge_factor": -0.2, 
             "nt_chunk": 0
         }
-    ]
+    ], 
+    "name": "pipeline"
 }
