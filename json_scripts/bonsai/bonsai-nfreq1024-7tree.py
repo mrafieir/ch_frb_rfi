@@ -9,7 +9,7 @@ clobber = False
 # I forgot the reason why v2 no longer exists!
 for version in [ 3, 4 ]:
     config_filename = '/data/bonsai_configs/bonsai_nfreq1024_7tree_v%s.hdf5' % version
-    json_filename = '../../json_files/bonsai/bonsai_nfreq1024_7tree_v%s.json' % version
+    json_filename = '../../json_files/bonsai_1k/bonsai_nfreq1024_7tree_v%s.json' % version
 
     t = rf_pipelines.bonsai_dedisperser(config_filename = config_filename,
                                         fill_rfi_mask = True,

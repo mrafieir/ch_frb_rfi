@@ -11,8 +11,8 @@ stem_list = [ 'noups_nbeta1_v2', 'ups_nbeta1_v2' ]
 
 for stem in stem_list:
     config_filename = '/data/bonsai_configs/bonsai_production_%s.hdf5' % stem
-    json_filename1 = '../../json_files/bonsai/bonsai_production_%s.json' % stem
-    json_filename2 = '../../json_files/bonsai/bonsai_production_%s-noplot.json' % stem
+    json_filename1 = '../../json_files/bonsai_16k/bonsai_production_%s.json' % stem
+    json_filename2 = '../../json_files/bonsai_16k/bonsai_production_%s-noplot.json' % stem
 
     # FIXME: currently, there are two versions of the bonsai_dedisperser, written in C++ and python.
     # In the pipeline json output, they are represented as 'bonsai_dedisperser_python' and 'bonsai_dedisperser_cpp'.
