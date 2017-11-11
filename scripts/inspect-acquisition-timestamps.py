@@ -47,5 +47,4 @@ for b in basenames:
     tprev = t1
     nfiles += 1
 
-print '%s: %d files, acqtime %s hours' % (dirname, nfiles, (tprev-tstart)/3600.)
-
+print '%s: %d files, %s hours, t0=%s, t1=%s' % (dirname, nfiles, (tprev-tstart)/3600., tstart, tprev)
