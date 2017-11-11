@@ -1161,7 +1161,8 @@
                         "sigma_clip": 3, 
                         "clip_niter": 3
                     }
-                ]
+                ], 
+                "name": "pipeline"
             }, 
             "Df": 0, 
             "class_name": "wi_sub_pipeline", 
@@ -1184,5 +1185,6 @@
             "nbins": 6, 
             "axis": "AXIS_FREQ"
         }
-    ]
+    ], 
+    "name": "pipeline"
 }
