@@ -12,7 +12,4 @@ A scripting framework for RFI removal and offline L1 analysis in [rf_pipelines](
 
 ### DOCUMENTATION
 
-Not much for now, but if you look at [example.py](./example.py) and [example2.py](./example2.py) 
-then it will be apparent how to get started!
-
-More info can be found in docstrings and source files.
+See [MANUAL.md](./MANUAL.md).
