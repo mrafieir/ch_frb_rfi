@@ -6,7 +6,9 @@
 import rf_pipelines
 import ch_frb_rfi
 
-# To guard against accidentally modifying git-managed json files
+# If 'clobber' is False, then when a json file is created with rf_pipelines.json_write(filename, j),
+# we throw an exception if 'filename' already exists, and its contents differ from 'j'.  This is
+# to prevent git-managed json files from being modified accidentally.
 clobber = False
 
 # Masoud says: "A faint source at low DM"

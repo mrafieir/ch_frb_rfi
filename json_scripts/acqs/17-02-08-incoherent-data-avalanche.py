@@ -14,7 +14,11 @@ import numpy as np
 import rf_pipelines
 
 
-clobber = True
+# If 'clobber' is False, then when a json file is created with rf_pipelines.json_write(filename, j),
+# we throw an exception if 'filename' already exists, and its contents differ from 'j'.  This is
+# to prevent git-managed json files from being modified accidentally.
+clobber = False
+
 global_run_list = [ ]
 global_label_set = set()
 global_dirname_set = set()
