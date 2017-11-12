@@ -1,7 +1,4 @@
 #!/usr/bin/env python
-#
-# This version of 's1.py' was modified by KMS to use the
-# spline_detrender and online_mask_filler!
 
 """
 A faint source at low DM. 
@@ -34,11 +31,11 @@ p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                     bonsai_dynamic_plotter = False,
                                     bonsai_plot_all_trees = True,
                                     L1Grouper_thr = 7,
-                                    bonsai_event_outfile = 'events_s1-kms')
+                                    bonsai_event_outfile = 'events_s1')
 
 t = ch_frb_rfi.transform_chain(p)
 t += [ ch_frb_rfi.bonsai.nfreq1K_7tree(p, v=3) ]
 
-ch_frb_rfi.run_for_web_viewer('s1-kms', s, t)
+ch_frb_rfi.run_for_web_viewer('s1', s, t)
 
-print ":::::::::::: s1-kms done ::::::::::::"
+print ":::::::::::: s1 done ::::::::::::"

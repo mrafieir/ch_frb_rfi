@@ -25,17 +25,17 @@ p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                     bonsai_dynamic_plotter = False,
                                     bonsai_plot_all_trees = True,
                                     L1Grouper_thr = 7,
-                                    bonsai_event_outfile = 'events_s1')
+                                    bonsai_event_outfile = 'events_s1_offline')
 
 t = ch_frb_rfi.transform_chain(p)
 
-ch_frb_rfi.run_in_scratch_dir('s1', s, t)
+ch_frb_rfi.run_in_scratch_dir('s1_offline', s, t)
 
 (p.var_est, p.mask_filler, p.make_plots) = (False, True, True)
 
 t = ch_frb_rfi.transform_chain(p)
 t += [ ch_frb_rfi.bonsai.nfreq1K_7tree(p, 1) ]
 
-ch_frb_rfi.run_for_web_viewer('s1', s, t)
+ch_frb_rfi.run_for_web_viewer('s1_offline', s, t)
 
-print ":::::::::::: s1 done ::::::::::::"
+print ":::::::::::: s1_offline done ::::::::::::"
