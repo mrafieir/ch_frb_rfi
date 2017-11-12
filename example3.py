@@ -31,8 +31,16 @@ p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
 
 t = ch_frb_rfi.transform_chain(p)
 
-ch_frb_rfi.run_in_scratch_dir('example3', s, t)
+# Combine stream and transforms into a pipeline.
+pipeline = rf_pipelines.pipeline([s]+t)
 
+ch_frb_rfi.run_in_scratch_dir('example3', pipeline)
+
+# In the v16 API, need to "unbind" the pipeline after running, before its constituent
+# pipeline_objects can be reused in another pipeline run.
+pipeline.unbind()
+
+# Remove the variance_estimator, append the mask_filler and plotter transforms.
 p.var_est = False
 p.mask_filler = True
 p.make_plots = True
@@ -40,7 +48,8 @@ p.make_plots = True
 t = ch_frb_rfi.transform_chain(p)
 t += [ ch_frb_rfi.bonsai.nfreq16K_3tree(p, 1) ]
 
-ch_frb_rfi.run_for_web_viewer('example3', s, t)
+pipeline = rf_pipelines.pipeline([s]+t)
+ch_frb_rfi.run_for_web_viewer('example3', pipeline)
 
 print "example3.py: pipeline run successful!"
 print "You can view the result at http://frb1.physics.mcgill.ca:5000/"

@@ -55,10 +55,17 @@ p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
 # Using the specified parameters make a chain of transforms for estimating the variance.
 t = ch_frb_rfi.transform_chain(p)
 
+# Combine stream and transforms into a pipeline.
+pipeline = rf_pipelines.pipeline([s]+t)
+
 # The purpose of the first pipeline run is to create the h5 file containing variance
 # estimates (p.var_filename = './var_example2.h5').  We do this pipeline run using the
 # wrapper function run_in_scratch_dir(), which does not index the run with the web viewer.
-ch_frb_rfi.run_in_scratch_dir('example2', s, t)
+ch_frb_rfi.run_in_scratch_dir('example2', pipeline)
+
+# In the v16 API, need to "unbind" the pipeline after running, before its constituent
+# pipeline_objects can be reused in another pipeline run.
+pipeline.unbind()
 
 # Remove the variance_estimator, append the mask_filler and plotter transforms.
 p.var_est = False
@@ -67,10 +74,11 @@ p.make_plots = True
 
 t = ch_frb_rfi.transform_chain(p)
 t += [ ch_frb_rfi.bonsai.nfreq1K_3tree(p, 1) ]
+pipeline = rf_pipelines.pipeline([s]+t)
 
 # Second pipeline run: we use the wrapper function run_for_web_viewer().
 # Run the pipeline (again) but now with the mask_filler and bonsai dedisperser.
-ch_frb_rfi.run_for_web_viewer('example2', s, t)
+ch_frb_rfi.run_for_web_viewer('example2', pipeline)
 
 print "example2.py: pipeline run successful!"
 print "You can view the result at http://frb1.physics.mcgill.ca:5000/"
