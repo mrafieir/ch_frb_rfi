@@ -29,13 +29,21 @@ p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
 
 t = ch_frb_rfi.transform_chain(p)
 
-ch_frb_rfi.run_in_scratch_dir('s1_offline', s, t)
+# Combine stream and transforms into a pipeline.
+pipeline = rf_pipelines.pipeline([s]+t)
+
+ch_frb_rfi.run_in_scratch_dir('s1_offline', pipeline)
+
+# In the v16 API, need to "unbind" the pipeline after running, before its constituent
+# pipeline_objects can be reused in another pipeline run.
+pipeline.unbind()
 
 (p.var_est, p.mask_filler, p.make_plots) = (False, True, True)
 
 t = ch_frb_rfi.transform_chain(p)
 t += [ ch_frb_rfi.bonsai.nfreq1K_7tree(p, 1) ]
 
-ch_frb_rfi.run_for_web_viewer('s1_offline', s, t)
+pipeline = rf_pipelines.pipeline([s]+t)
+ch_frb_rfi.run_for_web_viewer('s1_offline', pipeline)
 
 print ":::::::::::: s1_offline done ::::::::::::"
