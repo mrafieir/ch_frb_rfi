@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # This script defines acquisition json files for the ~1000 hours of incoherent-beam
-# pathdinder data in frb1:/data2/17-02-08-data-avalanche.
+# pathfinder data in frb1:/data2/17-02-08-data-avalanche.
 #
 # We define one json file per ~10 hours of data, so ~100 json files are created.
 # When a "long" gap (more than a minute) occurs in the data, we start a new json file.

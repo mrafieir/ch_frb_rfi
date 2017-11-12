@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 #
-# From Masoud: Some examples of "interesting" incoherent-beam CHIME pathfinder data (originally in scripts/s*.py)
+# Some examples of "interesting" incoherent-beam CHIME pathfinder data (also in scripts/s*.py)
+# From Masoud (17-08-11)
 
 import rf_pipelines
 import ch_frb_rfi
