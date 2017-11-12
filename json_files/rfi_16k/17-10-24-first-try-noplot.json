@@ -1106,7 +1106,8 @@
                         "nbins": 6, 
                         "axis": "AXIS_FREQ"
                     }
-                ]
+                ], 
+                "name": "pipeline"
             }, 
             "Df": 0, 
             "class_name": "wi_sub_pipeline", 
@@ -1129,5 +1130,6 @@
             "nbins": 6, 
             "axis": "AXIS_FREQ"
         }
-    ]
+    ], 
+    "name": "pipeline"
 }

@@ -1157,5 +1157,6 @@
             "sigma_clip": 3, 
             "clip_niter": 3
         }
-    ]
+    ], 
+    "name": "pipeline"
 }

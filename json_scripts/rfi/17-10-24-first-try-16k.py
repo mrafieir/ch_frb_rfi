@@ -8,7 +8,7 @@ import ch_frb_rfi
 import rf_pipelines
 
 # To guard against accidentally overwriting git-managed json files
-clobber = False
+clobber = True
 
 for make_plots in [ False, True ]:
     params = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
@@ -39,6 +39,6 @@ for make_plots in [ False, True ]:
 
     for (pobj, suffix) in [ (p1k,'1k'), (p16k,'16k') ]:
         suffix2 = '' if make_plots else '-noplot'
-        filename = '../../json_files/rfi/17-10-24-first-try-%s%s.json' % (suffix, suffix2)
+        filename = '../../json_files/rfi_%s/17-10-24-first-try%s.json' % (suffix, suffix2)
         rf_pipelines.utils.json_write(filename, pobj, clobber=clobber)
 

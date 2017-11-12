@@ -1102,5 +1102,6 @@
             "nbins": 6, 
             "axis": "AXIS_FREQ"
         }
-    ]
+    ], 
+    "name": "pipeline"
 }
