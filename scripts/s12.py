@@ -30,7 +30,7 @@ p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                     bonsai_event_outfile = 'events_s12')
 
 t = ch_frb_rfi.transform_chain(p)
-t += [ ch_frb_rfi.bonsai.nfreq1K_7tree(p, v=3) ]
+t += [ ch_frb_rfi.bonsai.nfreq1K_7tree(p, fpga_counts_per_sample=512, v=3) ]
 
 ch_frb_rfi.run_for_web_viewer('s12', s, t)
 

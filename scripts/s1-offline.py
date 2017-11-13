@@ -41,7 +41,7 @@ pipeline.unbind()
 (p.var_est, p.mask_filler, p.make_plots) = (False, True, True)
 
 t = ch_frb_rfi.transform_chain(p)
-t += [ ch_frb_rfi.bonsai.nfreq1K_7tree(p, 1) ]
+t += [ ch_frb_rfi.bonsai.nfreq1K_7tree(p, fpga_counts_per_sample=512, v=3) ]
 
 pipeline = rf_pipelines.pipeline([s]+t)
 ch_frb_rfi.run_for_web_viewer('s1_offline', pipeline)

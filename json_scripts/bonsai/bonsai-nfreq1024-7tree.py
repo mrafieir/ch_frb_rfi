@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import rf_pipelines
 import ch_frb_rfi
 
@@ -8,10 +9,15 @@ import ch_frb_rfi
 # to prevent git-managed json files from being modified accidentally.
 clobber = False
 
-for version in [ 3, 4 ]:
-    config_filename = '/data/bonsai_configs/bonsai_nfreq1024_7tree_v%s.hdf5' % version
-    json_filename1 = '../../json_files/bonsai_1k/bonsai_nfreq1024_7tree_v%s.json' % version
-    json_filename2 = '../../json_files/bonsai_1k/bonsai_nfreq1024_7tree_v%s-noplot.json' % version
+version = 3
+
+for fpga_counts_per_sample in [ 384, 512 ]:
+    config_filename = '/data/bonsai_configs/bonsai_nfreq1024_7tree_f%s_v%s.hdf5' % (fpga_counts_per_sample, version)
+    json_filename1 = '../../json_files/bonsai_1k/bonsai_nfreq1024_7tree_f%s_v%s.json' % (fpga_counts_per_sample, version)
+    json_filename2 = '../../json_files/bonsai_1k/bonsai_nfreq1024_7tree_f%s_v%s-noplot.json' % (fpga_counts_per_sample, version)
+
+    if not os.path.exists(config_filename):
+        raise RuntimeError("Fatal: '%s' does not exist" % config_filename)
 
     # FIXME: currently, there are two versions of the bonsai_dedisperser, written in C++ and python.
     # In the pipeline json output, they are represented as 'bonsai_dedisperser_python' and 'bonsai_dedisperser_cpp'.

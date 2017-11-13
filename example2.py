@@ -73,7 +73,7 @@ p.mask_filler = True
 p.make_plots = True
 
 t = ch_frb_rfi.transform_chain(p)
-t += [ ch_frb_rfi.bonsai.nfreq1K_3tree(p, 1) ]
+t += [ ch_frb_rfi.bonsai.nfreq1K_3tree(p, fpga_counts_per_sample=512, v=1) ]
 pipeline = rf_pipelines.pipeline([s]+t)
 
 # Second pipeline run: we use the wrapper function run_for_web_viewer().

@@ -40,8 +40,11 @@ s = ch_frb_rfi.acquisitions.small()   # A small example acq containing a few min
 # The submodule ch_frb_rfi.bonsai defines a few "standard" dedispersers that we sometimes use.
 # See bonsai_configs/README.md for a list!
 
-t = ch_frb_rfi.transform_chain(p)                   # ch_frb_rfi.transform_chain() returns a list of transforms
-t += [ ch_frb_rfi.bonsai.nfreq1K_3tree(p, v=1) ]    # ch_frb_rfi.bonsai.nfreq1K_3tree() returns a single transform
+# ch_frb_rfi.transform_chain() returns a list of transforms
+t = ch_frb_rfi.transform_chain(p)
+
+# ch_frb_rfi.bonsai.nfreq1K_3tree() returns a single transform
+t += [ ch_frb_rfi.bonsai.nfreq1K_3tree(p, fpga_counts_per_sample=512, v=1) ]
 
 
 # Fourth, run the pipeline!

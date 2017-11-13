@@ -46,19 +46,12 @@ def _config(basename):
         
 
 def nfreq1024_singletree(parameters):
-    return make_dedisperser(parameters, _config('bonsai_nfreq1024_singletree_v1.hdf5'))
+    return make_dedisperser(parameters, _config('bonsai_nfreq1024_singletree_f512_v1.hdf5'))
 
-def nfreq1K_3tree(parameters, v):
-    return make_dedisperser(parameters, _config('bonsai_nfreq1024_3tree_v%s.hdf5' % v))
+def nfreq1K_3tree(parameters, fpga_counts_per_sample, v):
+    assert fpga_counts_per_sample in [ 384, 512 ]
+    return make_dedisperser(parameters, _config('bonsai_nfreq1024_3tree_f%d_v%s.hdf5' % (fpga_counts_per_sample,v)))
 
-def nfreq1K_7tree(parameters, v=1):
-    return make_dedisperser(parameters, _config('bonsai_nfreq1024_7tree_v%s.hdf5' % v))
-
-def nfreq16K_3tree(parameters, v):
-    return make_dedisperser(parameters, _config('bonsai_nfreq16K_3tree_v%s.hdf5' % v))
-
-def nfreq128K_3tree(parameters, v):
-    return make_dedisperser(parameters, _config('bonsai_nfreq128K_3tree_v%s.hdf5' % v))
-
-def nfreq16K_7tree(parameters, v=1):
-    return make_dedisperser(parameters, _config('bonsai_nfreq16K_7tree_v%s.hdf5' % v))
+def nfreq1K_7tree(parameters, fpga_counts_per_sample, v):
+    assert fpga_counts_per_sample in [ 384, 512 ]
+    return make_dedisperser(parameters, _config('bonsai_nfreq1024_7tree_f%d_v%s.hdf5' % (fpga_counts_per_sample,v)))
