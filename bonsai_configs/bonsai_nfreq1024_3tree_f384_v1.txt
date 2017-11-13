@@ -17,6 +17,7 @@
 variance_timescale = 100.0
 reweighting_timescale = 100.0
 
+ntrees = 3
 tree_size = 4096
 nfreq = 1024       # Number of frequency channels in input (currently 1024; will expand to 16384)
 

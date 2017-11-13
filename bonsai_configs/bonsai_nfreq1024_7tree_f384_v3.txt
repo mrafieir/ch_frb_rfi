@@ -9,6 +9,7 @@ reweighting_timescale = 100.0
 
 nfreq = 1024
 
+ntrees = 7
 tree_size = [ 4096, 4096, 4096, 4096, 4096, 2048, 1024 ]
 nds = [ 1, 1, 2, 4, 8, 16, 32 ]
 nups = [ 2, 1, 1, 1, 1, 1, 1 ]

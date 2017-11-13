@@ -10,6 +10,14 @@
 #   - one downsampled (nups=2, max DM 552)
 
 
+# For no deep reason, the (variance, reweighting) timescales are currently (100, 100) in
+# the 1K-channel bonsai configs, and (200, 400) in the 16K-channel configs.  These values
+# are chosen semi-arbitrarily, and we should do a study to determine optimal settings!
+
+variance_timescale = 100.0
+reweighting_timescale = 100.0
+
+ntrees = 3
 tree_size = 4096
 nfreq = 1024       # Number of frequency channels in input (currently 1024; will expand to 16384)
 
