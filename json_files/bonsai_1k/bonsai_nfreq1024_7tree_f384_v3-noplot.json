@@ -1,6 +1,6 @@
 {
     "class_name": "bonsai_dedisperser_cpp", 
-    "config_filename": "/data/bonsai_configs/bonsai_nfreq1024_7tree_v3.hdf5", 
+    "config_filename": "/data/bonsai_configs/bonsai_nfreq1024_7tree_f384_v3.hdf5", 
     "initializer": {
         "fill_rfi_mask": true, 
         "use_analytic_normalization": false, 

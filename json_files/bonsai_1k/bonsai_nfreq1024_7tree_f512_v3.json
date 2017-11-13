@@ -8,7 +8,7 @@
     "nt_per_hdf5_file": 0, 
     "hdf5_output_filename": null, 
     "img_nt": 256, 
-    "config_filename": "/data/bonsai_configs/bonsai_nfreq1024_7tree_v4.hdf5", 
+    "config_filename": "/data/bonsai_configs/bonsai_nfreq1024_7tree_f512_v3.hdf5", 
     "L1Grouper_thr": 7, 
     "fill_rfi_mask": true, 
     "dynamic_plotter": false, 
