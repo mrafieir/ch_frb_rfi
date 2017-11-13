@@ -6,6 +6,8 @@
 
    - New scripts for the verification of bonsai and rf_pipelines
 
+   - Json files/scripts, MANUAL.md
+
 - Version 5:
 
    - Minor updates following API changes in bonsai v9.

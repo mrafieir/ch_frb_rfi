@@ -14,6 +14,8 @@ in a production config file, make a new copy of the file and increment the versi
 
 It is important to make sure that the three versions don't get out of sync!  This should
 happen automatically if production configs are never changed after committing them to git.
+The script `scripts/check-bonsai-config-consistency.py` will check for inconsistencies,
+and should be run periodically.
 
 Reminder: currently, bonsai config files must be constructed by a two-step process as follows.
 First, a human-editable text file `bonsai_xxx.txt` is written.  Second, this is "compiled"
@@ -45,27 +47,13 @@ all bonsai configs.  The functions in `ch_frb_rfi.bonsai` assume that you're run
 
 **Non-production configs:**
 
-  - bonsai_nfreq1024_singletree_v1.txt
+  - bonsai_nfreq1024_singletree_f512_v1.txt
 
-    Simplest example, intended for RFI studies with 1024-frequency data and
-    testing the web viewer.  Searches with a single dedispersion tree to max DM 276.
+    Simplest example, intended for RFI studies with 1024-frequency data and 512 FPGA counts/sample
+    (0.00131072 sec).  Searches with a single dedispersion tree to max DM 276.
 
-  - bonsai_nfreq1024_3tree_v1.txt
+  - bonsai_nfreq1024_3tree_fXXX_v1.txt
 
-    Slightly more complicated, also intended for RFI studies with 1024-frequency data `(dt_sample = 0.00131072)`.
-    Searches with three dedispersion trees to max DM 552.
-
-  - bonsai_nfreq1024_3tree_v2.txt
-
-    Intended for RFI studies with 1K-frequency data `(dt_sample = 0.00098304)`.
-    Searches with three dedispersion trees to max DM 552.
-
-  - bonsai_nfreq16K_3tree_v1.txt
-
-    Intended for RFI studies with 16K-frequency data `(dt_sample = 0.00098304)`.
-    Searches with three dedispersion trees to max DM 552.
-
-  - bonsai_nfreq128K_3tree_v1.txt
-
-    Intended for RFI studies with 128K-frequency data `(dt_sample = 0.00098304)`.
-    Searches with three dedispersion trees to max DM 552.
+    Slightly more complicated, also intended for RFI studies with 1024-frequency data.
+    The `fXXX` in the filename should be either `f512` for 512 FPGA counts/sample
+    (incoherent-beam acqs), or `f384` for 384 FPGA counts/sample (16K acqs).

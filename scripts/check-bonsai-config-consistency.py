@@ -1,6 +1,13 @@
 #!/usr/bin/env python
 #
-# This 
+# As explained in MANUAL.md, the same bonsai configs are expected to appear in multiple places:
+#  - in git/ch_frb_rfi/bonsai_configs
+#  - in git/ch_frb_l1/bonsai_configs
+#  - in /data/bonsai_configs (with "derived" hdf5 files created with 'bonsai-mkweight').
+#
+# This raises the possibility of files becoming out of sync, if they are modified in one place
+# and not updated in others, or if the .txt files are updated without regenerating the corresponding
+# hdf5 files.  This script will check for inconsistencies, and should be run periodically.
 
 
 import os
