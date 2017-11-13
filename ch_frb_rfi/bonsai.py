@@ -55,3 +55,6 @@ def nfreq1K_3tree(parameters, fpga_counts_per_sample, v):
 def nfreq1K_7tree(parameters, fpga_counts_per_sample, v):
     assert fpga_counts_per_sample in [ 384, 512 ]
     return make_dedisperser(parameters, _config('bonsai_nfreq1024_7tree_f%d_v%s.hdf5' % (fpga_counts_per_sample,v)))
+
+def nfreq16K_production(parameters):
+    return make_dedisperser(parameters, _config('bonsai_production_noups_nbeta1_v2.hdf5'))
