@@ -1,50 +1,30 @@
-# This is a simple bonsai paramfile for CHIME.
-#
-# Since it assumes 1024 frequency channels (rather than 16K) the
-# computational cost is much lower than what we expect on the real
-# L1 node.
-#
-# The search uses seven(!) trees with two trial spectral indices, 
-# in order to be slightly more representative of the 
-#
-#   - tree 0: upsampled by 2, ntree=4096, max DM 138
-#   - tree 1: native resolution, ntree=4096, max DM 276
-#   - tree 2: downsampled by 2, ntree=4096, max DM 552
-#   - tree 3: downsampled by 4, ntree=4096, max DM 1104
-#   - tree 4: downsampled by 8, ntree=4096, max DM 2208
-#   - tree 5: downsampled by 16, ntree=2048, max DM 2208
-#   - tree 6: downsampled by 32, ntree=1024, max DM 2208
+# mrafiei, OCT 15, 2017
 
+# For no deep reason, the (variance, reweighting) timescales are currently (100, 100) in
+# the 1K-channel bonsai configs, and (200, 400) in the 16K-channel configs.  These values
+# are chosen semi-arbitrarily, and we should do a study to determine optimal settings!
 
-#### !!! Experimental for online_mask_filler !!! ####
 variance_timescale = 100.0
-reweighting_timescale = 50.0
+reweighting_timescale = 100.0
 
-
-# Number of frequency channels in input (currently 1024; will expand to 16384)
 nfreq = 1024
 
 tree_size = [ 4096, 4096, 4096, 4096, 4096, 2048, 1024 ]
 nds = [ 1, 1, 2, 4, 8, 16, 32 ]
 nups = [ 2, 1, 1, 1, 1, 1, 1 ]
 
-# Spectral index search with two trial spectral indices.
 nbeta = 2
 beta_depth = 2
 beta_min = -1.5
 beta_max = 1.5
 
-# No scattering search
 nsm = 1
 sm_depth = 0
 sm_max = 0
 
-# The following numbers can be obtained from the hdf5 data files, using
-# the utility program 'ch-show-intensity-file' in the ch_frb_io github repo.
-
 freq_lo_MHz = 400.0
 freq_hi_MHz = 800.0
-dt_sample = 0.00131072   # sample length in seconds
+dt_sample = 0.00131072   # sample length in seconds (=512 FPGA counts)
 
 nt_chunk = 2048
 dm_coarse_graining_factor = 16
