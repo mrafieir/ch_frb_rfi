@@ -87,7 +87,7 @@ def run_for_web_viewer(run_name, *args):
     # scripts!
 
     p = make_pipeline(*args)
-    rf_pipelines.utils.run_for_web_viewer(run_name, p)
+    rf_pipelines.utils.run_for_web_viewer(run_name, p, show_stdout=True)
 
 
 def run_in_scratch_dir(run_name, *args):
