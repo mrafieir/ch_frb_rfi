@@ -1,6 +1,6 @@
-### ch_frb_rfi
+### CH_FRB_RFI
 
-A scripting framework for RFI removal and offline L1 analysis in [rf_pipelines](https://github.com/kmsmith137/rf_pipelines).
+A plugin-based framework for processing channelized intensity data in radio astronomy.
 
 ### INSTALLATION
 
