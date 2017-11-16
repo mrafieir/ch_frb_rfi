@@ -35,9 +35,8 @@ class transform_parameters:
        - detrend_nt/clip_nt: 
            chunk sizes (in time samples) for detrender transforms and clipper transforms respectively.
 
-       - detrend_last: if True, then a chain of detrenders is appened to the final transform chain. This is required for
-           removing residuals from the last chain of clippers in a "flat" pipeline, wherein all transforms are at the same level of
-           down/up-sampling.
+       - detrend_last: if True, then the RFI transform chain ends with a chain of detrenders.
+           This is required for removing intensity residuals due to preceding transforms.
 
        - two_pass: if True, then the first round of clipper transforms will use a
             more numerically stable, but slightly slower, clipping algorithm.
