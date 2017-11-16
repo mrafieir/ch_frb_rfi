@@ -13,7 +13,7 @@ class transform_parameters:
 
     Constructor syntax:
 
-        p = transform_parameters(rfi_level=0, detrender_niter=None, clipper_niter=None, detrend_nt=1024, clip_nt=1024, kfreq=1, two_pass=True, spline=False,
+        p = transform_parameters(rfi_level=0, detrender_niter=None, clipper_niter=None, detrend_nt=1024, clip_nt=1024, detrend_last=True, two_pass=True, spline=False,
                                  make_plots=True, plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, bonsai_plot_nypix=256, plot_nzoom=None,
                                  bonsai_output_plot_stem=None, bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None, bonsai_nt_per_hdf5_file=0, 
                                  bonsai_plot_threshold1=6, bonsai_plot_threshold2=10, bonsai_dynamic_plotter=False, maskpath=None, bonsai_event_outfile=None, 
@@ -35,8 +35,9 @@ class transform_parameters:
        - detrend_nt/clip_nt: 
            chunk sizes (in time samples) for detrender transforms and clipper transforms respectively.
 
-       - kfreq: is a multiplicative factor for the Df argument in clipper transforms. 
-           e.g., if 16K data is used, then kfreq should be 16. The default value (kfreq=1) assumes 1K frequency channels. 
+       - detrend_last: if True, then a chain of detrenders is appened to the final transform chain. This is required for
+           removing residuals from the last chain of clippers in a "flat" pipeline, wherein all transforms are at the same level of
+           down/up-sampling.
 
        - two_pass: if True, then the first round of clipper transforms will use a
             more numerically stable, but slightly slower, clipping algorithm.
@@ -53,9 +54,9 @@ class transform_parameters:
            normalization, assuming a toy model in which each input (frequency, time) sample is an
            uncorrelated Gaussian.  Not suitable for real data!
 
-       - bonsai_hdf5_output_filename: If specified, HDF5 file(s) containing coarse-grained triggers will be written.
+       - bonsai_hdf5_output_filename: if specified, HDF5 file(s) containing coarse-grained triggers will be written.
 
-       - bonsai_nt_per_hdf5_file: Only meaningful if bonsai_hdf5_output_filename=True.  Zero means "one big file".
+       - bonsai_nt_per_hdf5_file: only meaningful if bonsai_hdf5_output_filename=True.  Zero means "one big file".
 
        - bonsai_plot_nypix: is a bonsai plot argument. It specifies the number of pixels along the DM axis.
 
@@ -65,7 +66,7 @@ class transform_parameters:
             (threshold1 < X < threshold2) : (yellow)
             (threshold2 < X) : (light green)
 
-       - bonsai_dynamic_plotter: If True, then the old color scheme (with a higher dynamic range from blue to red) is used.
+       - bonsai_dynamic_plotter: if True, then the old color scheme (with a higher dynamic range from blue to red) is used.
 
        - bonsai_event_outfile: specifies a file path to the grouper output. The grouper is disabled by default. 
 
@@ -120,7 +121,7 @@ class transform_parameters:
     By default (if no plotting-related constructor arguments are specified), plotting is disabled.
     """
 
-    def __init__(self, rfi_level=0, detrender_niter=None, clipper_niter=None, detrend_nt=1024, clip_nt=1024, kfreq=1, two_pass=True, spline=False,
+    def __init__(self, rfi_level=0, detrender_niter=None, clipper_niter=None, detrend_nt=1024, clip_nt=1024, detrend_last=True, two_pass=True, spline=False,
                  make_plots=True, plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, bonsai_plot_nypix=256, plot_nzoom=None, 
                  bonsai_output_plot_stem=None, bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None, bonsai_nt_per_hdf5_file=0,
                  bonsai_plot_threshold1=6, bonsai_plot_threshold2=10, bonsai_dynamic_plotter=False, bonsai_event_outfile=None, bonsai_plot_all_trees=False,
@@ -138,7 +139,7 @@ class transform_parameters:
         self.rfi_level = rfi_level
         self.detrend_nt = detrend_nt
         self.clip_nt = clip_nt
-        self.kfreq = kfreq
+        self.detrend_last = detrend_last
 
         self.two_pass = two_pass
         self.spline = spline
@@ -250,6 +251,8 @@ class transform_parameters:
 def detrender_chain(parameters, ix):
     assert isinstance(parameters, transform_parameters)
 
+    if (not parameters.detrend_last) and (parameters.detrender_niter == (ix + 1)): return []
+
     # AXIS_TIME (nt_chunk must be nonzero here)
     ret = [ rf_pipelines.polynomial_detrender(polydeg=4, axis='time', nt_chunk=parameters.detrend_nt) ]
 
@@ -265,18 +268,18 @@ def detrender_chain(parameters, ix):
 def clipper_chain(parameters, ix):
     two_pass = parameters.two_pass and (ix == 0)
     
-    return [ rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=parameters.clip_nt, Df=1*parameters.kfreq, Dt=1, two_pass=two_pass),
-             rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=2*parameters.clip_nt, Df=1*parameters.kfreq, Dt=1, two_pass=two_pass),
-             rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=6*parameters.clip_nt, Df=1*parameters.kfreq, Dt=1, two_pass=two_pass),
+    return [ rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=parameters.clip_nt, Df=1, Dt=1, two_pass=two_pass),
+             rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=2*parameters.clip_nt, Df=1, Dt=1, two_pass=two_pass),
+             rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=6*parameters.clip_nt, Df=1, Dt=1, two_pass=two_pass),
 
-             rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=6*parameters.clip_nt, Df=1*parameters.kfreq, Dt=1),
-             rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=6*parameters.clip_nt, Df=1*parameters.kfreq, Dt=1),
+             rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=6*parameters.clip_nt, Df=1, Dt=1),
+             rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=6*parameters.clip_nt, Df=1, Dt=1),
              
-             rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=5, axis=0, nt_chunk=parameters.clip_nt, Df=1*parameters.kfreq, Dt=1),
-             rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=5, axis=1, nt_chunk=parameters.clip_nt, Df=1*parameters.kfreq, Dt=1, two_pass=two_pass),
+             rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=5, axis=0, nt_chunk=parameters.clip_nt, Df=1, Dt=1),
+             rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=5, axis=1, nt_chunk=parameters.clip_nt, Df=1, Dt=1, two_pass=two_pass),
 
-             rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=3, axis=None, nt_chunk=parameters.clip_nt, Df=2*parameters.kfreq, Dt=16),
-             rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=3, axis=0, nt_chunk=parameters.clip_nt, Df=2*parameters.kfreq, Dt=16) ]
+             rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=3, axis=None, nt_chunk=parameters.clip_nt, Df=2, Dt=16),
+             rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=3, axis=0, nt_chunk=parameters.clip_nt, Df=2, Dt=16) ]
 
        
 def transform_chain(parameters):
