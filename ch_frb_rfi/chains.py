@@ -271,14 +271,14 @@ def clipper_chain(parameters, ix):
              rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=2*parameters.clip_nt, Df=1, Dt=1, two_pass=two_pass),
              rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=6*parameters.clip_nt, Df=1, Dt=1, two_pass=two_pass),
 
-             rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=6*parameters.clip_nt, Df=1, Dt=1),
-             rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=6*parameters.clip_nt, Df=1, Dt=1),
+             rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=6*parameters.clip_nt, Df=1, Dt=1, two_pass=two_pass),
+             rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=6*parameters.clip_nt, Df=1, Dt=1, two_pass=two_pass),
              
-             rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=5, axis=0, nt_chunk=parameters.clip_nt, Df=1, Dt=1),
+             rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=5, axis=0, nt_chunk=parameters.clip_nt, Df=1, Dt=1, two_pass=two_pass),
              rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=5, axis=1, nt_chunk=parameters.clip_nt, Df=1, Dt=1, two_pass=two_pass),
 
-             rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=3, axis=None, nt_chunk=parameters.clip_nt, Df=2, Dt=16),
-             rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=3, axis=0, nt_chunk=parameters.clip_nt, Df=2, Dt=16) ]
+             rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=3, axis=None, nt_chunk=parameters.clip_nt, Df=2, Dt=16, two_pass=two_pass),
+             rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=3, axis=0, nt_chunk=parameters.clip_nt, Df=2, Dt=16, two_pass=two_pass) ]
 
        
 def transform_chain(parameters):

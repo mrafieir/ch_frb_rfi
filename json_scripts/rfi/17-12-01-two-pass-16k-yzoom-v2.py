@@ -1,7 +1,11 @@
 #!/usr/bin/env python
 #
-# 16K RFI removal with the parameter `two_pass=True` for all the clippers in the first
-# (outer) loop of detrenders. It does not include the badchannel mask.
+# THIS IS NOT TRUE : 16K RFI removal with the parameter `two_pass=True` for all the clippers in
+# the first (outer) loop of detrenders. I forgot to commit changes on chains.py before running
+# this script. Therefore, `../../json_files/rfi_%s/17-12-01-two-pass-yzoom-v2*.json` are NOT
+# really valid "two_pass" configs!
+#
+# It does not include the badchannel mask.
 # It uses bonsai's online mask filler.
 
 import ch_frb_rfi
