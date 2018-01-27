@@ -16,11 +16,7 @@ clobber = False
 
 for make_plots in [ False, True ]:
     params = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
-                                             plot_nypix=1024,
-                                             plot_nxpix = 256,
-                                             plot_downsample_nt = 16,
-                                             plot_nzoom = 4,
-                                             make_plots = False,
+                                             make_plots = make_plots,
                                              bonsai_output_plot_stem = 'triggers' if make_plots else None,
                                              maskpath = None,
                                              detrender_niter = 2,
@@ -51,5 +47,5 @@ for make_plots in [ False, True ]:
 
     for (pobj, suffix) in [ (p1k,'1k'), (p16k,'16k') ]:
         suffix2 = '' if make_plots else '-noplot'
-        filename = '../../json_files/rfi_%s/17-12-02-two-pass-no-plots-v3%s.json' % (suffix, suffix2)
+        filename = '../../json_files/rfi_%s/17-12-02-two-pass-v3%s.json' % (suffix, suffix2)
         rf_pipelines.utils.json_write(filename, pobj, clobber=clobber)
