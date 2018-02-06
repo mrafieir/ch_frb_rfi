@@ -1,3 +1,7 @@
+- Version 7:
+
+   - New RFI configs based on transform chain v1.5
+
 - Version 6:
 
    - From Alex: L1b functionality
