@@ -117,6 +117,31 @@ def run_in_scratch_dir(run_name, *args):
 
     p.run(outdir=outdir, clobber=False)
 
+def run_in_custom_dir(dirname, run_name, *args):
+    """
+    Runs a pipeline in a directory of user's choice.
+    
+    Pipeline runs in this directory will not be indexed by the web viewer, but they
+    will stay on disk so that their outputs can be processed by hand if needed.
+
+    Subsequent arguments can be either
+       - pipeline_objects
+       - filenames ending in .json
+       - lists of either of the above
+
+    These will be concatenated together to create the pipeline run.
+    """
+
+    assert isinstance(run_name, basestring)
+
+    p = make_pipeline(*args)
+
+    outdir = os.path.join(dirname, run_name)
+
+    print >>sys.stderr, "creating temporary directory '%s' for running pipeline" % outdir
+    os.makedirs(outdir)
+
+    p.run(outdir=outdir, clobber=False)
 
 def sample(path, start, end, nt_chunk=1024):
     """A handy function which allows user to select a range of stream files from an input path"""

@@ -23,6 +23,7 @@ from chains import clipper_chain, \
     transform_parameters
 
 from transform_template import transform_template
+from write_mask import WriteWeights
 
 from utils import run_for_web_viewer, run_in_scratch_dir, sample
 
@@ -31,3 +32,4 @@ from . import acquisitions
 
 # Example syntax: ch_frb_rfi.bonsai.nfreq1024_singletree()
 from . import bonsai
+
