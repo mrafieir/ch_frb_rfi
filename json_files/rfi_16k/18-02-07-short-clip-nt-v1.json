@@ -609,6 +609,9 @@
             "nt_chunk": 0, 
             "nbins": 6, 
             "axis": "AXIS_FREQ"
+        }, 
+        {
+            "nt_chunk": 1024
         }
     ], 
     "name": "pipeline"
