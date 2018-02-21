@@ -125,7 +125,7 @@ class transform_parameters:
                  bonsai_output_plot_stem=None, bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None, bonsai_nt_per_hdf5_file=0,
                  bonsai_plot_threshold1=6, bonsai_plot_threshold2=10, bonsai_dynamic_plotter=False, bonsai_event_outfile=None, bonsai_plot_all_trees=False,
                  bonsai_fill_rfi_mask=False, maskpath=None, mask=None, variance_estimator_v1_chunk=32, variance_estimator_v2_chunk=192, var_filename=None, 
-                 var_est=False, mask_filler=False, mask_filler_w_cutoff=0.5, L1Grouper_thr=7, L1Grouper_beam=0, L1Grouper_addr=None):
+                 var_est=False, mask_filler=False, mask_filler_w_cutoff=0.5, L1b_config=None):
 
         nv = 0
         if var_est: nv += 1
@@ -155,9 +155,7 @@ class transform_parameters:
         self.bonsai_plot_all_trees = bonsai_plot_all_trees
         self.bonsai_fill_rfi_mask = bonsai_fill_rfi_mask
 
-        self.L1Grouper_thr = L1Grouper_thr
-        self.L1Grouper_beam = L1Grouper_beam
-        self.L1Grouper_addr = L1Grouper_addr
+        self.L1b_config = L1b_config
 
         self.maskpath = maskpath
         self.mask = mask
