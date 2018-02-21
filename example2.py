@@ -46,10 +46,7 @@ p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                     bonsai_plot_threshold1 = 7,
                                     bonsai_plot_threshold2 = 10,
                                     bonsai_dynamic_plotter = False,
-                                    bonsai_event_outfile = './events_example2.dat',
-                                    L1Grouper_thr = 10,
-                                    L1Grouper_beam = 0,
-                                    L1Grouper_addr = None)
+                                    L1b_config = 'L1b_config_mcgill.yaml')
 
 # Using the specified parameters make a chain of transforms for estimating the variance.
 t = ch_frb_rfi.transform_chain(p)
