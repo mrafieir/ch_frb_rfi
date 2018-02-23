@@ -46,7 +46,7 @@ p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                     bonsai_plot_threshold1 = 7,
                                     bonsai_plot_threshold2 = 10,
                                     bonsai_dynamic_plotter = False,
-                                    L1b_config = 'L1b_config_mcgill.yaml')
+                                    L1b_config = 'multi_endpoints.yaml')
 
 # Using the specified parameters make a chain of transforms for estimating the variance.
 t = ch_frb_rfi.transform_chain(p)
@@ -74,7 +74,8 @@ pipeline = rf_pipelines.pipeline([s]+t)
 
 # Second pipeline run: we use the wrapper function run_for_web_viewer().
 # Run the pipeline (again) but now with the mask_filler and bonsai dedisperser.
-ch_frb_rfi.run_for_web_viewer('example2', pipeline)
+#ch_frb_rfi.run_for_web_viewer('example2', pipeline)
+ch_frb_rfi.run_in_scratch_dir('example2', pipeline)
 
 print "example2.py: pipeline run successful!"
 print "You can view the result at http://frb1.physics.mcgill.ca:5000/"
