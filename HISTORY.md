@@ -1,3 +1,9 @@
+- Version 8:
+
+   - From Chitrang: New transform for writing weights to disk
+
+   - New RFI config for processing short events
+
 - Version 7:
 
    - New RFI configs based on transform chain v1.5
