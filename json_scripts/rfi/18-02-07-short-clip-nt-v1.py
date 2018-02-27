@@ -14,13 +14,14 @@ def run_rf_pipelines(filename_list, output_directory, output_acq_name, output_fi
     # If 'clobber' is False, then when a json file is created with rf_pipelines.json_write(filename, j),
     # we throw an exception if 'filename' already exists, and its contents differ from 'j'.  This is
     # to prevent git-managed json files from being modified accidentally.
-    clobber = True
+    clobber = False
     
     params = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                              make_plots = False,
                                              bonsai_output_plot_stem = None,
                                              maskpath = None,
                                              clip_nt = 1024,
+                                             eq_clip_nt = True,
                                              detrend_nt = 1024,
                                              detrender_niter=1,
                                              clipper_niter=6,
@@ -50,19 +51,18 @@ def run_rf_pipelines(filename_list, output_directory, output_acq_name, output_fi
     t16k += [write_mask.WriteWeights(basename = output_filename)]
     p16k = rf_pipelines.pipeline(t16k)
     
-    s = rf_pipelines.chime_frb_stream_from_filename_list(filename_list, nt_chunk=1024, noise_source_align= 0)
-    ch_frb_rfi.utils.run_in_custom_dir(output_directory,output_acq_name, s , p16k)
+    s = rf_pipelines.chime_frb_stream_from_filename_list(filename_list, nt_chunk=1024, noise_source_align=0)
+    ch_frb_rfi.utils.run_in_scratch_dir(run_name=output_acq_name, dirname=output_directory, s, p16k)
 
 def main():
-    filename_list = [
-                
-            "/home/patelchi/astro_98134_2018129302653857_beam0000_00258920_01.msgpack",
-            "/home/patelchi/astro_98134_2018129302653857_beam0000_00258921_01.msgpack",
-            "/home/patelchi/astro_98134_2018129302653857_beam0000_00258922_01.msgpack",
-    #        "/home/patelchi/astro_98252_20181293330523560_beam0000_00259127_01.msgpack",
-    #        "/home/patelchi/astro_98252_20181293330523560_beam0000_00259128_01.msgpack",
-    #        "/home/patelchi/astro_98252_20181293330523560_beam0000_00259129_01.msgpack"
-        ]
+    filename_list = ["/home/patelchi/astro_98134_2018129302653857_beam0000_00258920_01.msgpack",
+                     "/home/patelchi/astro_98134_2018129302653857_beam0000_00258921_01.msgpack",
+                     "/home/patelchi/astro_98134_2018129302653857_beam0000_00258922_01.msgpack",
+             #       "/home/patelchi/astro_98252_20181293330523560_beam0000_00259127_01.msgpack",
+             #       "/home/patelchi/astro_98252_20181293330523560_beam0000_00259128_01.msgpack",
+             #       "/home/patelchi/astro_98252_20181293330523560_beam0000_00259129_01.msgpack"
+                    ]
+
     output_filename = "test"
     output_acq_name = "chitrang_test_run_98134"
     output_directory = "./"

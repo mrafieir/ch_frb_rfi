@@ -22,8 +22,8 @@ from chains import clipper_chain, \
     transform_chain, \
     transform_parameters
 
-from transform_template import transform_template
-from write_mask import WriteWeights
+from .transforms.transform_template import transform_template
+from .transforms.write_mask import WriteWeights
 
 from utils import run_for_web_viewer, run_in_scratch_dir, sample
 
