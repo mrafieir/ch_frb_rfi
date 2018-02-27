@@ -17,6 +17,7 @@ all:
 
 install:
 	mkdir -p $(PYDIR)/ch_frb_rfi
+	mkdir -p $(PYDIR)/ch_frb_rfi/transforms
 	for f in $(PYFILES); do cp $$f $(PYDIR)/$$f; done
 
 uninstall:
