@@ -122,6 +122,25 @@ def run_in_scratch_dir(run_name, dirname=None, *args):
 
     p.run(outdir=outdir, clobber=False)
 
+def run_in_custom_dir(output_directory, output_acq_name, s , p16k):
+    """
+    Runs rf pipelines in a custom directory : output_directory.
+    Name if the json file : output_acq_name
+    streams to run the pipeline on : s
+    chain of transforms: p16k
+
+    """
+                                                                                                                                                       
+    p = make_pipeline(s, p16k)                                                                                                                         
+                                                                                                                                                       
+    outdir = os.path.join(output_directory, output_acq_name)                                                                                           
+                                                                                                                                                       
+    print >>sys.stderr, "creating temporary directory '%s' for running pipeline" % outdir                                                              
+    os.makedirs(outdir)                                                                                                                                
+                                                                                                                                                       
+    p.run(outdir=outdir, clobber=False)                                                                                                                
+                                          
+
 def sample(path, start, end, nt_chunk=1024):
     """A handy function which allows user to select a range of stream files from an input path"""
 
