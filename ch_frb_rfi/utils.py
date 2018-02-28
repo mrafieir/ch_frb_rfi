@@ -89,10 +89,12 @@ def run_for_web_viewer(run_name, *args):
     p = make_pipeline(*args)
     rf_pipelines.utils.run_for_web_viewer(run_name, p, show_stdout=True)
 
-
-def run_in_scratch_dir(run_name, *args):
+def run_in_scratch_dir(run_name, dirname=None, *args):
     """
-    Runs a pipeline in a subdirectory of /data2/scratch_pipelines.
+    Runs a pipeline in
+        - a subdirectory of /data2/scratch_pipelines.
+        or
+        - dirname (if not None)
     
     Pipeline runs in this directory will not be indexed by the web viewer, but they
     will stay on disk so that their outputs can be processed by hand if needed.
@@ -109,14 +111,16 @@ def run_in_scratch_dir(run_name, *args):
 
     p = make_pipeline(*args)
 
-    (dirname, basename) = make_rundir('scratch_pipelines', run_name)
-    outdir = os.path.join(dirname, basename)
+    if dirname is None:
+        (dirname, basename) = make_rundir('scratch_pipelines', run_name)
+        outdir = os.path.join(dirname, basename)
+    else:
+        outdir = os.path.join(dirname, run_name)
 
     print >>sys.stderr, "creating temporary directory '%s' for running pipeline" % outdir
     os.makedirs(outdir)
 
     p.run(outdir=outdir, clobber=False)
-
 
 def sample(path, start, end, nt_chunk=1024):
     """A handy function which allows user to select a range of stream files from an input path"""

@@ -15,10 +15,10 @@ class transform_parameters:
 
         p = transform_parameters(rfi_level=0, detrender_niter=None, clipper_niter=None, detrend_nt=1024, clip_nt=1024, detrend_last=True, two_pass=True, spline=False,
                                  make_plots=True, plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, bonsai_plot_nypix=256, plot_nzoom=None,
-                                 bonsai_output_plot_stem=None, bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None, bonsai_nt_per_hdf5_file=0, 
+                                 bonsai_output_plot_stem=None, bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None, bonsai_nt_per_hdf5_file=0,
                                  bonsai_plot_threshold1=6, bonsai_plot_threshold2=10, bonsai_dynamic_plotter=False, maskpath=None, bonsai_plot_all_trees=False,
-                                 bonsai_fill_rfi_mask=False, mask=None, variance_estimator_v1_chunk=32, variance_estimator_v2_chunk=192, var_filename=None, 
-                                 var_est=False, mask_filler=False, mask_filler_w_cutoff=0.5, L1b_config=None)
+                                 bonsai_fill_rfi_mask=False, mask=None, variance_estimator_v1_chunk=32, variance_estimator_v2_chunk=192, var_filename=None,
+                                 var_est=False, mask_filler=False, mask_filler_w_cutoff=0.5, L1b_config=None, eq_clip_nt=False)
     
     with arguments as follows:
 
@@ -34,6 +34,9 @@ class transform_parameters:
 
        - detrend_nt/clip_nt: 
            chunk sizes (in time samples) for detrender transforms and clipper transforms respectively.
+
+       - eq_clip_nt: if True, then clip_nt values are equalized for all clipper transforms in the chain. Otherwise,
+           they follow a hard-coded convention as shown below.
 
        - detrend_last: if True, then the RFI transform chain ends with a chain of detrenders.
            This is required for removing intensity residuals due to preceding transforms.
@@ -117,12 +120,13 @@ class transform_parameters:
     By default (if no plotting-related constructor arguments are specified), plotting is disabled.
     """
 
-    def __init__(self, rfi_level=0, detrender_niter=None, clipper_niter=None, detrend_nt=1024, clip_nt=1024, detrend_last=True, two_pass=True, spline=False,
-                 make_plots=True, plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, bonsai_plot_nypix=256, plot_nzoom=None, 
-                 bonsai_output_plot_stem=None, bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None, bonsai_nt_per_hdf5_file=0,
+    def __init__(self, rfi_level=0, detrender_niter=None, clipper_niter=None, detrend_nt=1024, clip_nt=1024, detrend_last=True,
+                 eq_clip_nt=False, two_pass=True, spline=False, make_plots=True, plot_type=None, plot_downsample_nt=None,
+                 plot_nxpix=None, plot_nypix=None, bonsai_plot_nypix=256, plot_nzoom=None, bonsai_output_plot_stem=None,
+                 bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None, bonsai_nt_per_hdf5_file=0,
                  bonsai_plot_threshold1=6, bonsai_plot_threshold2=10, bonsai_dynamic_plotter=False, bonsai_plot_all_trees=False,
-                 bonsai_fill_rfi_mask=False, maskpath=None, mask=None, variance_estimator_v1_chunk=32, variance_estimator_v2_chunk=192, var_filename=None, 
-                 var_est=False, mask_filler=False, mask_filler_w_cutoff=0.5, L1b_config=None):
+                 bonsai_fill_rfi_mask=False, maskpath=None, mask=None, variance_estimator_v1_chunk=32, variance_estimator_v2_chunk=192,
+                 var_filename=None,  var_est=False, mask_filler=False, mask_filler_w_cutoff=0.5, L1b_config=None):
 
         nv = 0
         if var_est: nv += 1
@@ -136,6 +140,7 @@ class transform_parameters:
         self.detrend_nt = detrend_nt
         self.clip_nt = clip_nt
         self.detrend_last = detrend_last
+        self.eq_clip_nt = eq_clip_nt
 
         self.two_pass = two_pass
         self.spline = spline
@@ -261,12 +266,14 @@ def detrender_chain(parameters, ix):
 def clipper_chain(parameters, ix):
     two_pass = parameters.two_pass and (ix == 0)
     
-    return [ rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=parameters.clip_nt, Df=1, Dt=1, two_pass=two_pass),
-             rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=2*parameters.clip_nt, Df=1, Dt=1, two_pass=two_pass),
-             rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=6*parameters.clip_nt, Df=1, Dt=1, two_pass=two_pass),
+    mct = [2, 6] if not parameters.eq_clip_nt else [1, 1]
 
-             rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=6*parameters.clip_nt, Df=1, Dt=1, two_pass=two_pass),
-             rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=6*parameters.clip_nt, Df=1, Dt=1, two_pass=two_pass),
+    return [ rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=parameters.clip_nt, Df=1, Dt=1, two_pass=two_pass),
+             rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=mct[0]*parameters.clip_nt, Df=1, Dt=1, two_pass=two_pass),
+             rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=mct[1]*parameters.clip_nt, Df=1, Dt=1, two_pass=two_pass),
+
+             rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=mct[1]*parameters.clip_nt, Df=1, Dt=1, two_pass=two_pass),
+             rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=mct[1]*parameters.clip_nt, Df=1, Dt=1, two_pass=two_pass),
              
              rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=5, axis=0, nt_chunk=parameters.clip_nt, Df=1, Dt=1, two_pass=two_pass),
              rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=5, axis=1, nt_chunk=parameters.clip_nt, Df=1, Dt=1, two_pass=two_pass),
