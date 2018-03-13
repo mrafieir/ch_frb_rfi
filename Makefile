@@ -9,6 +9,7 @@ PYFILES=ch_frb_rfi/__init__.py \
 	ch_frb_rfi/bonsai.py \
 	ch_frb_rfi/chains.py \
 	ch_frb_rfi/utils.py \
+	ch_frb_rfi/transforms/__init__.py \
 	ch_frb_rfi/transforms/transform_template.py \
 	ch_frb_rfi/transforms/write_mask.py
 
