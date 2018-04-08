@@ -89,6 +89,7 @@ def run_for_web_viewer(run_name, *args):
     p = make_pipeline(*args)
     rf_pipelines.utils.run_for_web_viewer(run_name, p, show_stdout=True)
 
+
 def run_in_scratch_dir(run_name, dirname=None, *args):
     """
     Runs a pipeline in
@@ -122,8 +123,9 @@ def run_in_scratch_dir(run_name, dirname=None, *args):
 
     p.run(outdir=outdir, clobber=False)
 
+
 def sample(path, start, end, nt_chunk=1024, msg=False):
-    """A handy function which allows user to select a range of stream files from an input path"""
+    """Returns a range of stream files from an input path."""
 
     filename_list = sorted(glob.glob(path))[start:end]
 
