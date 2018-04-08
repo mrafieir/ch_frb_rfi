@@ -122,8 +122,12 @@ def run_in_scratch_dir(run_name, dirname=None, *args):
 
     p.run(outdir=outdir, clobber=False)
 
-def sample(path, start, end, nt_chunk=1024):
+def sample(path, start, end, nt_chunk=1024, msg=False):
     """A handy function which allows user to select a range of stream files from an input path"""
 
     filename_list = sorted(glob.glob(path))[start:end]
-    return rf_pipelines.chime_stream_from_filename_list(filename_list, nt_chunk=nt_chunk)
+
+    if not msg:
+        return rf_pipelines.chime_stream_from_filename_list(filename_list, nt_chunk=nt_chunk)
+    else:
+        return rf_pipelines.chime_frb_stream_from_filename_list(filename_list, nt_chunk=nt_chunk)
