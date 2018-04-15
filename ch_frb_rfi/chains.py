@@ -13,20 +13,22 @@ class transform_parameters:
 
     Constructor syntax:
 
-        p = transform_parameters(rfi_level=0, detrender_niter=None, clipper_niter=None, detrend_nt=1024, clip_nt=1024, detrend_last=True, two_pass=True, spline=False,
-                                 make_plots=True, plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, bonsai_plot_nypix=256, plot_nzoom=None,
-                                 bonsai_output_plot_stem=None, bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None, bonsai_nt_per_hdf5_file=0, 
-                                 bonsai_plot_threshold1=6, bonsai_plot_threshold2=10, bonsai_dynamic_plotter=False, maskpath=None, bonsai_event_outfile=None, 
-                                 bonsai_plot_all_trees=False, bonsai_fill_rfi_mask=False, mask=None, variance_estimator_v1_chunk=32, variance_estimator_v2_chunk=192, 
-                                 var_filename=None, var_est=False, mask_filler=False, mask_filler_w_cutoff=0.5, L1Grouper_thr=7, L1Grouper_beam=0, L1Grouper_addr=None,
-                                 eq_clip_nt=False)
+        p = transform_parameters(rfi_level=0, detrender_niter=None, clipper_niter=None, detrend_nt=1024, clip_nt=1024, max_nt_buffer=10,
+                                 detrend_last=True, aux_detrend_first=False, aux_clip_first=False, aux_clip_last=False, eq_clip_nt=False, two_pass=True,
+                                 spline=False, make_plots=True, plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, bonsai_plot_nypix=256,
+                                 plot_nzoom=None, bonsai_output_plot_stem=None, bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None,
+                                 bonsai_nt_per_hdf5_file=0, bonsai_plot_threshold1=6, bonsai_plot_threshold2=10, bonsai_dynamic_plotter=False,
+                                 maskpath=None, bonsai_event_outfile=None, bonsai_plot_all_trees=False, bonsai_fill_rfi_mask=False, mask=None,
+                                 variance_estimator_v1_chunk=32, variance_estimator_v2_chunk=192, var_filename=None, var_est=False, mask_filler=False,
+                                 mask_filler_w_cutoff=0.5, L1Grouper_thr=7, L1Grouper_beam=0, L1Grouper_addr=None)
     
     with arguments as follows:
 
-       - rfi_level: specifies the severity of the RF environment. Possible modes are           
-           0: is the base mode which is recommended for a relatively quiet environment. (detrender_niter=1, clipper_niter=3)
-           1: can handle some storms. (detrender_niter=2, clipper_niter=3)
-           2: is recommended for obtaining very low false-positive rates. (detrender_niter=2, clipper_niter=6)
+       - rfi_level (negative levels may resort to auxiliary transforms):
+           -1: fine-tuned for detecting bright events. (detrender_niter=3, clipper_niter=5)
+           0: base mode, recommended for a relatively quiet RFI environment. (detrender_niter=1, clipper_niter=3)
+           1: can handle some RFI storms. (detrender_niter=2, clipper_niter=3)
+           2: recommended for obtaining very low false-positive rates. (detrender_niter=2, clipper_niter=6)
             
            Note: If detrender_niter and clipper_niter are specified explicitly, then these are used. 
 
@@ -36,11 +38,22 @@ class transform_parameters:
        - detrend_nt/clip_nt: 
            chunk sizes (in time samples) for detrender transforms and clipper transforms respectively.
 
+       - max_nt_buffer:
+           an integer constraining the maximum number of detrend_nt and clip_nt chunks in transforms.
+           E.g. if max_nt_buffer=10 and max(detrend_nt, clip_nt) is 1024, then all transforms have
+           nt_chunks less than or equal to 10*1024.
+
        - eq_clip_nt: if True, then clip_nt values are equalized for all clipper transforms in the chain. Otherwise,
            they follow a hard-coded convention as shown below.
 
        - detrend_last: if True, then the RFI transform chain ends with a chain of detrenders.
            This is required for removing intensity residuals due to preceding transforms.
+
+       - aux_detrend_first: if True, then appends auxiliary detrenders to the first inner loop.
+
+       - aux_clip_first: if True, then appends auxiliary clippers to the end of the first inner loop.
+
+       - aux_clip_last: if True, then appends auxiliary clippers to the last outer loop.
 
        - two_pass: if True, then the first round of clipper transforms will use a
             more numerically stable, but slightly slower, clipping algorithm.
@@ -124,14 +137,14 @@ class transform_parameters:
     By default (if no plotting-related constructor arguments are specified), plotting is disabled.
     """
 
-    def __init__(self, rfi_level=0, detrender_niter=None, clipper_niter=None, detrend_nt=1024, clip_nt=1024, detrend_last=True,
-                 eq_clip_nt=False, two_pass=True, spline=False, make_plots=True, plot_type=None, plot_downsample_nt=None,
-                 plot_nxpix=None, plot_nypix=None, bonsai_plot_nypix=256, plot_nzoom=None, bonsai_output_plot_stem=None,
-                 bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None, bonsai_nt_per_hdf5_file=0,
-                 bonsai_plot_threshold1=6, bonsai_plot_threshold2=10, bonsai_dynamic_plotter=False, bonsai_event_outfile=None,
-                 bonsai_plot_all_trees=False, bonsai_fill_rfi_mask=False, maskpath=None, mask=None, variance_estimator_v1_chunk=32,
-                 variance_estimator_v2_chunk=192, var_filename=None,  var_est=False, mask_filler=False, mask_filler_w_cutoff=0.5,
-                 L1Grouper_thr=7, L1Grouper_beam=0, L1Grouper_addr=None):
+    def __init__(self, rfi_level=0, detrender_niter=None, clipper_niter=None, detrend_nt=1024, clip_nt=1024, max_nt_buffer=6,
+                 detrend_last=True, aux_detrend_first=False, aux_clip_first=False, aux_clip_last=False, eq_clip_nt=False, two_pass=True,
+                 spline=False, make_plots=True, plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, bonsai_plot_nypix=256,
+                 plot_nzoom=None, bonsai_output_plot_stem=None, bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None,
+                 bonsai_nt_per_hdf5_file=0, bonsai_plot_threshold1=6, bonsai_plot_threshold2=10, bonsai_dynamic_plotter=False,
+                 bonsai_event_outfile=None, bonsai_plot_all_trees=False, bonsai_fill_rfi_mask=False, maskpath=None, mask=None,
+                 variance_estimator_v1_chunk=32, variance_estimator_v2_chunk=192, var_filename=None, var_est=False, mask_filler=False,
+                 mask_filler_w_cutoff=0.5, L1Grouper_thr=7, L1Grouper_beam=0, L1Grouper_addr=None):
 
         nv = 0
         if var_est: nv += 1
@@ -141,10 +154,17 @@ class transform_parameters:
         if nv > 1:
             raise RuntimeError("transform_parameters: at most one of { var_est, mask_filler, bonsai_fill_rfi_mask } may be specified")
 
+        if (rfi_level >= 0) and (aux_detrend_first or aux_clip_first or aux_clip_last):
+            raise RuntimeError("transform_parameters: aux transforms are not available in non-negative rfi_level modes")
+
         self.rfi_level = rfi_level
         self.detrend_nt = detrend_nt
         self.clip_nt = clip_nt
+        self.max_nt_buffer = max_nt_buffer
         self.detrend_last = detrend_last
+        self.aux_detrend_first = aux_detrend_first
+        self.aux_clip_first = aux_clip_first
+        self.aux_clip_last = aux_clip_last
         self.eq_clip_nt = eq_clip_nt
 
         self.two_pass = two_pass
@@ -181,9 +201,10 @@ class transform_parameters:
         # values based on input parameters. See docstring above!
 
         if (detrender_niter is not None) and (clipper_niter is not None):
-           print "transform_parameters: the preset rfi_level is disabled."
            self.detrender_niter = detrender_niter
            self.clipper_niter = clipper_niter
+        elif self.rfi_level == -1:
+           (self.detrender_niter, self.clipper_niter) = (3, 5)
         elif self.rfi_level == 0:
            (self.detrender_niter, self.clipper_niter) = (1, 3)
         elif self.rfi_level == 1:
@@ -191,8 +212,8 @@ class transform_parameters:
         elif self.rfi_level == 2:
            (self.detrender_niter, self.clipper_niter) = (2, 6)
         else:
-           raise RuntimeError("transform_parameters: either a valid rfi_level (0, 1, or 2) or a (detrender_niter, clipper_nitr)" 
-                              + " pair must be specified.")
+           raise RuntimeError("transform_parameters: either a valid rfi_level (-1, 0, 1, or 2) or"
+                              + " a (detrender_niter, clipper_nitr) pair must be specified.")
  
         # The rest of the constructor initializes plotting parameters.
         # See docstring above for a description of the initialization logic!
@@ -238,56 +259,78 @@ class transform_parameters:
             transform_chain.append(t)
     
     def append_variance_estimator(self, transform_chain, ix):
-        if (self.var_est) and (ix == self.detrender_niter - 1):
+        if (self.var_est) and (ix == self.detrender_niter-1):
             if self.var_filename is None:
                 raise RuntimeError('ch_frb_rfi.parameters.append_variance_estimator() was called, but var_filename is None')
-            t = rf_pipelines.variance_estimator(v1_chunk=self.variance_estimator_v1_chunk, v2_chunk=self.variance_estimator_v2_chunk, var_filename=self.var_filename, nt_chunk=self.clip_nt) 
+            t = rf_pipelines.variance_estimator(v1_chunk=self.variance_estimator_v1_chunk, v2_chunk=self.variance_estimator_v2_chunk,
+                                                var_filename=self.var_filename, nt_chunk=self.clip_nt)
             transform_chain.append(t)
 
     def append_mask_filler(self, transform_chain, ix):
-        if (self.mask_filler) and (ix == self.detrender_niter - 1):
+        if (self.mask_filler) and (ix == self.detrender_niter-1):
             if self.var_filename is None:
                 raise RuntimeError('ch_frb_rfi.parameters.append_mask_filler() was called, but var_filename is None')
             t = rf_pipelines.mask_filler(var_file=self.var_filename, w_cutoff=self.mask_filler_w_cutoff, nt_chunk=self.clip_nt)            
             transform_chain.append(t)
 
+
 ##############################  T R A N S F O R M   C H A I N S  ##############################
 
 
-def detrender_chain(parameters, ix):
+def detrender_chain(parameters, ix, jx):
     assert isinstance(parameters, transform_parameters)
 
-    if (not parameters.detrend_last) and (parameters.detrender_niter == (ix + 1)): return []
+    if parameters.aux_detrend_first and (ix == jx == 0):
+        return [ rf_pipelines.polynomial_detrender(polydeg=0, axis='time', nt_chunk=parameters.max_nt_buffer*parameters.detrend_nt) ]
+
+    if (not parameters.detrend_last) and (parameters.detrender_niter == (ix+1)):
+        return [ ]
 
     # AXIS_TIME (nt_chunk must be nonzero here)
     ret = [ rf_pipelines.polynomial_detrender(polydeg=4, axis='time', nt_chunk=parameters.detrend_nt) ]
 
     # AXIS_FREQ (nt_chunk=0 is OK here)
     if parameters.spline:
-        ret += [ rf_pipelines.spline_detrender(nbins=6, axis='freq', nt_chunk=0) ]
+        deg = 4 if (rfi_level < 0) else 12
+        ret += [ rf_pipelines.spline_detrender(nbins=deg/2, axis='freq', nt_chunk=0) ]
     else:
-        ret += [ rf_pipelines.polynomial_detrender(polydeg=12, axis='freq', nt_chunk=0) ]
+        ret += [ rf_pipelines.polynomial_detrender(polydeg=deg, axis='freq', nt_chunk=0) ]
 
     return ret
 
 
-def clipper_chain(parameters, ix):
+def clipper_chain(parameters, ix, jx):
     two_pass = parameters.two_pass and (ix == 0)
-    
-    mct = [2, 6] if not parameters.eq_clip_nt else [1, 1]
 
-    return [ rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=parameters.clip_nt, Df=1, Dt=1, two_pass=two_pass),
-             rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=mct[0]*parameters.clip_nt, Df=1, Dt=1, two_pass=two_pass),
-             rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=mct[1]*parameters.clip_nt, Df=1, Dt=1, two_pass=two_pass),
+    if parameters.eq_clip_nt:
+        ntc = [1, 1, 1]
+    elif parameters.rfi_level < 0:
+        ntc = [parameters.max_nt_buffer, parameters.max_nt_buffer, parameters.max_nt_buffer]
+    else:
+        ntc = [1, 2, parameters.max_nt_buffer]
 
-             rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=mct[1]*parameters.clip_nt, Df=1, Dt=1, two_pass=two_pass),
-             rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=mct[1]*parameters.clip_nt, Df=1, Dt=1, two_pass=two_pass),
+    ntc = [ i * parameters.clip_nt for i in ntc ]
+
+    if (parameters.aux_clip_first and (ix == jx == 0)) or (parameters.aux_clip_last and (ix == parameters.detrender_niter-1)):
+        return [ rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=ntc[0], Df=2, Dt=256, two_pass=two_pass),
+                 rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=ntc[0], Df=2, Dt=256, two_pass=two_pass) ]
+
+    ret = [ rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=ntc[0], Df=1, Dt=1, two_pass=two_pass),
+            rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=ntc[1], Df=1, Dt=1, two_pass=two_pass),
+            rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=ntc[2], Df=1, Dt=1, two_pass=two_pass) ]
+
+    if parameters.rfi_level < 0:
+        return ret
+    else:
+        ret += [ rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=ntc[2], Df=1, Dt=1, two_pass=two_pass),
+                 rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=ntc[2], Df=1, Dt=1, two_pass=two_pass),
              
-             rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=5, axis=0, nt_chunk=parameters.clip_nt, Df=1, Dt=1, two_pass=two_pass),
-             rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=5, axis=1, nt_chunk=parameters.clip_nt, Df=1, Dt=1, two_pass=two_pass),
+                 rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=5, axis=0, nt_chunk=ntc[0], Df=1, Dt=1, two_pass=two_pass),
+                 rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=5, axis=1, nt_chunk=ntc[0], Df=1, Dt=1, two_pass=two_pass),
+                 rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=3, axis=None, nt_chunk=ntc[0], Df=2, Dt=16, two_pass=two_pass),
+                 rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=3, axis=0, nt_chunk=ntc[0], Df=2, Dt=16, two_pass=two_pass) ]
 
-             rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=3, axis=None, nt_chunk=parameters.clip_nt, Df=2, Dt=16, two_pass=two_pass),
-             rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=3, axis=0, nt_chunk=parameters.clip_nt, Df=2, Dt=16, two_pass=two_pass) ]
+        return ret
 
        
 def transform_chain(parameters):
@@ -296,14 +339,17 @@ def transform_chain(parameters):
     parameters.append_badchannel_mask(transform_chain)
 
     for ix in xrange(parameters.detrender_niter):
-        
         for jx in xrange(parameters.clipper_niter):
-            transform_chain += clipper_chain(parameters, ix)
-        
+            transform_chain += clipper_chain(parameters, ix, jx)
+            transform_chain += detrender_chain(parameters, ix, jx)      # auxiliary detrenders
+            transform_chain += clipper_chain(parameters, ix, jx)        # auxiliary clippers
+
+        transform_chain += clipper_chain(parameters, ix, jx)            # auxiliary clippers
+
         parameters.append_plotter_transform(transform_chain, 'dc_out_a%d' % ix)
         
         parameters.append_mask_filler(transform_chain, ix)
-        transform_chain += detrender_chain(parameters, ix)
+        transform_chain += detrender_chain(parameters, ix, jx)
         parameters.append_variance_estimator(transform_chain, ix)
 
         parameters.append_plotter_transform(transform_chain, 'dc_out_b%d' % ix)
