@@ -90,13 +90,13 @@ def run_for_web_viewer(run_name, *args):
     rf_pipelines.utils.run_for_web_viewer(run_name, p, show_stdout=True)
 
 
-def run_in_scratch_dir(run_name, dirname=None, *args):
+def run_in_scratch_dir(run_name, dirname, *args):
     """
     Runs a pipeline in
-        - a subdirectory of /data2/scratch_pipelines.
+        - a subdirectory of /data2/scratch_pipelines (if dirname is None)
         or
-        - dirname (if not None)
-    
+        - dirname (if dirname is specified properly)
+
     Pipeline runs in this directory will not be indexed by the web viewer, but they
     will stay on disk so that their outputs can be processed by hand if needed.
 
@@ -116,6 +116,7 @@ def run_in_scratch_dir(run_name, dirname=None, *args):
         (dirname, basename) = make_rundir('scratch_pipelines', run_name)
         outdir = os.path.join(dirname, basename)
     else:
+        assert isinstance(dirname, str)
         outdir = os.path.join(dirname, run_name)
 
     print >>sys.stderr, "creating temporary directory '%s' for running pipeline" % outdir
