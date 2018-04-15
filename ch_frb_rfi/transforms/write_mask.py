@@ -5,7 +5,7 @@ import numpy as np
 
 class WriteWeights(rf_pipelines.wi_transform):
 
-    def __init__(self, nt_chunk=1024, basename='test_file'):
+    def __init__(self, nt_chunk=1024, basename=None):
         name = 'WriteWeights(nt_chunk=%d)' % (nt_chunk)
         rf_pipelines.wi_transform.__init__(self, name)
 
@@ -26,9 +26,17 @@ class WriteWeights(rf_pipelines.wi_transform):
         'intensity' and 'weights' are 2D numpy arrays of shape (self.nfreq, self.nt_chunk).
         'pos' is the number of samples processed so far (= nt_chunk * (number of chunks so far)).
         """
-        np.savez('%s_%d.npz'%(self.basename, pos/self.nt_chunk), intensity=intensity, weights=weights)
 
-    def jsonize(self): 
+        if self.basename is None:
+            num = np.count_nonzero(weights)
+            den = float(weights.size)
+
+            print 'unmasked_fraction =', (num/den)
+        else:
+            filename = '%s_%d.npz' % (self.basename, pos/self.nt_chunk)
+            np.savez(filename, intensity=intensity, weights=weights)
+
+    def jsonize(self):
         return {'nt_chunk': self.nt_chunk,
                 'basename': self.basename}
 
