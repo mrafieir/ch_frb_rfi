@@ -89,13 +89,14 @@ def run_for_web_viewer(run_name, *args):
     p = make_pipeline(*args)
     rf_pipelines.utils.run_for_web_viewer(run_name, p, show_stdout=True)
 
-def run_in_scratch_dir(run_name, dirname=None, *args):
+
+def run_in_scratch_dir(run_name, dirname, *args):
     """
     Runs a pipeline in
-        - a subdirectory of /data2/scratch_pipelines.
+        - a subdirectory of /data2/scratch_pipelines (if dirname is None)
         or
-        - dirname (if not None)
-    
+        - dirname (if dirname is specified properly)
+
     Pipeline runs in this directory will not be indexed by the web viewer, but they
     will stay on disk so that their outputs can be processed by hand if needed.
 
@@ -115,6 +116,7 @@ def run_in_scratch_dir(run_name, dirname=None, *args):
         (dirname, basename) = make_rundir('scratch_pipelines', run_name)
         outdir = os.path.join(dirname, basename)
     else:
+        assert isinstance(dirname, str)
         outdir = os.path.join(dirname, run_name)
 
     print >>sys.stderr, "creating temporary directory '%s' for running pipeline" % outdir
@@ -122,8 +124,13 @@ def run_in_scratch_dir(run_name, dirname=None, *args):
 
     p.run(outdir=outdir, clobber=False)
 
-def sample(path, start, end, nt_chunk=1024):
-    """A handy function which allows user to select a range of stream files from an input path"""
+
+def sample(path, start, end, nt_chunk=1024, msg=False):
+    """Returns a range of stream files from an input path."""
 
     filename_list = sorted(glob.glob(path))[start:end]
-    return rf_pipelines.chime_stream_from_filename_list(filename_list, nt_chunk=nt_chunk)
+
+    if not msg:
+        return rf_pipelines.chime_stream_from_filename_list(filename_list, nt_chunk=nt_chunk)
+    else:
+        return rf_pipelines.chime_frb_stream_from_filename_list(filename_list, nt_chunk=nt_chunk)
