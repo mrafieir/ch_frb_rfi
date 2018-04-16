@@ -55,8 +55,8 @@ class transform_parameters:
 
        - aux_clip_last: if True, then appends auxiliary clippers to the last outer loop.
 
-       - two_pass: if True, then the first round of clipper transforms will use a
-            more numerically stable, but slightly slower, clipping algorithm.
+       - two_pass: if True, then all clipper transforms will use a more numerically stable,
+            but slightly slower, clipping algorithm. If False, then only the first outer loop will satisfy this condition.
 
        - spline: if True, then spline_detrender will be used instead of the polynomial_detrender.  (Experimental.)
             Currently only for AXIS_FREQ!  If the results of this experiment look good, then I'll implement
@@ -303,7 +303,7 @@ def detrender_chain(parameters, ix, jx, aux=False):
 
 
 def clipper_chain(parameters, ix, jx, aux=False):
-    two_pass = parameters.two_pass and (ix == 0)
+    two_pass = parameters.two_pass or (ix == 0)
 
     if parameters.eq_clip_nt:
         ntc = [1, 1, 1]
