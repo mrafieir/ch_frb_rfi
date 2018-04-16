@@ -277,29 +277,32 @@ class transform_parameters:
 ##############################  T R A N S F O R M   C H A I N S  ##############################
 
 
-def detrender_chain(parameters, ix, jx):
+def detrender_chain(parameters, ix, jx, aux=False):
     assert isinstance(parameters, transform_parameters)
 
-    if parameters.aux_detrend_first and (ix == jx == 0):
-        return [ rf_pipelines.polynomial_detrender(polydeg=0, axis='time', nt_chunk=parameters.max_nt_buffer*parameters.detrend_nt) ]
-
-    if (not parameters.detrend_last) and (parameters.detrender_niter == (ix+1)):
-        return [ ]
-
-    # AXIS_TIME (nt_chunk must be nonzero here)
-    ret = [ rf_pipelines.polynomial_detrender(polydeg=4, axis='time', nt_chunk=parameters.detrend_nt) ]
-
-    # AXIS_FREQ (nt_chunk=0 is OK here)
-    if parameters.spline:
-        deg = 4 if (rfi_level < 0) else 12
-        ret += [ rf_pipelines.spline_detrender(nbins=deg/2, axis='freq', nt_chunk=0) ]
+    if aux:
+        if parameters.aux_detrend_first and (ix == jx == 0):
+            return [ rf_pipelines.polynomial_detrender(polydeg=0, axis='time', nt_chunk=parameters.max_nt_buffer*parameters.detrend_nt) ]
+        else:
+            return [ ]
     else:
-        ret += [ rf_pipelines.polynomial_detrender(polydeg=deg, axis='freq', nt_chunk=0) ]
+        if (not parameters.detrend_last) and (ix == parameters.detrender_niter-1):
+            return [ ]
+        else:
+            # AXIS_TIME (nt_chunk must be nonzero here)
+            ret = [ rf_pipelines.polynomial_detrender(polydeg=4, axis='time', nt_chunk=parameters.detrend_nt) ]
 
-    return ret
+            # AXIS_FREQ (nt_chunk=0 is OK here)
+            if parameters.spline:
+                deg = 4 if (parameters.rfi_level < 0) else 12
+                ret += [ rf_pipelines.spline_detrender(nbins=deg/2, axis='freq', nt_chunk=0) ]
+            else:
+                ret += [ rf_pipelines.polynomial_detrender(polydeg=deg, axis='freq', nt_chunk=0) ]
+
+            return ret
 
 
-def clipper_chain(parameters, ix, jx):
+def clipper_chain(parameters, ix, jx, aux=False):
     two_pass = parameters.two_pass and (ix == 0)
 
     if parameters.eq_clip_nt:
@@ -311,26 +314,33 @@ def clipper_chain(parameters, ix, jx):
 
     ntc = [ i * parameters.clip_nt for i in ntc ]
 
-    if (parameters.aux_clip_first and (ix == jx == 0)) or (parameters.aux_clip_last and (ix == parameters.detrender_niter-1)):
-        return [ rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=ntc[0], Df=2, Dt=256, two_pass=two_pass),
-                 rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=ntc[0], Df=2, Dt=256, two_pass=two_pass) ]
+    if aux:
+        cf = parameters.aux_clip_first and (ix == jx == 0)
+        cl = parameters.aux_clip_last and (jx != 0) and (ix == parameters.detrender_niter-1)
 
-    ret = [ rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=ntc[0], Df=1, Dt=1, two_pass=two_pass),
-            rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=ntc[1], Df=1, Dt=1, two_pass=two_pass),
-            rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=ntc[2], Df=1, Dt=1, two_pass=two_pass) ]
-
-    if parameters.rfi_level < 0:
-        return ret
+        # currently using the same aux chain for both cf and cl
+        if cf or cl:
+            return [ rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=ntc[0], Df=2, Dt=256, two_pass=two_pass),
+                     rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=ntc[0], Df=2, Dt=256, two_pass=two_pass) ]
+        else:
+            return [ ]
     else:
-        ret += [ rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=ntc[2], Df=1, Dt=1, two_pass=two_pass),
-                 rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=ntc[2], Df=1, Dt=1, two_pass=two_pass),
-             
-                 rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=5, axis=0, nt_chunk=ntc[0], Df=1, Dt=1, two_pass=two_pass),
-                 rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=5, axis=1, nt_chunk=ntc[0], Df=1, Dt=1, two_pass=two_pass),
-                 rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=3, axis=None, nt_chunk=ntc[0], Df=2, Dt=16, two_pass=two_pass),
-                 rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=3, axis=0, nt_chunk=ntc[0], Df=2, Dt=16, two_pass=two_pass) ]
+        ret = [ rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=ntc[0], Df=1, Dt=1, two_pass=two_pass),
+                rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=ntc[1], Df=1, Dt=1, two_pass=two_pass),
+                rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=ntc[2], Df=1, Dt=1, two_pass=two_pass) ]
 
-        return ret
+        if parameters.rfi_level < 0:
+            return ret
+        else:
+            ret += [ rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=ntc[2], Df=1, Dt=1, two_pass=two_pass),
+                     rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=ntc[2], Df=1, Dt=1, two_pass=two_pass),
+             
+                     rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=5, axis=0, nt_chunk=ntc[0], Df=1, Dt=1, two_pass=two_pass),
+                     rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=5, axis=1, nt_chunk=ntc[0], Df=1, Dt=1, two_pass=two_pass),
+                     rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=3, axis=None, nt_chunk=ntc[0], Df=2, Dt=16, two_pass=two_pass),
+                     rf_pipelines.intensity_clipper(sigma=5, niter=9, iter_sigma=3, axis=0, nt_chunk=ntc[0], Df=2, Dt=16, two_pass=two_pass) ]
+
+            return ret
 
        
 def transform_chain(parameters):
@@ -341,16 +351,18 @@ def transform_chain(parameters):
     for ix in xrange(parameters.detrender_niter):
         for jx in xrange(parameters.clipper_niter):
             transform_chain += clipper_chain(parameters, ix, jx)
-            transform_chain += detrender_chain(parameters, ix, jx)      # auxiliary detrenders
-            transform_chain += clipper_chain(parameters, ix, jx)        # auxiliary clippers
-
-        transform_chain += clipper_chain(parameters, ix, jx)            # auxiliary clippers
+            transform_chain += detrender_chain(parameters, ix, jx, aux=True)
+            transform_chain += clipper_chain(parameters, ix, jx, aux=True)
 
         parameters.append_plotter_transform(transform_chain, 'dc_out_a%d' % ix)
         
         parameters.append_mask_filler(transform_chain, ix)
         transform_chain += detrender_chain(parameters, ix, jx)
         parameters.append_variance_estimator(transform_chain, ix)
+
+        # preventing redundant plots
+        if (not parameters.detrend_last) and (ix == parameters.detrender_niter-1):
+            continue
 
         parameters.append_plotter_transform(transform_chain, 'dc_out_b%d' % ix)
 
