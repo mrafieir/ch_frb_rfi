@@ -316,7 +316,7 @@ def clipper_chain(parameters, ix, jx, aux=False):
 
     if aux:
         cf = parameters.aux_clip_first and (ix == jx == 0)
-        cl = parameters.aux_clip_last and (jx != 0) and (ix == parameters.detrender_niter-1)
+        cl = parameters.aux_clip_last and (jx == parameters.clipper_niter-1) and (ix == parameters.detrender_niter-1)
 
         # currently using the same aux chain for both cf and cl
         if cf or cl:
