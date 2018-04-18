@@ -1130,17 +1130,6 @@
                         "downsample_nt": 16, 
                         "sigma_clip": 3, 
                         "clip_niter": 3
-                    }, 
-                    {
-                        "n_zoom": 4, 
-                        "class_name": "plotter_transform", 
-                        "img_prefix": "dc_out_b1", 
-                        "img_nfreq": 256, 
-                        "img_nt": 256, 
-                        "nt_chunk": 1152, 
-                        "downsample_nt": 16, 
-                        "sigma_clip": 3, 
-                        "clip_niter": 3
                     }
                 ], 
                 "name": "pipeline"
