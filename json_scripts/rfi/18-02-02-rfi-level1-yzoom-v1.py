@@ -15,7 +15,7 @@ clobber = False
 
 for make_plots in [ True ]:
     params = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
-                                             plot_nypix=1024,
+                                             plot_nypix = 1024,
                                              plot_nxpix = 256,
                                              plot_downsample_nt = 16,
                                              plot_nzoom = 4, 

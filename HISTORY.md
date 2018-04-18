@@ -1,3 +1,7 @@
+- Version 9:
+
+   - New transform chain (v1.6, aux-enabled)
+
 - Version 8:
 
    - From Chitrang: New transform for writing weights to disk
