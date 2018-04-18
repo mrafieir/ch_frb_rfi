@@ -10,12 +10,6 @@ import rf_pipelines
 
 
 def run_rf_pipelines(filename_list, output_directory, output_acq_name, output_filename):
-
-    # If 'clobber' is False, then when a json file is created with rf_pipelines.json_write(filename, j),
-    # we throw an exception if 'filename' already exists, and its contents differ from 'j'.  This is
-    # to prevent git-managed json files from being modified accidentally.
-    clobber = False
-    
     params = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                              make_plots = False,
                                              bonsai_output_plot_stem = None,
