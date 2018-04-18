@@ -51,6 +51,6 @@ for make_plots in [ False, True ]:
     p16k = rf_pipelines.pipeline(t16k)
     
     suffix = '' if make_plots else '-noplot'
-    filename = '../../json_files/rfi_16k/18-04-18-rfi-level-minus1-v1%s.json' % suffix
+    filename = '../../json_files/rfi_16k/18-04-18-rfi-level-n1-v1%s.json' % suffix
 
     rf_pipelines.utils.json_write(filename, p16k, clobber=clobber)
