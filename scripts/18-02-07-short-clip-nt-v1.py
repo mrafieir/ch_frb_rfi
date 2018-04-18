@@ -3,11 +3,11 @@
 # 16K RFI removal for waterfalling short acq
 # 1024 time samples are a min requirement.
 
+from glob import glob
+import numpy as np
 import ch_frb_rfi
 import rf_pipelines
-from ch_frb_rfi import write_mask
-import numpy as np
-from glob import glob
+
 
 def run_rf_pipelines(filename_list, output_directory, output_acq_name, output_filename):
 
@@ -20,12 +20,13 @@ def run_rf_pipelines(filename_list, output_directory, output_acq_name, output_fi
                                              make_plots = False,
                                              bonsai_output_plot_stem = None,
                                              maskpath = None,
+                                             two_pass = True,
                                              clip_nt = 1024,
                                              eq_clip_nt = True,
                                              detrend_nt = 1024,
-                                             detrender_niter=1,
-                                             clipper_niter=6,
-                                             plot_nypix=1024,
+                                             detrender_niter = 1,
+                                             clipper_niter = 6,
+                                             plot_nypix = 1024,
                                              plot_nxpix = 256,
                                              plot_downsample_nt = 1,
                                              plot_nzoom = 2,
@@ -47,21 +48,22 @@ def run_rf_pipelines(filename_list, output_directory, output_acq_name, output_fi
     _p1k = rf_pipelines.pipeline(_t1k)
     
     t16k = [ rf_pipelines.wi_sub_pipeline(_p1k, nfreq_out=1024, nds_out=1) ]
-    t16k += ch_frb_rfi.chains.detrender_chain(params, ix=0)
-    t16k += [write_mask.WriteWeights(basename = output_filename)]
+    t16k += ch_frb_rfi.chains.detrender_chain(params, ix=0, jx=1)
+    t16k += [ch_frb_rfi.WriteWeights(basename = output_filename)]
     p16k = rf_pipelines.pipeline(t16k)
     
     s = rf_pipelines.chime_frb_stream_from_filename_list(filename_list, nt_chunk=1024, noise_source_align=0)
-    ch_frb_rfi.utils.run_in_scratch_dir(run_name=output_acq_name, dirname=output_directory, s, p16k)
+    ch_frb_rfi.utils.run_in_scratch_dir(output_acq_name, output_directory, s, p16k)
+
 
 def main():
     filename_list = ["/home/patelchi/astro_98134_2018129302653857_beam0000_00258920_01.msgpack",
                      "/home/patelchi/astro_98134_2018129302653857_beam0000_00258921_01.msgpack",
                      "/home/patelchi/astro_98134_2018129302653857_beam0000_00258922_01.msgpack",
-             #       "/home/patelchi/astro_98252_20181293330523560_beam0000_00259127_01.msgpack",
-             #       "/home/patelchi/astro_98252_20181293330523560_beam0000_00259128_01.msgpack",
-             #       "/home/patelchi/astro_98252_20181293330523560_beam0000_00259129_01.msgpack"
-                    ]
+    #                "/home/patelchi/astro_98252_20181293330523560_beam0000_00259127_01.msgpack",
+    #                "/home/patelchi/astro_98252_20181293330523560_beam0000_00259128_01.msgpack",
+    #                "/home/patelchi/astro_98252_20181293330523560_beam0000_00259129_01.msgpack",
+    ]
 
     output_filename = "test"
     output_acq_name = "chitrang_test_run_98134"
