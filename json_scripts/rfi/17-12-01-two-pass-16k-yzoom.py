@@ -12,13 +12,13 @@ import rf_pipelines
 # to prevent git-managed json files from being modified accidentally.
 clobber = False
 
-
-for make_plots in [ False, True ]:
+for make_plots in [ True ]:
     params = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                              plot_nypix=1024,
                                              plot_nxpix = 256,
                                              plot_downsample_nt = 16,
                                              plot_nzoom = 4,
+                                             two_pass = False,
                                              make_plots = make_plots,
                                              bonsai_output_plot_stem = 'triggers' if make_plots else None,
                                              maskpath = '/data/pathfinder/rfi_masks/rfi_20160705.dat',
@@ -45,7 +45,7 @@ for make_plots in [ False, True ]:
     _p1k = rf_pipelines.pipeline(_t1k)
 
     t16k = [ rf_pipelines.wi_sub_pipeline(_p1k, nfreq_out=1024, nds_out=1) ]
-    t16k += ch_frb_rfi.chains.detrender_chain(params, ix=0)
+    t16k += ch_frb_rfi.chains.detrender_chain(params, ix=0, jx=1)
     p16k = rf_pipelines.pipeline(t16k)
 
     for (pobj, suffix) in [ (p1k,'1k'), (p16k,'16k') ]:
