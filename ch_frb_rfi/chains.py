@@ -306,7 +306,7 @@ def clipper_chain(parameters, ix, jx, aux=False):
     two_pass = parameters.two_pass or (ix == 0)
 
     if parameters.eq_clip_nt:
-        ntc = [1, 1, 1]
+        ntc = [2, 2, 2]
     elif parameters.rfi_level < 0:
         ntc = [parameters.max_nt_buffer, parameters.max_nt_buffer, parameters.max_nt_buffer]
     else:
