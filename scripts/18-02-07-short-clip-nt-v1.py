@@ -3,13 +3,14 @@
 # 16K RFI removal for waterfalling short acq
 # 1024 time samples are a min requirement.
 
+import os
 from glob import glob
 import numpy as np
 import ch_frb_rfi
 import rf_pipelines
 
 
-def run_rf_pipelines(filename_list, output_directory, output_acq_name, output_filename):
+def run_rf_pipelines(filename_list, output_dir, output_acq_path):
     params = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                              make_plots = False,
                                              bonsai_output_plot_stem = None,
@@ -18,6 +19,10 @@ def run_rf_pipelines(filename_list, output_directory, output_acq_name, output_fi
                                              clip_nt = 1024,
                                              eq_clip_nt = True,
                                              detrend_nt = 1024,
+                                             rfi_level = -1,
+                                             aux_clip_first = True,
+                                             aux_clip_last = True,
+                                             aux_detrend_first = False,
                                              detrender_niter = 1,
                                              clipper_niter = 6,
                                              plot_nypix = 1024,
@@ -36,41 +41,38 @@ def run_rf_pipelines(filename_list, output_directory, output_acq_name, output_fi
     
     t1k = ch_frb_rfi.transform_chain(params)
     p1k = rf_pipelines.pipeline(t1k)
-    
+
+    t16k = [ rf_pipelines.wi_sub_pipeline(p1k, nfreq_out=1024, nds_out=1) ]
+
     params.detrend_last = True
-    _t1k = ch_frb_rfi.transform_chain(params)
-    _p1k = rf_pipelines.pipeline(_t1k)
-    
-    t16k = [ rf_pipelines.wi_sub_pipeline(_p1k, nfreq_out=1024, nds_out=1) ]
-    t16k += ch_frb_rfi.chains.detrender_chain(params, ix=0, jx=1)
-    t16k += [ch_frb_rfi.WriteWeights(basename = output_filename)]
+    t16k += ch_frb_rfi.chains.detrender_chain(params, ix=1, jx=0)
+
+    t16k += [ ch_frb_rfi.WriteWeights(basename=output_acq_path+'/data') ]
     p16k = rf_pipelines.pipeline(t16k)
     
     s = rf_pipelines.chime_frb_stream_from_filename_list(filename_list, nt_chunk=1024, noise_source_align=0)
-    ch_frb_rfi.utils.run_in_scratch_dir(output_acq_name, output_directory, s, p16k)
+    ch_frb_rfi.utils.run_in_scratch_dir(output_acq_path, output_dir, s, p16k)
 
 
-def main():
-    filename_list = ["/home/patelchi/astro_98134_2018129302653857_beam0000_00258920_01.msgpack",
-                     "/home/patelchi/astro_98134_2018129302653857_beam0000_00258921_01.msgpack",
-                     "/home/patelchi/astro_98134_2018129302653857_beam0000_00258922_01.msgpack",
-    #                "/home/patelchi/astro_98252_20181293330523560_beam0000_00259127_01.msgpack",
-    #                "/home/patelchi/astro_98252_20181293330523560_beam0000_00259128_01.msgpack",
-    #                "/home/patelchi/astro_98252_20181293330523560_beam0000_00259129_01.msgpack",
-    ]
+def main(toplevel_dir='/frb-archiver-1', acq_name='test-18-02-07-short-clip-nt-v1'):
 
-    output_filename = "test"
-    output_acq_name = "chitrang_test_run_98134"
-    output_directory = "./"
-    run_rf_pipelines(filename_list, output_directory, output_acq_name, output_filename) 
-    files = glob(output_directory+'/%s*.npz'%output_filename)
-    files.sort()
+    assert isinstance(toplevel_dir, str)
+    assert isinstance(acq_name, str)
+
+    filename_list = ["/frb-archiver-1/2018/4/19/astro_6570662/intensity/raw/0138/astro_6570662_20180419220657569002_beam0138_00019667_01.msgpack",
+                     "/frb-archiver-1/2018/4/19/astro_6570662/intensity/raw/0138/astro_6570662_20180419220657569002_beam0138_00019668_01.msgpack"]
+
+    output_dir = os.path.join(toplevel_dir, os.environ['USER'])
+    output_acq_path = os.path.join(output_dir, acq_name)
+
+    run_rf_pipelines(filename_list, output_dir, output_acq_path)
+    files = sorted(glob(output_acq_path+'/data*.npz'))
+
     fs = [np.load(f) for f in files]
-    intensity = [f['intensity'] for f in fs]
-    weights = [f['weights'] for f in fs]
-    intensity_combined = np.hstack(intensity)[::-1]
-    weights_combined = np.hstack(weights)[::-1]
-    np.savez('test_run_98134.npz', intensity=intensity_combined, weights=weights_combined)
+    intensity = np.concatenate([f['intensity'] for f in fs], axis=1)
+    weights = np.concatenate([f['weights'] for f in fs], axis=1)
+
+    np.savez(output_acq_path+'/data_all.npz', intensity=intensity, weights=weights)
 
 if __name__ == "__main__":
     main()
