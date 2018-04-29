@@ -45,7 +45,7 @@ p.mask_filler = True
 p.make_plots = True
 
 t = ch_frb_rfi.transform_chain(p)
-t += [ ch_frb_rfi.bonsai.nfreq16K_production(p) ]
+t += [ ch_frb_rfi.bonsai.nfreq16K_production(p, v=2) ]
 
 pipeline = rf_pipelines.pipeline([s]+t)
 ch_frb_rfi.run_for_web_viewer('example3', pipeline)
