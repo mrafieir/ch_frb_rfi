@@ -238,7 +238,7 @@ Sometimes we want to run a pipeline with random data, instead of reading an acqu
 <a name="frb-ops-acquisitions"></a> 
 ### FRB-OPS ACQUISITIONS
 
-The following directories are located in `/frb-archiver-1/acq_data`.
+The following directories are located in `/frb-archiver-1/acq_data`. [CHIMEFRB/frb_ops/issues](https://github.com/CHIMEFRB/frb_ops/issues) track their technical details. See [kmsmith137/ch_frb_l1/OPERATIONS_MANUAL.md](https://github.com/kmsmith137/ch_frb_l1/blob/master/OPERATIONS_MANUAL.md#analyzing-acquisitions) for more info on how to prepare new acquisitions for the "offline pipeline".
 
 <table>
     <tr><th>Name</th> <th>Size</th></tr>
