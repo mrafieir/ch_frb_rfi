@@ -12,8 +12,9 @@ s = ch_frb_rfi.utils.sample(stream_files+'/chunk*.msg', 1500, 1600, msg=True)
 
 # s.append(ch_frb_rfi.WriteWeights(nt_chunk=1024*2))
 
+detrend_16k = True
 write_json = True
-output_path = './design-rfi-config.json'
+output_path = './design-rfi-config_chain.json'
 
 params = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                          plot_nypix = 1024,
@@ -44,7 +45,7 @@ params = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                          bonsai_plot_threshold2 = 10,
                                          bonsai_dynamic_plotter = False,
                                          bonsai_plot_all_trees = True,
-                                         detrend_last = False)
+                                         detrend_last = not detrend_16k)
 
 t1k = ch_frb_rfi.transform_chain(params)
 p1k = rf_pipelines.pipeline(t1k)
