@@ -58,7 +58,7 @@ if detrend_16k:
     params.append_plotter_transform(t16k, 'dc_out_last')
 
 if write_json:
-    assert isinstance(output_path, str) and assert output_path.endswith('.json')
+    assert isinstance(output_path, str) and output_path.endswith('.json')
     p16k = rf_pipelines.pipeline(t16k)
     rf_pipelines.utils.json_write(output_path, p16k, clobber=True)
     #rf_pipelines.utils.json_write('design-rfi-config_acq.json', s, clobber=True)
