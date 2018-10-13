@@ -36,13 +36,10 @@ for make_plots in [ False, True ]:
     p1k = rf_pipelines.pipeline(t1k)
 
     params.detrend_last = False
-    #_t1k = ch_frb_rfi.transform_chain(params)
     _t1k = []
-    _t1k.append(rf_pipelines.mask_counter({'nt_chunk': 1024,
-                                           'where': 'before_rfi'}))
+    _t1k.append(rf_pipelines.mask_counter(1024, 'before_rfi')
     _t1k.extend(ch_frb_rfi.transform_chain(params))
-    _t1k.append(rf_pipelines.chime_mask_counter({'nt_chunk': 1024,
-                                                 'where': 'after_rfi'}))
+    _t1k.append(rf_pipelines.chime_mask_counter('after_rfi'))
     _p1k = rf_pipelines.pipeline(_t1k)
 
     t16k = [ rf_pipelines.wi_sub_pipeline(_p1k, nfreq_out=1024, nds_out=1) ]
