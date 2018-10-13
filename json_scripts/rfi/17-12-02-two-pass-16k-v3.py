@@ -38,6 +38,8 @@ for make_plots in [ False, True ]:
     p1k = rf_pipelines.pipeline(t1k)
 
     params.detrend_last = False
+    params.mask_counter = True
+
     _t1k = ch_frb_rfi.transform_chain(params)
     _p1k = rf_pipelines.pipeline(_t1k)
 

@@ -1,3 +1,9 @@
+- Version 10:
+
+   - From Dustin: mask_counter functionality
+
+   - New script for post-processing astro events
+
 - Version 9:
 
    - New transform chain (v1.6, aux-enabled)
