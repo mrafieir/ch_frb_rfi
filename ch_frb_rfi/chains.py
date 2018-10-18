@@ -20,7 +20,7 @@ class transform_parameters:
                                  bonsai_nt_per_hdf5_file=0, bonsai_plot_threshold1=6, bonsai_plot_threshold2=10, bonsai_dynamic_plotter=False,
                                  maskpath=None, bonsai_event_outfile=None, bonsai_plot_all_trees=False, bonsai_fill_rfi_mask=False, mask=None,
                                  variance_estimator_v1_chunk=32, variance_estimator_v2_chunk=192, var_filename=None, var_est=False, mask_filler=False,
-                                 mask_filler_w_cutoff=0.5, L1Grouper_thr=7, L1Grouper_beam=0, L1Grouper_addr=None)
+                                 mask_filler_w_cutoff=0.5, L1Grouper_thr=7, L1Grouper_beam=0, L1Grouper_addr=None, mask_counter=False)
     
     with arguments as follows:
 
@@ -118,6 +118,10 @@ class transform_parameters:
             in the bonsai dedisperser transform. (see their docstrings!)
             Note: 'bonsai_event_outfile' determines whether to en(/dis)able the L1Grouper.
 
+       - mask_counter: if True, mask counter transforms are appended to the list of transforms.
+
+       - mask_counter_nt: specifies the chunk size for the mask counter transforms.
+
     The way the plotting parameters are determined deserves special explanation!
 
        - If the four "fine-grained" plotting parameters (plot_downsample_nt, plot_nxpix, plot_nypix, plot_nzoom)
@@ -144,7 +148,7 @@ class transform_parameters:
                  bonsai_nt_per_hdf5_file=0, bonsai_plot_threshold1=6, bonsai_plot_threshold2=10, bonsai_dynamic_plotter=False,
                  bonsai_event_outfile=None, bonsai_plot_all_trees=False, bonsai_fill_rfi_mask=False, maskpath=None, mask=None,
                  variance_estimator_v1_chunk=32, variance_estimator_v2_chunk=192, var_filename=None, var_est=False, mask_filler=False,
-                 mask_filler_w_cutoff=0.5, L1Grouper_thr=7, L1Grouper_beam=0, L1Grouper_addr=None):
+                 mask_filler_w_cutoff=0.5, L1Grouper_thr=7, L1Grouper_beam=0, L1Grouper_addr=None, mask_counter=False, mask_counter_nt=1024):
 
         nv = 0
         if var_est: nv += 1
@@ -186,6 +190,8 @@ class transform_parameters:
         self.L1Grouper_beam = L1Grouper_beam
         self.L1Grouper_addr = L1Grouper_addr
 
+        self.mask_counter = mask_counter
+        self.mask_counter_nt = mask_counter_nt
         self.maskpath = maskpath
         self.mask = mask
 
@@ -273,6 +279,17 @@ class transform_parameters:
             t = rf_pipelines.mask_filler(var_file=self.var_filename, w_cutoff=self.mask_filler_w_cutoff, nt_chunk=self.clip_nt)            
             transform_chain.append(t)
 
+    def append_mask_counter(self, transform_chian, where):
+        if self.mask_counter:
+            if where == 'before_rfi':
+                t = rf_pipelines.mask_counter(self.mask_counter_nt, where)
+            elif where == 'after_rfi':
+                t = rf_pipelines.chime_mask_counter(where)
+            else:
+                raise RuntimeError('ch_frb_rfi.append_mask_counter() was called, but its where arg is invalid'
+
+            transform_chain.append(t)
+
 
 ##############################  T R A N S F O R M   C H A I N S  ##############################
 
@@ -345,6 +362,8 @@ def clipper_chain(parameters, ix, jx, aux=False):
        
 def transform_chain(parameters):
     transform_chain = [ ]
+
+    parameters.append_mask_counter(transform_chain, 'before_rfi')
     parameters.append_plotter_transform(transform_chain, 'raw')
     parameters.append_badchannel_mask(transform_chain)
 
@@ -365,5 +384,7 @@ def transform_chain(parameters):
             continue
 
         parameters.append_plotter_transform(transform_chain, 'dc_out_b%d' % ix)
+
+    parameters.append_mask_counter(transform_chain, 'after_rfi')
 
     return transform_chain
