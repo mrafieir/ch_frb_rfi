@@ -279,14 +279,14 @@ class transform_parameters:
             t = rf_pipelines.mask_filler(var_file=self.var_filename, w_cutoff=self.mask_filler_w_cutoff, nt_chunk=self.clip_nt)            
             transform_chain.append(t)
 
-    def append_mask_counter(self, transform_chian, where):
+    def append_mask_counter(self, transform_chain, where):
         if self.mask_counter:
             if where == 'before_rfi':
                 t = rf_pipelines.mask_counter(self.mask_counter_nt, where)
             elif where == 'after_rfi':
                 t = rf_pipelines.chime_mask_counter(where)
             else:
-                raise RuntimeError('ch_frb_rfi.append_mask_counter() was called, but its where arg is invalid'
+                raise RuntimeError('ch_frb_rfi.append_mask_counter() was called, but its where arg is invalid')
 
             transform_chain.append(t)
 
