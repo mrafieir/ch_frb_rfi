@@ -37,7 +37,7 @@ for make_plots in [ False, True ]:
 
     params.detrend_last = False
     _t1k = []
-    _t1k.append(rf_pipelines.mask_counter(1024, 'before_rfi')
+    _t1k.append(rf_pipelines.mask_counter(1024, 'before_rfi'))
     _t1k.extend(ch_frb_rfi.transform_chain(params))
     _t1k.append(rf_pipelines.chime_mask_counter('after_rfi'))
     _p1k = rf_pipelines.pipeline(_t1k)
