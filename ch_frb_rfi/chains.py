@@ -281,13 +281,7 @@ class transform_parameters:
 
     def append_mask_counter(self, transform_chain, where):
         if self.mask_counter:
-            if where == 'before_rfi':
-                t = rf_pipelines.mask_counter(self.mask_counter_nt, where)
-            elif where == 'after_rfi':
-                t = rf_pipelines.chime_mask_counter(where)
-            else:
-                raise RuntimeError('ch_frb_rfi.append_mask_counter() was called, but its where arg is invalid')
-
+            t = rf_pipelines.mask_counter(self.mask_counter_nt, where)
             transform_chain.append(t)
 
 
