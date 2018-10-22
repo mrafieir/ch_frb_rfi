@@ -559,8 +559,9 @@
                         "axis": "AXIS_FREQ"
                     }, 
                     {
-                        "class_name": "chime_mask_counter", 
-                        "where": "after_rfi"
+                        "class_name": "mask_counter", 
+                        "where": "after_rfi", 
+                        "nt_chunk": 1024
                     }
                 ], 
                 "name": "pipeline"
