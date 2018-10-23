@@ -6,11 +6,6 @@
                 "class_name": "pipeline", 
                 "elements": [
                     {
-                        "class_name": "mask_counter", 
-                        "where": "before_rfi", 
-                        "nt_chunk": 1024
-                    }, 
-                    {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
                         "nt_chunk": 10240, 
@@ -485,11 +480,6 @@
                         "sigma": 3, 
                         "two_pass": true, 
                         "axis": "AXIS_FREQ"
-                    }, 
-                    {
-                        "class_name": "mask_counter", 
-                        "where": "after_rfi", 
-                        "nt_chunk": 1024
                     }
                 ], 
                 "name": "pipeline"

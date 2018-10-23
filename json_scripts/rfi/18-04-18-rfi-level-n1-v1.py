@@ -39,7 +39,7 @@ for make_plots in [ False, True ]:
                                              bonsai_dynamic_plotter = False,
                                              bonsai_plot_all_trees = False,
                                              detrend_last = False,
-                                             mask_counter = True)
+                                             mask_counter = False)
 
     t1k = ch_frb_rfi.transform_chain(params)
     p1k = rf_pipelines.pipeline(t1k)
