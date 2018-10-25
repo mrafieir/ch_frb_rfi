@@ -35,10 +35,12 @@ for fpga_counts_per_sample in [ 384, 512 ]:
                                          n_zoom = 4,
                                          plot_threshold1 = 7,
                                          plot_threshold2 = 10,
-                                         plot_all_trees = True)
+                                         plot_all_trees = True,
+                                         L1b_config='L1b_config.yaml')
     
+
     t2 = rf_pipelines.bonsai_dedisperser_cpp(config_filename = config_filename,
                                              fill_rfi_mask = True)
     
-    rf_pipelines.utils.json_write(json_filename1, t1, clobber=clobber)
-    rf_pipelines.utils.json_write(json_filename2, t2, clobber=clobber)
+    rf_pipelines.utils.json_write(json_filename1, t1, clobber=clobber, verbose=False)
+    rf_pipelines.utils.json_write(json_filename2, t2, clobber=clobber, verbose=False)

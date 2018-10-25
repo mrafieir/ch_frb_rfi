@@ -20,7 +20,7 @@ class transform_parameters:
                                  bonsai_nt_per_hdf5_file=0, bonsai_plot_threshold1=6, bonsai_plot_threshold2=10, bonsai_dynamic_plotter=False,
                                  maskpath=None, bonsai_event_outfile=None, bonsai_plot_all_trees=False, bonsai_fill_rfi_mask=False, mask=None,
                                  variance_estimator_v1_chunk=32, variance_estimator_v2_chunk=192, var_filename=None, var_est=False, mask_filler=False,
-                                 mask_filler_w_cutoff=0.5, L1Grouper_thr=7, L1Grouper_beam=0, L1Grouper_addr=None, mask_counter=False)
+                                 mask_filler_w_cutoff=0.5, L1b_config=None, mask_counter=False)
     
     with arguments as follows:
 
@@ -84,8 +84,6 @@ class transform_parameters:
 
        - bonsai_dynamic_plotter: if True, then the old color scheme (with a higher dynamic range from blue to red) is used.
 
-       - bonsai_event_outfile: specifies a file path to the grouper output. The grouper is disabled by default. 
-
        - bonsai_plot_all_trees: if False, only tree 0 will be plotted; if True, all trees will be plotted.
 
        - bonsai_fill_rfi_mask: if True, then bonsai's online_mask_filler will be enabled.
@@ -114,9 +112,8 @@ class transform_parameters:
             mask_filler is not None. E.g., a w_cutoff value of 0.5 corresponds to a 25% w_cutoff in the 
             incoherent-beam data.
 
-       - (L1Grouper_thr, L1Grouper_beam, L1Grouper_addr) specify parameters for the L1Grouper which may be called
-            in the bonsai dedisperser transform. (see their docstrings!)
-            Note: 'bonsai_event_outfile' determines whether to en(/dis)able the L1Grouper.
+       - L1b_config: If specified, L1B will be used to group and sift triggers (ch_frb_L1b is required). 
+            Can either be a full path, or the name of a config file kept in ch_frb_L1b/ch_frb_L1b/configs.
 
        - mask_counter: if True, mask counter transforms are appended to the list of transforms.
 
@@ -148,7 +145,7 @@ class transform_parameters:
                  bonsai_nt_per_hdf5_file=0, bonsai_plot_threshold1=6, bonsai_plot_threshold2=10, bonsai_dynamic_plotter=False,
                  bonsai_event_outfile=None, bonsai_plot_all_trees=False, bonsai_fill_rfi_mask=False, maskpath=None, mask=None,
                  variance_estimator_v1_chunk=32, variance_estimator_v2_chunk=192, var_filename=None, var_est=False, mask_filler=False,
-                 mask_filler_w_cutoff=0.5, L1Grouper_thr=7, L1Grouper_beam=0, L1Grouper_addr=None, mask_counter=False, mask_counter_nt=1024):
+                 mask_filler_w_cutoff=0.5, L1b_config=None, mask_counter=False, mask_counter_nt=1024):
 
         nv = 0
         if var_est: nv += 1
@@ -182,13 +179,10 @@ class transform_parameters:
         self.bonsai_plot_threshold1 = bonsai_plot_threshold1
         self.bonsai_plot_threshold2 = bonsai_plot_threshold2
         self.bonsai_dynamic_plotter = bonsai_dynamic_plotter
-        self.bonsai_event_outfile = bonsai_event_outfile
         self.bonsai_plot_all_trees = bonsai_plot_all_trees
         self.bonsai_fill_rfi_mask = bonsai_fill_rfi_mask
 
-        self.L1Grouper_thr = L1Grouper_thr
-        self.L1Grouper_beam = L1Grouper_beam
-        self.L1Grouper_addr = L1Grouper_addr
+        self.L1b_config = L1b_config
 
         self.mask_counter = mask_counter
         self.mask_counter_nt = mask_counter_nt
