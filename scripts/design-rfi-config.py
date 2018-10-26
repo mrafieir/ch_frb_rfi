@@ -7,8 +7,8 @@ import numpy as np
 import ch_frb_rfi
 import rf_pipelines
 
-stream_files = '/frb-archiver-1/acq_data/frb_run_11_20180406_beams_110to114_119to122_133to141_144to148/beam_0139'
-s = ch_frb_rfi.utils.sample(stream_files+'/chunk*.msg', 1500, 1600, msg=True)
+stream_files='/data/frb-archiver/acq_data/frb_B0329+54_2018-10-26-01-50/beam_0141'
+s = ch_frb_rfi.utils.sample(stream_files+'/chunk*.msg', 10, 100, msg=True)
 
 # s.append(ch_frb_rfi.WriteWeights(nt_chunk=1024*2))
 
