@@ -18,8 +18,8 @@ class transform_parameters:
                                  spline=False, make_plots=True, plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, bonsai_plot_nypix=256,
                                  plot_nzoom=None, bonsai_output_plot_stem=None, bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None,
                                  bonsai_nt_per_hdf5_file=0, bonsai_plot_threshold1=6, bonsai_plot_threshold2=10, bonsai_dynamic_plotter=False,
-                                 maskpath=None, bonsai_event_outfile=None, bonsai_plot_all_trees=False, bonsai_fill_rfi_mask=False, mask=None,
-                                 variance_estimator_v1_chunk=32, variance_estimator_v2_chunk=192, var_filename=None, var_est=False, mask_filler=False,
+                                 maskpath=None, bonsai_plot_all_trees=False, bonsai_fill_rfi_mask=False, mask=None, variance_estimator_v1_chunk=32,
+                                 variance_estimator_v2_chunk=192, var_filename=None, var_est=False, mask_filler=False,
                                  mask_filler_w_cutoff=0.5, L1b_config=None, mask_counter=False)
     
     with arguments as follows:
@@ -143,8 +143,8 @@ class transform_parameters:
                  spline=False, make_plots=True, plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, bonsai_plot_nypix=256,
                  plot_nzoom=None, bonsai_output_plot_stem=None, bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None,
                  bonsai_nt_per_hdf5_file=0, bonsai_plot_threshold1=6, bonsai_plot_threshold2=10, bonsai_dynamic_plotter=False,
-                 bonsai_event_outfile=None, bonsai_plot_all_trees=False, bonsai_fill_rfi_mask=False, maskpath=None, mask=None,
-                 variance_estimator_v1_chunk=32, variance_estimator_v2_chunk=192, var_filename=None, var_est=False, mask_filler=False,
+                 bonsai_plot_all_trees=False, bonsai_fill_rfi_mask=False, maskpath=None, mask=None, variance_estimator_v1_chunk=32,
+                 variance_estimator_v2_chunk=192, var_filename=None, var_est=False, mask_filler=False,
                  mask_filler_w_cutoff=0.5, L1b_config=None, mask_counter=False, mask_counter_nt=1024):
 
         nv = 0
