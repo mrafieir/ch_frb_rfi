@@ -17,7 +17,7 @@ def make_rundir(topdir, run_name):
     """
 
     basename = '%s-%s' % (run_name, time.strftime('%y-%m-%d-%X'))
-    dirname = os.path.join('/data2', topdir, os.environ['USER'])
+    dirname = os.path.join('/data/frb-archiver', topdir, os.environ['USER'])
     return (dirname, basename)
 
 
