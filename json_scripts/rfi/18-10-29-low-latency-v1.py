@@ -23,6 +23,7 @@ for make_plots in [ False, True ]:
                                              maskpath = None,
                                              detrender_niter = 2,
                                              clipper_niter = 6,
+                                             two_pass = False,
                                              rfi_level = -1,
                                              aux_clip_first = False,
                                              aux_clip_last = False,
