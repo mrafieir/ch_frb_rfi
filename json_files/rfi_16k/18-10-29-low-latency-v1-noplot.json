@@ -550,7 +550,7 @@
                         "class_name": "spline_detrender", 
                         "epsilon": 0.0003, 
                         "nt_chunk": 0, 
-                        "nbins": 2, 
+                        "nbins": 6, 
                         "axis": "AXIS_FREQ"
                     }, 
                     {
@@ -1108,7 +1108,7 @@
             "class_name": "spline_detrender", 
             "epsilon": 0.0003, 
             "nt_chunk": 0, 
-            "nbins": 2, 
+            "nbins": 6, 
             "axis": "AXIS_FREQ"
         }
     ], 
