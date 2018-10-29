@@ -329,7 +329,7 @@ def clipper_chain(parameters, ix, jx, aux=False):
                 rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=ntc[1], Df=1, Dt=1, two_pass=two_pass),
                 rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=ntc[2], Df=1, Dt=1, two_pass=two_pass) ]
 
-        if parameters.rfi_level < 0:
+        if (parameters.rfi_level < 0) and parameters.aux_clip_first and parameters.aux_clip_last:
             return ret
         else:
             ret += [ rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=ntc[2], Df=1, Dt=1, two_pass=two_pass),

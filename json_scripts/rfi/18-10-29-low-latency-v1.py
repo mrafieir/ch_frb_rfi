@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# 16K RFI removal with a 4-sec latency!
+# 16K RFI removal with a 4-sec latency.
 
 import ch_frb_rfi
 import rf_pipelines
@@ -21,10 +21,12 @@ for make_plots in [ False, True ]:
                                              bonsai_plot_nypix = 1024,
                                              bonsai_output_plot_stem = 'triggers' if make_plots else None,
                                              maskpath = None,
+                                             detrender_niter = 2,
+                                             clipper_niter = 6,
                                              rfi_level = -1,
-                                             aux_clip_first = True,
-                                             aux_clip_last = True,
-                                             aux_detrend_first = True,
+                                             aux_clip_first = False,
+                                             aux_clip_last = False,
+                                             aux_detrend_first = False,
                                              spline = True,
                                              bonsai_use_analytic_normalization = False,
                                              bonsai_hdf5_output_filename = None,
@@ -36,7 +38,7 @@ for make_plots in [ False, True ]:
                                              bonsai_plot_threshold1 = 7,
                                              bonsai_plot_threshold2 = 10,
                                              bonsai_dynamic_plotter = False,
-                                             bonsai_plot_all_trees = False,
+                                             bonsai_plot_all_trees = make_plots,
                                              detrend_last = False)
 
     t1k = ch_frb_rfi.transform_chain(params)
@@ -47,9 +49,12 @@ for make_plots in [ False, True ]:
     params.detrend_last = True
     t16k += ch_frb_rfi.chains.detrender_chain(params, ix=1, jx=0)
 
+    if make_plots:
+        params.append_plotter_transform(t16k, 'dc_out_last')
+
     p16k = rf_pipelines.pipeline(t16k)
     
     suffix = '' if make_plots else '-noplot'
-    filename = '../../json_files/rfi_16k/18-10-25-low-latency-v1%s.json' % suffix
+    filename = '../../json_files/rfi_16k/18-10-29-low-latency-v1%s.json' % suffix
 
     rf_pipelines.utils.json_write(filename, p16k, clobber=clobber)
