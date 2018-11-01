@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 #
-# 16K RFI removal with the parameter `rfi_level=1`
+# 16K RFI removal with the parameter `two_pass=True` for all the clippers in the first
+# (outer) loop of detrenders. It does not include the badchannel mask and plotter transforms.
 # It uses bonsai's online mask filler.
 
 import ch_frb_rfi
@@ -17,8 +18,9 @@ for make_plots in [ False, True ]:
                                              make_plots = make_plots,
                                              bonsai_output_plot_stem = 'triggers' if make_plots else None,
                                              maskpath = None,
-                                             rfi_level = 1,
                                              two_pass = False,
+                                             detrender_niter = 2,
+                                             clipper_niter = 6,
                                              spline = True,
                                              bonsai_use_analytic_normalization = False,
                                              bonsai_hdf5_output_filename = None,
@@ -36,7 +38,7 @@ for make_plots in [ False, True ]:
     p1k = rf_pipelines.pipeline(t1k)
 
     params.detrend_last = False
-    params.mask_counter = False
+    params.mask_counter = True
 
     _t1k = ch_frb_rfi.transform_chain(params)
     _p1k = rf_pipelines.pipeline(_t1k)
@@ -47,5 +49,5 @@ for make_plots in [ False, True ]:
 
     for (pobj, suffix) in [ (p1k,'1k'), (p16k,'16k') ]:
         suffix2 = '' if make_plots else '-noplot'
-        filename = '../../json_files/rfi_%s/18-02-02-rfi-level1-v1%s.json' % (suffix, suffix2)
+        filename = '../../json_files/rfi_%s/17-12-02-two-pass-v4%s.json' % (suffix, suffix2)
         rf_pipelines.utils.json_write(filename, pobj, clobber=clobber)
