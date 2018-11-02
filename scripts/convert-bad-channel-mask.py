@@ -69,6 +69,6 @@ mask = zip(mask-(1.0/scale), mask)
 with open(output_file_path, 'w') as _file:
     _file.write(comments)
     for i in mask:
-        _file.write('%.3f,%.3f\n' % i)
+        _file.write('%s,%s\n' % i)
 
 print 'Wrote the new mask %s to disk.' % output_file_path 
