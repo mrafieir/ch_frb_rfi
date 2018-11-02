@@ -1,8 +1,10 @@
 #!/usr/bin/env python
-
+import datetime
 import rf_pipelines
 
-mask_filename = '/data/chimefrb/badchannel_mask_2018-11-02.dat'
+
+today = str(datetime.date.today())
+mask_filename = './badchannel_mask_%s.dat' % today
 
 class masklist_capturing_transform(rf_pipelines.wi_transform):
     def __init__(self):
