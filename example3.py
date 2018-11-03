@@ -26,7 +26,7 @@ p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                     bonsai_plot_threshold1 = 7,
                                     bonsai_plot_threshold2 = 10,
                                     bonsai_dynamic_plotter = False,
-                                    bonsai_event_outfile = './events_example3.dat')
+                                    L1b_config = 'L1b_config_mcgill.yaml')
 
 t = ch_frb_rfi.transform_chain(p)
 
