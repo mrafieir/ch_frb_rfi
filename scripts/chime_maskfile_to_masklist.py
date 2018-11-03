@@ -4,7 +4,7 @@ import rf_pipelines
 
 
 today = str(datetime.date.today())
-mask_filename = './badchannel_mask_%s.dat' % today
+mask_filename = '/data/chimefrb/badchannel_mask_%s.dat' % today
 
 class masklist_capturing_transform(rf_pipelines.wi_transform):
     def __init__(self):
