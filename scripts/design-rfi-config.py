@@ -8,6 +8,7 @@ import ch_frb_rfi
 import rf_pipelines
 
 stream_files = '/frb-archiver-1/acq_data/frb_run_11_20180406_beams_110to114_119to122_133to141_144to148/beam_0139'
+stream_files='/data/frb-archiver/acq_data/hotfix-mask-s1/beam_0002'
 s = ch_frb_rfi.utils.sample(stream_files+'/chunk*.msg', 1500, 1600, msg=True)
 
 # s.append(ch_frb_rfi.WriteWeights(nt_chunk=1024*2))
@@ -26,7 +27,8 @@ params = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                          bonsai_output_plot_stem = 'triggers',
                                          bonsai_plot_nypix = 1024,
                                          #maskpath = None,
-                                         maskpath = '/data/pathfinder/rfi_masks/rfi_20160705.dat',
+                                         #maskpath = '/data/pathfinder/rfi_masks/rfi_20160705.dat',
+                                         maskpath = './badchannel_mask_2018-11-02.dat',
                                          #detrender_niter = 3,
                                          #clipper_niter = 5,
                                          rfi_level = -1,
