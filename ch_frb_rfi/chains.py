@@ -305,7 +305,7 @@ def detrender_chain(parameters, ix, jx, aux=False):
 
             # AXIS_FREQ (nt_chunk=0 is OK here)
             if parameters.spline:
-                deg = 4 if (parameters.rfi_level < 0) else 12
+                deg = 4 if ((parameters.rfi_level < 0) and parameters.aux_detrend_first) else 12
                 ret += [ rf_pipelines.spline_detrender(nbins=deg/2, axis='freq', nt_chunk=0) ]
             else:
                 ret += [ rf_pipelines.polynomial_detrender(polydeg=deg, axis='freq', nt_chunk=0) ]
@@ -340,7 +340,7 @@ def clipper_chain(parameters, ix, jx, aux=False):
                 rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=ntc[1], Df=1, Dt=1, two_pass=two_pass),
                 rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=ntc[2], Df=1, Dt=1, two_pass=two_pass) ]
 
-        if parameters.rfi_level < 0:
+        if (parameters.rfi_level < 0) and parameters.aux_clip_first and parameters.aux_clip_last:
             return ret
         else:
             ret += [ rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=ntc[2], Df=1, Dt=1, two_pass=two_pass),
