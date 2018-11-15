@@ -7,3 +7,4 @@ log*
 *.dat
 exps
 *.h5
+.DS_Store

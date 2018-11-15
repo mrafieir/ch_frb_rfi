@@ -20,7 +20,7 @@ for make_plots in [ False, True ]:
                                              make_plots = make_plots,
                                              bonsai_plot_nypix = 1024,
                                              bonsai_output_plot_stem = 'triggers' if make_plots else None,
-                                             maskpath = None,
+                                             maskpath = '/data/chimefrb/badchannel_mask_2018-11-02.dat',
                                              detrender_niter = 2,
                                              clipper_niter = 6,
                                              two_pass = False,
@@ -40,7 +40,8 @@ for make_plots in [ False, True ]:
                                              bonsai_plot_threshold2 = 10,
                                              bonsai_dynamic_plotter = False,
                                              bonsai_plot_all_trees = make_plots,
-                                             detrend_last = False)
+                                             detrend_last = False,
+                                             mask_counter = True)
 
     t1k = ch_frb_rfi.transform_chain(params)
     p1k = rf_pipelines.pipeline(t1k)
@@ -48,6 +49,8 @@ for make_plots in [ False, True ]:
     t16k = [ rf_pipelines.wi_sub_pipeline(p1k, nfreq_out=1024, nds_out=1) ]
 
     params.detrend_last = True
+    params.mask_counter = False
+
     t16k += ch_frb_rfi.chains.detrender_chain(params, ix=1, jx=0)
 
     if make_plots:
@@ -56,6 +59,6 @@ for make_plots in [ False, True ]:
     p16k = rf_pipelines.pipeline(t16k)
     
     suffix = '' if make_plots else '-noplot'
-    filename = '../../json_files/rfi_16k/18-10-29-low-latency-v1%s.json' % suffix
+    filename = '../../json_files/rfi_16k/18-11-15-low-latency-v1%s.json' % suffix
 
     rf_pipelines.utils.json_write(filename, p16k, clobber=clobber)
