@@ -36,7 +36,7 @@ for make_plots in [ False, True ]:
     p1k = rf_pipelines.pipeline(t1k)
 
     params.detrend_last = False
-    params.mask_counter = False
+    params.mask_counter = True
 
     _t1k = ch_frb_rfi.transform_chain(params)
     _p1k = rf_pipelines.pipeline(_t1k)
@@ -47,5 +47,5 @@ for make_plots in [ False, True ]:
 
     for (pobj, suffix) in [ (p1k,'1k'), (p16k,'16k') ]:
         suffix2 = '' if make_plots else '-noplot'
-        filename = '../../json_files/rfi_%s/18-02-02-rfi-level1-v1%s.json' % (suffix, suffix2)
+        filename = '../../json_files/rfi_%s/18-02-02-rfi-level1-v2%s.json' % (suffix, suffix2)
         rf_pipelines.utils.json_write(filename, pobj, clobber=clobber)

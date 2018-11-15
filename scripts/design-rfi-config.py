@@ -2,18 +2,15 @@
 #
 # This script comes in handy for fine-tuning the RFI transform chain.
 
-import glob
-import numpy as np
 import ch_frb_rfi
 import rf_pipelines
 
-stream_files='/data/frb-archiver/acq_data/frb_J1923_2018-09-22-19-45/beam_0043' #0
-stream_files='/data/frb-archiver/acq_data/frb_B0329+54_2018-10-22-01-58/beam_0141' #1
-s = ch_frb_rfi.utils.sample(stream_files+'/chunk*.msg', 10, 3000, msg=True)
+
+stream_files = '/frb-archiver-1/acq_data/frb_run_11_20180406_beams_110to114_119to122_133to141_144to148/beam_0139'
+s = ch_frb_rfi.utils.sample(stream_files+'/chunk*.msg', 1500, 1600, msg=True)
 
 # s.append(ch_frb_rfi.WriteWeights(nt_chunk=1024*2))
 
-make_plots = True
 detrend_16k = True
 write_json = True
 output_path = './design-rfi-config_chain.json'

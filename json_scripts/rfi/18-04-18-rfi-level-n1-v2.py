@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 #
-# 16K RFI removal with the parameter `rfi_level=1`
-# It uses bonsai's online mask filler.
+# 16K RFI removal with the parameter `rfi_level=-1` which makes use of auxiliary chains, along with `max_nt_buffer=10`.
+# It does not include the badchannel mask and plotter transforms. It assumes bonsai's online mask filler.
 
 import ch_frb_rfi
 import rf_pipelines
-
 
 # If 'clobber' is False, then when a json file is created with rf_pipelines.json_write(filename, j),
 # we throw an exception if 'filename' already exists, and its contents differ from 'j'.  This is
@@ -14,11 +13,19 @@ clobber = False
 
 for make_plots in [ False, True ]:
     params = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
+                                             plot_nypix = 1024,
+                                             plot_nxpix = 256,
+                                             plot_downsample_nt = 16,
+                                             plot_nzoom = 4,
+                                             max_nt_buffer = 10,
                                              make_plots = make_plots,
+                                             bonsai_plot_nypix = 1024,
                                              bonsai_output_plot_stem = 'triggers' if make_plots else None,
                                              maskpath = None,
-                                             rfi_level = 1,
-                                             two_pass = False,
+                                             rfi_level = -1,
+                                             aux_clip_first = True,
+                                             aux_clip_last = True,
+                                             aux_detrend_first = True,
                                              spline = True,
                                              bonsai_use_analytic_normalization = False,
                                              bonsai_hdf5_output_filename = None,
@@ -30,22 +37,21 @@ for make_plots in [ False, True ]:
                                              bonsai_plot_threshold1 = 7,
                                              bonsai_plot_threshold2 = 10,
                                              bonsai_dynamic_plotter = False,
-                                             bonsai_plot_all_trees = make_plots)
+                                             bonsai_plot_all_trees = False,
+                                             detrend_last = False,
+                                             mask_counter = True)
 
     t1k = ch_frb_rfi.transform_chain(params)
     p1k = rf_pipelines.pipeline(t1k)
 
-    params.detrend_last = False
-    params.mask_counter = False
+    t16k = [ rf_pipelines.wi_sub_pipeline(p1k, nfreq_out=1024, nds_out=1) ]
 
-    _t1k = ch_frb_rfi.transform_chain(params)
-    _p1k = rf_pipelines.pipeline(_t1k)
+    params.detrend_last = True
+    t16k += ch_frb_rfi.chains.detrender_chain(params, ix=1, jx=0)
 
-    t16k = [ rf_pipelines.wi_sub_pipeline(_p1k, nfreq_out=1024, nds_out=1) ]
-    t16k += ch_frb_rfi.chains.detrender_chain(params, ix=0, jx=1)
     p16k = rf_pipelines.pipeline(t16k)
+    
+    suffix = '' if make_plots else '-noplot'
+    filename = '../../json_files/rfi_16k/18-04-18-rfi-level-n1-v2%s.json' % suffix
 
-    for (pobj, suffix) in [ (p1k,'1k'), (p16k,'16k') ]:
-        suffix2 = '' if make_plots else '-noplot'
-        filename = '../../json_files/rfi_%s/18-02-02-rfi-level1-v1%s.json' % (suffix, suffix2)
-        rf_pipelines.utils.json_write(filename, pobj, clobber=clobber)
+    rf_pipelines.utils.json_write(filename, p16k, clobber=clobber)
