@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 #
-# 16K RFI removal with a 4-sec latency and a uniform nt_chunk size throughout.
+# 16K RFI removal with
+#   - an overall 4-sec latency
+#   - a uniform nt_chunk size in clipping transforms
 
 import ch_frb_rfi
 import rf_pipelines
