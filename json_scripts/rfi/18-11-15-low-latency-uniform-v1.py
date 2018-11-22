@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# 16K RFI removal with a 4-sec latency.
+# 16K RFI removal with a 4-sec latency and a uniform nt_chunk size throughout.
 
 import ch_frb_rfi
 import rf_pipelines
@@ -59,6 +59,6 @@ for make_plots in [ False, True ]:
     p16k = rf_pipelines.pipeline(t16k)
     
     suffix = '' if make_plots else '-noplot'
-    filename = '../../json_files/rfi_16k/18-11-15-low-latency-v1%s.json' % suffix
+    filename = '../../json_files/rfi_16k/18-11-15-low-latency-uniform-v1%s.json' % suffix
 
     rf_pipelines.utils.json_write(filename, p16k, clobber=clobber)
