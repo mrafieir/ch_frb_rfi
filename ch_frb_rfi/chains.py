@@ -250,7 +250,7 @@ class transform_parameters:
 
     def append_plotter_transform(self, transform_chain, img_prefix):
         if self.make_plots:
-            t = rf_pipelines.plotter_transform(img_prefix, self.plot_nypix, self.plot_nxpix, self.plot_downsample_nt, self.plot_nzoom)
+            t = rf_pipelines.plotter_transform(img_prefix, self.plot_nypix, self.plot_nxpix, self.plot_downsample_nt, self.plot_nzoom, sigma_clip=10, clip_niter=3)
             transform_chain.append(t)
 
     def append_badchannel_mask(self, transform_chain):

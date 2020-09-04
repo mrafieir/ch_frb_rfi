@@ -9,8 +9,10 @@ import rf_pipelines
 
 #stream_files='/data/frb-archiver/acq_data/frb_J1923_2018-09-22-19-45/beam_0043' #0
 stream_files='/data/frb-archiver/acq_data/frb_B0329+54_2018-10-22-01-58/beam_0141' #1
-stream_files='/data/frb-archiver/acq_data/hotfix-mask-s1/beam_0002'
-s = ch_frb_rfi.utils.sample(stream_files+'/chunk*.msg', 10, 100, msg=True)
+stream_files='/data/frb-archiver/acq_data/hotfix-mask-s2/beam_3068'
+#stream_files='/data/frb-archiver/acq_data/frb_B0329+54_2018-10-10-02-46/beam_2141'
+#stream_files='/data/frb-archiver/acq_data/frb_B0329+54_2018-10-30-01-48/beam_0141'
+s = ch_frb_rfi.utils.sample(stream_files+'/chunk*.msg', 2, 4000, msg=True)
 
 # s.append(ch_frb_rfi.WriteWeights(nt_chunk=1024*2))
 
@@ -29,13 +31,13 @@ params = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                          bonsai_output_plot_stem = 'triggers',
                                          bonsai_plot_nypix = 1024,
                                          maskpath = './badchannel_mask_2018-11-02.dat',
-                                         detrender_niter = 2,
-                                         clipper_niter = 6,
+                                         detrender_niter = 1, # XXX
+                                         clipper_niter = 10, # XXX
                                          two_pass = False,
-                                         rfi_level = 2,
-                                         aux_clip_first = False,
-                                         aux_clip_last = False,
-                                         aux_detrend_first = False,
+                                         rfi_level = -1, # XXX
+                                         aux_clip_first = True, #XXX
+                                         aux_clip_last = True, #XXX
+                                         aux_detrend_first = True, #XXX
                                          spline = True,
                                          bonsai_use_analytic_normalization = False,
                                          bonsai_hdf5_output_filename = None,
@@ -67,9 +69,9 @@ if write_json:
     #rf_pipelines.utils.json_write('design-rfi-config_acq.json', s, clobber=True)
 
 w = ch_frb_rfi.WriteWeights(nt_chunk=1024*2) 
-t16k += [ w, ch_frb_rfi.bonsai.nfreq16K_production(params, v=4, beta=2, u=False) ]
+t16k += [ w, ch_frb_rfi.bonsai.nfreq16K_production(params, v=3, beta=2, u=False) ]
 
 p16k = rf_pipelines.pipeline([s]+t16k)
-ch_frb_rfi.run_for_web_viewer('2018-02-03_0000', p16k)
+ch_frb_rfi.run_for_web_viewer('n1_1_10_3068s2', p16k)
 
 print 'design-rfi-config done!'
