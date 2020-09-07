@@ -8,6 +8,8 @@ import ch_frb_rfi
 import rf_pipelines
 
 stream_files = '/frb-archiver-1/2018/4/2/astro_519866/intensity/raw/0118/'
+stream_files = '/frb-archiver-1/acq_data/rfi_storm_20200813_3030/beam_3030/chunk_0060/'
+stream_files = '/frb-archiver-1/2019/11/13/astro_61625458/intensity/raw/2105/'
 s = ch_frb_rfi.utils.sample(stream_files+'/*.msgpack', 0, 12, msg=True)
 
 write_json = True

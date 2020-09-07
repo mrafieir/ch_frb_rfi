@@ -7,11 +7,13 @@ import rf_pipelines
 
 
 stream_files = '/frb-archiver-1/acq_data/frb_run_11_20180406_beams_110to114_119to122_133to141_144to148/beam_0139'
-s = ch_frb_rfi.utils.sample(stream_files+'/chunk*.msg', 1500, 1600, msg=True)
+stream_files = '/frb-archiver-1/2019/11/13/astro_61625458/intensity/raw/2105/'
+s = ch_frb_rfi.utils.sample(stream_files+'/*', 0, 12, msg=True)
 
 # s.append(ch_frb_rfi.WriteWeights(nt_chunk=1024*2))
 
-detrend_16k = True
+make_plots = True
+detrend_16k = True  # 19-03-01: True
 write_json = True
 output_path = './design-rfi-config_chain.json'
 
@@ -22,7 +24,7 @@ params = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                          plot_nzoom = 4,
                                          max_nt_buffer = 4,
                                          make_plots = make_plots,
-                                         bonsai_output_plot_stem = 'triggers',
+                                         bonsai_output_plot_stem = 'triggers' if make_plots else None,
                                          bonsai_plot_nypix = 1024,
                                          maskpath = None,
                                          detrender_niter = 2,
@@ -44,7 +46,8 @@ params = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                          bonsai_plot_threshold2 = 10,
                                          bonsai_dynamic_plotter = False,
                                          bonsai_plot_all_trees = make_plots,
-                                         detrend_last = not detrend_16k)
+                                         detrend_last = not detrend_16k,
+                                         mask_counter = True)
 
 t1k = ch_frb_rfi.transform_chain(params)
 p1k = rf_pipelines.pipeline(t1k)
@@ -53,6 +56,7 @@ t16k = [ rf_pipelines.wi_sub_pipeline(p1k, nfreq_out=1024, nds_out=1) ]
 
 if detrend_16k:
     params.detrend_last = True
+    params.mask_counter = False
     t16k += ch_frb_rfi.chains.detrender_chain(params, ix=1, jx=0)
     params.append_plotter_transform(t16k, 'dc_out_last')
 
@@ -62,8 +66,9 @@ if write_json:
     rf_pipelines.utils.json_write(output_path, p16k, clobber=True)
     #rf_pipelines.utils.json_write('design-rfi-config_acq.json', s, clobber=True)
 
-w = ch_frb_rfi.WriteWeights(nt_chunk=1024*2) 
-t16k += [ w, ch_frb_rfi.bonsai.nfreq16K_production(params, v=4, beta=2, u=False) ]
+#w = ch_frb_rfi.WriteWeights(nt_chunk=1024*2)
+#t16k += [ w, ch_frb_rfi.bonsai.nfreq16K_production(params, v=4, beta=2, u=False) ]
+t16k.append(ch_frb_rfi.bonsai.nfreq16K_production(params, v=4, beta=2, u=False))
 
 p16k = rf_pipelines.pipeline([s]+t16k)
 ch_frb_rfi.run_for_web_viewer('design-rfi-config', p16k)
