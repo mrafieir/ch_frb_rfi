@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 #
-# 16K RFI removal with a 4-sec latency.
+# This is a 16K RFI-removal config with an overall 4-sec latency and a uniform
+# nt_chunk size in clipping transforms. It does not uses any static badchannel
+# mask; masks are generated dynamically.
 
 import ch_frb_rfi
 import rf_pipelines
@@ -40,7 +42,8 @@ for make_plots in [ False, True ]:
                                              bonsai_plot_threshold2 = 10,
                                              bonsai_dynamic_plotter = False,
                                              bonsai_plot_all_trees = make_plots,
-                                             detrend_last = False)
+                                             detrend_last = False,
+                                             mask_counter = True)
 
     t1k = ch_frb_rfi.transform_chain(params)
     p1k = rf_pipelines.pipeline(t1k)
@@ -48,6 +51,8 @@ for make_plots in [ False, True ]:
     t16k = [ rf_pipelines.wi_sub_pipeline(p1k, nfreq_out=1024, nds_out=1) ]
 
     params.detrend_last = True
+    params.mask_counter = False
+
     t16k += ch_frb_rfi.chains.detrender_chain(params, ix=1, jx=0)
 
     if make_plots:
@@ -56,6 +61,6 @@ for make_plots in [ False, True ]:
     p16k = rf_pipelines.pipeline(t16k)
     
     suffix = '' if make_plots else '-noplot'
-    filename = '../../json_files/rfi_16k/18-10-29-low-latency-v1%s.json' % suffix
+    filename = '../../json_files/rfi_16k/19-03-01-low-latency-uniform-nobadchannel-mask%s.json' % suffix
 
     rf_pipelines.utils.json_write(filename, p16k, clobber=clobber)
