@@ -39,7 +39,7 @@ def make_dedisperser(parameters, config_filename):
 # -------------------------------------------------------------------------------------------------------
 
 def _config(basename):
-    return os.path.join('/data/frb-archiver/bonsai_configs', basename)
+    return os.path.join('/data/bonsai_configs', basename)
         
 
 def nfreq1024_singletree(parameters):
