@@ -1,3 +1,8 @@
+- Version 11:
+
+   - New RFI configs with an overall 4-sec latency and a uniform
+     nt_chunk size in clipping transforms
+
 - Version 10:
 
    - From Dustin: mask_counter functionality
