@@ -7,6 +7,8 @@
 
    - From Dustin: mask_counter functionality
 
+   - From Alex: L1b usage.
+
    - New script for post-processing astro events
 
 - Version 9:

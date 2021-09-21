@@ -5,8 +5,6 @@
 import ch_frb_rfi
 import rf_pipelines
 
-
-stream_files = '/frb-archiver-1/acq_data/frb_run_11_20180406_beams_110to114_119to122_133to141_144to148/beam_0139'
 stream_files = '/frb-archiver-1/2019/11/13/astro_61625458/intensity/raw/2105/'
 s = ch_frb_rfi.utils.sample(stream_files+'/*', 0, 12, msg=True)
 
@@ -26,7 +24,7 @@ params = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                          make_plots = make_plots,
                                          bonsai_output_plot_stem = 'triggers' if make_plots else None,
                                          bonsai_plot_nypix = 1024,
-                                         maskpath = None,
+                                         maskpath = None, #'./badchannel_mask_2018-11-02.dat',
                                          detrender_niter = 2,
                                          clipper_niter = 6,
                                          two_pass = False,
@@ -71,6 +69,6 @@ if write_json:
 t16k.append(ch_frb_rfi.bonsai.nfreq16K_production(params, v=4, beta=2, u=False))
 
 p16k = rf_pipelines.pipeline([s]+t16k)
-ch_frb_rfi.run_for_web_viewer('design-rfi-config', p16k)
+ch_frb_rfi.run_for_web_viewer('n1_1_10_3068s2', p16k)
 
 print 'design-rfi-config done!'
