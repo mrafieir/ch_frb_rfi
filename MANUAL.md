@@ -13,6 +13,7 @@ This manual isn't 100% complete, but there should be enough examples to get star
      - [RFI removal](#user-content-json-inventory-rfi-removal)
      - [Dedipsersion](#user-content-json-inventory-dedispersion)
      - [Toy streams](#user-content-json-inventory-toy-streams)
+  - [frb_ops acquisitions](#user-content-frb-ops-acquisitions)
 
 <a name="examples-scripting-interface"></a> 
 #### EXAMPLES: SCRIPTING INTERFACE
@@ -234,4 +235,54 @@ Sometimes we want to run a pipeline with random data, instead of reading an acqu
      is useful for timing (see `rfp-time` example earlier in the manual), since it represents the
      computational cost of the packet decoding kernel in the real-time search.
 
+<a name="frb-ops-acquisitions"></a> 
+### FRB-OPS ACQUISITIONS
+
+The following directories are located in `/frb-archiver-1/acq_data`. [CHIMEFRB/frb_ops/issues](https://github.com/CHIMEFRB/frb_ops/issues) track their technical details. See [kmsmith137/ch_frb_l1/OPERATIONS_MANUAL.md](https://github.com/kmsmith137/ch_frb_l1/blob/master/OPERATIONS_MANUAL.md#analyzing-acquisitions) for more info on how to prepare new acquisitions for the "offline pipeline".
+
+<table>
+    <tr><th>Name</th> <th>Size</th></tr>
+    <tr> <th colspan="2" align="center">Long runs</td> </tr>
+    <tr> <td>Galactic_20180330_1</td> <td>4.6T</td>
+    <tr> <td>frb_run_11_20180407_beams_111to118_130to137_146to150</td> <td>1.5T</td>
+    <tr> <td>frb_run_11_20180406_beams_110to114_119to122_133to141_144to148</td> <td>1.2T</td>
+    <tr> <td>frb_run_11_20180406_1230_1430_beams_130_133_135_146_148_plus_minus_2</td> <td>678G</td>
+    <tr> <td>frb_run_11_20180407_beams_108to115_119to123_129to139_144to148</td> <td>507G</td>
+    <tr> <td>frb_run_11_20180406_beams_135_148</td> <td>492G</td>
+    <tr> <td>frb_run_11_20180406_beams_120to125_137to144</td> <td>417G</td>
+    <tr> <td>frb_run_11_20180407_beams_111to118_129to137_146to150</td> <td>377G</td>
+    <tr> <td>frb_run_11_20180406_1230_1430_beams_130_133_135_146_148</td> <td>24G</td>
+    <tr> <td>frb_run_10_B0329_20180322</td> <td>6.5G</td>
+    <tr> <td>frb_run_10_B0329_20180322_1</td> <td>7.7G</td>
+    <tr> <td>frb_run_10_B0329_20180322_2</td> <td>1.4G</td>
+    <tr> <td>frb_run_10_B0329_20180322_3</td> <td>313G</td>
+    <tr> <td>frb_run_10_B0329_20180322_3_sub_copy</td> <td>6.6G</td>
+    <tr> <th colspan="2" align="center">Short transits</td> </tr>
+    <tr> <td>frb_B1953+50_2018-05-02-09-06</td> <td>25G</td>
+    <tr> <td>frb_B2022+50_2018-04-08-08-17</td> <td>17G</td>
+    <tr> <td>frb_B1953+50_2018-05-02-09-07</td> <td>15G</td>
+    <tr> <td>frb_J2027+4557_2018-04-08-08-18</td> <td>3.6G</td>
+    <tr> <td>frb_J2027+4557_2018-04-08-08-17</td> <td>1.8G</td>
+    <tr> <td>frb_J2001+42_2018-05-02-09-10</td> <td>1.5G</td>
+    <tr> <th colspan="2" align="center">No gains</td> </tr>
+    <tr> <td>B0329_no_gains_20180329</td> <td>58G</td>
+    <tr> <td>B0329_no_gains_20180329_2</td> <td>75G</td>
+    <tr> <td>B0329_no_gains_20180329_3</td> <td>24G</td>
+    <tr> <td>B0329_no_gains_20180329_4</td> <td>11G</td>
+    <tr> <td>B0329_no_gains_20180329_5</td> <td>334M</td>
+    <tr> <th colspan="2" align="center">Test runs</td> </tr>
+    <tr> <td>frb_run_9_B0329</td> <td>79G</td>
+    <tr> <td>frb_run_9</td> <td>2.1G</td>
+    <tr> <td>frb_run_9_night 3</td> <td>70G</td>
+    <tr> <td>frb_run_9_test_1</td> <td>5.8G</td>
+    <tr> <td>frb_run_9_test_2</td> <td>1.1G</td>
+    <tr> <td>frb_run_9_test_3</td> <td>8.4G</td>
+    <tr> <td>frb_run_incoherent_test</td> <td>284M</td>
+    <tr> <td>frb_run_incoherent_test_2</td> <td>5.9G</td>
+    <tr> <td>frb_run_incoherent_test_3</td> <td>6.5G</td>
+    <tr> <td>frb_run_incoherent_test_4</td> <td>45G</td>
+    <tr> <td>frb_incoherent_coherent_run</td> <td>67G</td>
+    <tr> <td>DM95_beam69</td> <td>29G</td>
+    <tr> <td>inf_snr_capture</td> <td>2.6G</td>
+</table>
 

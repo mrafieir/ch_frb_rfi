@@ -26,7 +26,7 @@ p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                     bonsai_plot_threshold1 = 7,
                                     bonsai_plot_threshold2 = 10,
                                     bonsai_dynamic_plotter = False,
-                                    bonsai_event_outfile = './events_example3.dat')
+                                    L1b_config = 'L1b_config_mcgill.yaml')
 
 t = ch_frb_rfi.transform_chain(p)
 
@@ -45,7 +45,7 @@ p.mask_filler = True
 p.make_plots = True
 
 t = ch_frb_rfi.transform_chain(p)
-t += [ ch_frb_rfi.bonsai.nfreq16K_production(p) ]
+t += [ ch_frb_rfi.bonsai.nfreq16K_production(p, v=2) ]
 
 pipeline = rf_pipelines.pipeline([s]+t)
 ch_frb_rfi.run_for_web_viewer('example3', pipeline)

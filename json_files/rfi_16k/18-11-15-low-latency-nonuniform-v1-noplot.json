@@ -6,15 +6,14 @@
                 "class_name": "pipeline", 
                 "elements": [
                     {
-                        "n_zoom": 4, 
-                        "class_name": "plotter_transform", 
-                        "img_prefix": "raw", 
-                        "img_nfreq": 1024, 
-                        "img_nt": 256, 
-                        "nt_chunk": 1152, 
-                        "downsample_nt": 16, 
-                        "sigma_clip": 3, 
-                        "clip_niter": 3
+                        "class_name": "mask_counter", 
+                        "where": "before_rfi", 
+                        "nt_chunk": 1024
+                    }, 
+                    {
+                        "class_name": "badchannel_mask", 
+                        "mask_ranges": [], 
+                        "mask_path": "/data/chimefrb/badchannel_mask_2018-11-02.dat"
                     }, 
                     {
                         "Df": 1, 
@@ -37,7 +36,7 @@
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
                         "two_pass": true, 
@@ -46,19 +45,19 @@
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
-                        "two_pass": false, 
+                        "two_pass": true, 
                         "axis": "AXIS_FREQ"
                     }, 
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
-                        "two_pass": false, 
+                        "two_pass": true, 
                         "axis": "AXIS_FREQ"
                     }, 
                     {
@@ -69,7 +68,7 @@
                         "nt_chunk": 1024, 
                         "Dt": 1, 
                         "sigma": 5, 
-                        "two_pass": false, 
+                        "two_pass": true, 
                         "axis": "AXIS_FREQ"
                     }, 
                     {
@@ -91,7 +90,7 @@
                         "nt_chunk": 1024, 
                         "Dt": 16, 
                         "sigma": 5, 
-                        "two_pass": false, 
+                        "two_pass": true, 
                         "axis": "AXIS_NONE"
                     }, 
                     {
@@ -102,96 +101,7 @@
                         "nt_chunk": 1024, 
                         "Dt": 16, 
                         "sigma": 5, 
-                        "two_pass": false, 
-                        "axis": "AXIS_FREQ"
-                    }, 
-                    {
-                        "Df": 1, 
-                        "class_name": "std_dev_clipper", 
-                        "nt_chunk": 1024, 
-                        "Dt": 1, 
-                        "sigma": 3, 
                         "two_pass": true, 
-                        "axis": "AXIS_TIME"
-                    }, 
-                    {
-                        "Df": 1, 
-                        "class_name": "std_dev_clipper", 
-                        "nt_chunk": 2048, 
-                        "Dt": 1, 
-                        "sigma": 3, 
-                        "two_pass": true, 
-                        "axis": "AXIS_TIME"
-                    }, 
-                    {
-                        "Df": 1, 
-                        "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
-                        "Dt": 1, 
-                        "sigma": 3, 
-                        "two_pass": true, 
-                        "axis": "AXIS_TIME"
-                    }, 
-                    {
-                        "Df": 1, 
-                        "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
-                        "Dt": 1, 
-                        "sigma": 3, 
-                        "two_pass": false, 
-                        "axis": "AXIS_FREQ"
-                    }, 
-                    {
-                        "Df": 1, 
-                        "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
-                        "Dt": 1, 
-                        "sigma": 3, 
-                        "two_pass": false, 
-                        "axis": "AXIS_FREQ"
-                    }, 
-                    {
-                        "niter": 9, 
-                        "Df": 1, 
-                        "iter_sigma": 5, 
-                        "class_name": "intensity_clipper", 
-                        "nt_chunk": 1024, 
-                        "Dt": 1, 
-                        "sigma": 5, 
-                        "two_pass": false, 
-                        "axis": "AXIS_FREQ"
-                    }, 
-                    {
-                        "niter": 9, 
-                        "Df": 1, 
-                        "iter_sigma": 5, 
-                        "class_name": "intensity_clipper", 
-                        "nt_chunk": 1024, 
-                        "Dt": 1, 
-                        "sigma": 5, 
-                        "two_pass": true, 
-                        "axis": "AXIS_TIME"
-                    }, 
-                    {
-                        "niter": 9, 
-                        "Df": 2, 
-                        "iter_sigma": 3, 
-                        "class_name": "intensity_clipper", 
-                        "nt_chunk": 1024, 
-                        "Dt": 16, 
-                        "sigma": 5, 
-                        "two_pass": false, 
-                        "axis": "AXIS_NONE"
-                    }, 
-                    {
-                        "niter": 9, 
-                        "Df": 2, 
-                        "iter_sigma": 3, 
-                        "class_name": "intensity_clipper", 
-                        "nt_chunk": 1024, 
-                        "Dt": 16, 
-                        "sigma": 5, 
-                        "two_pass": false, 
                         "axis": "AXIS_FREQ"
                     }, 
                     {
@@ -215,7 +125,7 @@
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
                         "two_pass": true, 
@@ -224,19 +134,19 @@
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
-                        "two_pass": false, 
+                        "two_pass": true, 
                         "axis": "AXIS_FREQ"
                     }, 
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
-                        "two_pass": false, 
+                        "two_pass": true, 
                         "axis": "AXIS_FREQ"
                     }, 
                     {
@@ -247,7 +157,7 @@
                         "nt_chunk": 1024, 
                         "Dt": 1, 
                         "sigma": 5, 
-                        "two_pass": false, 
+                        "two_pass": true, 
                         "axis": "AXIS_FREQ"
                     }, 
                     {
@@ -269,7 +179,7 @@
                         "nt_chunk": 1024, 
                         "Dt": 16, 
                         "sigma": 5, 
-                        "two_pass": false, 
+                        "two_pass": true, 
                         "axis": "AXIS_NONE"
                     }, 
                     {
@@ -280,7 +190,7 @@
                         "nt_chunk": 1024, 
                         "Dt": 16, 
                         "sigma": 5, 
-                        "two_pass": false, 
+                        "two_pass": true, 
                         "axis": "AXIS_FREQ"
                     }, 
                     {
@@ -304,7 +214,7 @@
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
                         "two_pass": true, 
@@ -313,19 +223,19 @@
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
-                        "two_pass": false, 
+                        "two_pass": true, 
                         "axis": "AXIS_FREQ"
                     }, 
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
-                        "two_pass": false, 
+                        "two_pass": true, 
                         "axis": "AXIS_FREQ"
                     }, 
                     {
@@ -336,7 +246,7 @@
                         "nt_chunk": 1024, 
                         "Dt": 1, 
                         "sigma": 5, 
-                        "two_pass": false, 
+                        "two_pass": true, 
                         "axis": "AXIS_FREQ"
                     }, 
                     {
@@ -358,7 +268,7 @@
                         "nt_chunk": 1024, 
                         "Dt": 16, 
                         "sigma": 5, 
-                        "two_pass": false, 
+                        "two_pass": true, 
                         "axis": "AXIS_NONE"
                     }, 
                     {
@@ -369,7 +279,7 @@
                         "nt_chunk": 1024, 
                         "Dt": 16, 
                         "sigma": 5, 
-                        "two_pass": false, 
+                        "two_pass": true, 
                         "axis": "AXIS_FREQ"
                     }, 
                     {
@@ -393,7 +303,7 @@
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
                         "two_pass": true, 
@@ -402,19 +312,19 @@
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
-                        "two_pass": false, 
+                        "two_pass": true, 
                         "axis": "AXIS_FREQ"
                     }, 
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
-                        "two_pass": false, 
+                        "two_pass": true, 
                         "axis": "AXIS_FREQ"
                     }, 
                     {
@@ -425,7 +335,7 @@
                         "nt_chunk": 1024, 
                         "Dt": 1, 
                         "sigma": 5, 
-                        "two_pass": false, 
+                        "two_pass": true, 
                         "axis": "AXIS_FREQ"
                     }, 
                     {
@@ -447,7 +357,7 @@
                         "nt_chunk": 1024, 
                         "Dt": 16, 
                         "sigma": 5, 
-                        "two_pass": false, 
+                        "two_pass": true, 
                         "axis": "AXIS_NONE"
                     }, 
                     {
@@ -458,7 +368,7 @@
                         "nt_chunk": 1024, 
                         "Dt": 16, 
                         "sigma": 5, 
-                        "two_pass": false, 
+                        "two_pass": true, 
                         "axis": "AXIS_FREQ"
                     }, 
                     {
@@ -482,7 +392,7 @@
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
                         "two_pass": true, 
@@ -491,19 +401,19 @@
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
-                        "two_pass": false, 
+                        "two_pass": true, 
                         "axis": "AXIS_FREQ"
                     }, 
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
-                        "two_pass": false, 
+                        "two_pass": true, 
                         "axis": "AXIS_FREQ"
                     }, 
                     {
@@ -514,7 +424,7 @@
                         "nt_chunk": 1024, 
                         "Dt": 1, 
                         "sigma": 5, 
-                        "two_pass": false, 
+                        "two_pass": true, 
                         "axis": "AXIS_FREQ"
                     }, 
                     {
@@ -536,7 +446,7 @@
                         "nt_chunk": 1024, 
                         "Dt": 16, 
                         "sigma": 5, 
-                        "two_pass": false, 
+                        "two_pass": true, 
                         "axis": "AXIS_NONE"
                     }, 
                     {
@@ -547,19 +457,97 @@
                         "nt_chunk": 1024, 
                         "Dt": 16, 
                         "sigma": 5, 
-                        "two_pass": false, 
+                        "two_pass": true, 
                         "axis": "AXIS_FREQ"
                     }, 
                     {
-                        "n_zoom": 4, 
-                        "class_name": "plotter_transform", 
-                        "img_prefix": "dc_out_a0", 
-                        "img_nfreq": 1024, 
-                        "img_nt": 256, 
-                        "nt_chunk": 1152, 
-                        "downsample_nt": 16, 
-                        "sigma_clip": 3, 
-                        "clip_niter": 3
+                        "Df": 1, 
+                        "class_name": "std_dev_clipper", 
+                        "nt_chunk": 1024, 
+                        "Dt": 1, 
+                        "sigma": 3, 
+                        "two_pass": true, 
+                        "axis": "AXIS_TIME"
+                    }, 
+                    {
+                        "Df": 1, 
+                        "class_name": "std_dev_clipper", 
+                        "nt_chunk": 2048, 
+                        "Dt": 1, 
+                        "sigma": 3, 
+                        "two_pass": true, 
+                        "axis": "AXIS_TIME"
+                    }, 
+                    {
+                        "Df": 1, 
+                        "class_name": "std_dev_clipper", 
+                        "nt_chunk": 4096, 
+                        "Dt": 1, 
+                        "sigma": 3, 
+                        "two_pass": true, 
+                        "axis": "AXIS_TIME"
+                    }, 
+                    {
+                        "Df": 1, 
+                        "class_name": "std_dev_clipper", 
+                        "nt_chunk": 4096, 
+                        "Dt": 1, 
+                        "sigma": 3, 
+                        "two_pass": true, 
+                        "axis": "AXIS_FREQ"
+                    }, 
+                    {
+                        "Df": 1, 
+                        "class_name": "std_dev_clipper", 
+                        "nt_chunk": 4096, 
+                        "Dt": 1, 
+                        "sigma": 3, 
+                        "two_pass": true, 
+                        "axis": "AXIS_FREQ"
+                    }, 
+                    {
+                        "niter": 9, 
+                        "Df": 1, 
+                        "iter_sigma": 5, 
+                        "class_name": "intensity_clipper", 
+                        "nt_chunk": 1024, 
+                        "Dt": 1, 
+                        "sigma": 5, 
+                        "two_pass": true, 
+                        "axis": "AXIS_FREQ"
+                    }, 
+                    {
+                        "niter": 9, 
+                        "Df": 1, 
+                        "iter_sigma": 5, 
+                        "class_name": "intensity_clipper", 
+                        "nt_chunk": 1024, 
+                        "Dt": 1, 
+                        "sigma": 5, 
+                        "two_pass": true, 
+                        "axis": "AXIS_TIME"
+                    }, 
+                    {
+                        "niter": 9, 
+                        "Df": 2, 
+                        "iter_sigma": 3, 
+                        "class_name": "intensity_clipper", 
+                        "nt_chunk": 1024, 
+                        "Dt": 16, 
+                        "sigma": 5, 
+                        "two_pass": true, 
+                        "axis": "AXIS_NONE"
+                    }, 
+                    {
+                        "niter": 9, 
+                        "Df": 2, 
+                        "iter_sigma": 3, 
+                        "class_name": "intensity_clipper", 
+                        "nt_chunk": 1024, 
+                        "Dt": 16, 
+                        "sigma": 5, 
+                        "two_pass": true, 
+                        "axis": "AXIS_FREQ"
                     }, 
                     {
                         "class_name": "polynomial_detrender", 
@@ -576,17 +564,6 @@
                         "axis": "AXIS_FREQ"
                     }, 
                     {
-                        "n_zoom": 4, 
-                        "class_name": "plotter_transform", 
-                        "img_prefix": "dc_out_b0", 
-                        "img_nfreq": 1024, 
-                        "img_nt": 256, 
-                        "nt_chunk": 1152, 
-                        "downsample_nt": 16, 
-                        "sigma_clip": 3, 
-                        "clip_niter": 3
-                    }, 
-                    {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
                         "nt_chunk": 1024, 
@@ -607,7 +584,7 @@
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
                         "two_pass": false, 
@@ -616,7 +593,7 @@
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
                         "two_pass": false, 
@@ -625,7 +602,7 @@
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
                         "two_pass": false, 
@@ -696,7 +673,7 @@
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
                         "two_pass": false, 
@@ -705,7 +682,7 @@
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
                         "two_pass": false, 
@@ -714,7 +691,7 @@
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
                         "two_pass": false, 
@@ -785,7 +762,7 @@
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
                         "two_pass": false, 
@@ -794,7 +771,7 @@
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
                         "two_pass": false, 
@@ -803,7 +780,7 @@
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
                         "two_pass": false, 
@@ -874,7 +851,7 @@
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
                         "two_pass": false, 
@@ -883,7 +860,7 @@
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
                         "two_pass": false, 
@@ -892,7 +869,7 @@
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
                         "two_pass": false, 
@@ -963,7 +940,7 @@
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
                         "two_pass": false, 
@@ -972,7 +949,7 @@
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
                         "two_pass": false, 
@@ -981,7 +958,7 @@
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
                         "two_pass": false, 
@@ -1052,7 +1029,7 @@
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
                         "two_pass": false, 
@@ -1061,7 +1038,7 @@
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
                         "two_pass": false, 
@@ -1070,7 +1047,7 @@
                     {
                         "Df": 1, 
                         "class_name": "std_dev_clipper", 
-                        "nt_chunk": 6144, 
+                        "nt_chunk": 4096, 
                         "Dt": 1, 
                         "sigma": 3, 
                         "two_pass": false, 
@@ -1121,26 +1098,9 @@
                         "axis": "AXIS_FREQ"
                     }, 
                     {
-                        "n_zoom": 4, 
-                        "class_name": "plotter_transform", 
-                        "img_prefix": "dc_out_a1", 
-                        "img_nfreq": 1024, 
-                        "img_nt": 256, 
-                        "nt_chunk": 1152, 
-                        "downsample_nt": 16, 
-                        "sigma_clip": 3, 
-                        "clip_niter": 3
-                    }, 
-                    {
-                        "n_zoom": 4, 
-                        "class_name": "plotter_transform", 
-                        "img_prefix": "dc_out_b1", 
-                        "img_nfreq": 1024, 
-                        "img_nt": 256, 
-                        "nt_chunk": 1152, 
-                        "downsample_nt": 16, 
-                        "sigma_clip": 3, 
-                        "clip_niter": 3
+                        "class_name": "mask_counter", 
+                        "where": "after_rfi", 
+                        "nt_chunk": 1024
                     }
                 ], 
                 "name": "pipeline"

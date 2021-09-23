@@ -18,9 +18,9 @@ class transform_parameters:
                                  spline=False, make_plots=True, plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, bonsai_plot_nypix=256,
                                  plot_nzoom=None, bonsai_output_plot_stem=None, bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None,
                                  bonsai_nt_per_hdf5_file=0, bonsai_plot_threshold1=6, bonsai_plot_threshold2=10, bonsai_dynamic_plotter=False,
-                                 maskpath=None, bonsai_event_outfile=None, bonsai_plot_all_trees=False, bonsai_fill_rfi_mask=False, mask=None,
-                                 variance_estimator_v1_chunk=32, variance_estimator_v2_chunk=192, var_filename=None, var_est=False, mask_filler=False,
-                                 mask_filler_w_cutoff=0.5, L1Grouper_thr=7, L1Grouper_beam=0, L1Grouper_addr=None)
+                                 maskpath=None, bonsai_plot_all_trees=False, bonsai_fill_rfi_mask=False, mask=None, variance_estimator_v1_chunk=32,
+                                 variance_estimator_v2_chunk=192, var_filename=None, var_est=False, mask_filler=False,
+                                 mask_filler_w_cutoff=0.5, L1b_config=None, mask_counter=False)
     
     with arguments as follows:
 
@@ -84,8 +84,6 @@ class transform_parameters:
 
        - bonsai_dynamic_plotter: if True, then the old color scheme (with a higher dynamic range from blue to red) is used.
 
-       - bonsai_event_outfile: specifies a file path to the grouper output. The grouper is disabled by default. 
-
        - bonsai_plot_all_trees: if False, only tree 0 will be plotted; if True, all trees will be plotted.
 
        - bonsai_fill_rfi_mask: if True, then bonsai's online_mask_filler will be enabled.
@@ -114,9 +112,12 @@ class transform_parameters:
             mask_filler is not None. E.g., a w_cutoff value of 0.5 corresponds to a 25% w_cutoff in the 
             incoherent-beam data.
 
-       - (L1Grouper_thr, L1Grouper_beam, L1Grouper_addr) specify parameters for the L1Grouper which may be called
-            in the bonsai dedisperser transform. (see their docstrings!)
-            Note: 'bonsai_event_outfile' determines whether to en(/dis)able the L1Grouper.
+       - L1b_config: If specified, L1B will be used to group and sift triggers (ch_frb_L1b is required). 
+            Can either be a full path, or the name of a config file kept in ch_frb_L1b/ch_frb_L1b/configs.
+
+       - mask_counter: if True, mask counter transforms are appended to the list of transforms.
+
+       - mask_counter_nt: specifies the chunk size for the mask counter transforms.
 
     The way the plotting parameters are determined deserves special explanation!
 
@@ -142,9 +143,9 @@ class transform_parameters:
                  spline=False, make_plots=True, plot_type=None, plot_downsample_nt=None, plot_nxpix=None, plot_nypix=None, bonsai_plot_nypix=256,
                  plot_nzoom=None, bonsai_output_plot_stem=None, bonsai_use_analytic_normalization=False, bonsai_hdf5_output_filename=None,
                  bonsai_nt_per_hdf5_file=0, bonsai_plot_threshold1=6, bonsai_plot_threshold2=10, bonsai_dynamic_plotter=False,
-                 bonsai_event_outfile=None, bonsai_plot_all_trees=False, bonsai_fill_rfi_mask=False, maskpath=None, mask=None,
-                 variance_estimator_v1_chunk=32, variance_estimator_v2_chunk=192, var_filename=None, var_est=False, mask_filler=False,
-                 mask_filler_w_cutoff=0.5, L1Grouper_thr=7, L1Grouper_beam=0, L1Grouper_addr=None):
+                 bonsai_plot_all_trees=False, bonsai_fill_rfi_mask=False, maskpath=None, mask=None, variance_estimator_v1_chunk=32,
+                 variance_estimator_v2_chunk=192, var_filename=None, var_est=False, mask_filler=False,
+                 mask_filler_w_cutoff=0.5, L1b_config=None, mask_counter=False, mask_counter_nt=1024):
 
         nv = 0
         if var_est: nv += 1
@@ -178,14 +179,13 @@ class transform_parameters:
         self.bonsai_plot_threshold1 = bonsai_plot_threshold1
         self.bonsai_plot_threshold2 = bonsai_plot_threshold2
         self.bonsai_dynamic_plotter = bonsai_dynamic_plotter
-        self.bonsai_event_outfile = bonsai_event_outfile
         self.bonsai_plot_all_trees = bonsai_plot_all_trees
         self.bonsai_fill_rfi_mask = bonsai_fill_rfi_mask
 
-        self.L1Grouper_thr = L1Grouper_thr
-        self.L1Grouper_beam = L1Grouper_beam
-        self.L1Grouper_addr = L1Grouper_addr
+        self.L1b_config = L1b_config
 
+        self.mask_counter = mask_counter
+        self.mask_counter_nt = mask_counter_nt
         self.maskpath = maskpath
         self.mask = mask
 
@@ -250,7 +250,7 @@ class transform_parameters:
 
     def append_plotter_transform(self, transform_chain, img_prefix):
         if self.make_plots:
-            t = rf_pipelines.plotter_transform(img_prefix, self.plot_nypix, self.plot_nxpix, self.plot_downsample_nt, self.plot_nzoom)
+            t = rf_pipelines.plotter_transform(img_prefix, self.plot_nypix, self.plot_nxpix, self.plot_downsample_nt, self.plot_nzoom, sigma_clip=10, clip_niter=3)
             transform_chain.append(t)
 
     def append_badchannel_mask(self, transform_chain):
@@ -271,6 +271,11 @@ class transform_parameters:
             if self.var_filename is None:
                 raise RuntimeError('ch_frb_rfi.parameters.append_mask_filler() was called, but var_filename is None')
             t = rf_pipelines.mask_filler(var_file=self.var_filename, w_cutoff=self.mask_filler_w_cutoff, nt_chunk=self.clip_nt)            
+            transform_chain.append(t)
+
+    def append_mask_counter(self, transform_chain, where):
+        if self.mask_counter:
+            t = rf_pipelines.mask_counter(self.mask_counter_nt, where)
             transform_chain.append(t)
 
 
@@ -294,7 +299,7 @@ def detrender_chain(parameters, ix, jx, aux=False):
 
             # AXIS_FREQ (nt_chunk=0 is OK here)
             if parameters.spline:
-                deg = 4 if (parameters.rfi_level < 0) else 12
+                deg = 4 if ((parameters.rfi_level < 0) and parameters.aux_detrend_first) else 12
                 ret += [ rf_pipelines.spline_detrender(nbins=deg/2, axis='freq', nt_chunk=0) ]
             else:
                 ret += [ rf_pipelines.polynomial_detrender(polydeg=deg, axis='freq', nt_chunk=0) ]
@@ -306,7 +311,7 @@ def clipper_chain(parameters, ix, jx, aux=False):
     two_pass = parameters.two_pass or (ix == 0)
 
     if parameters.eq_clip_nt:
-        ntc = [1, 1, 1]
+        ntc = [2, 2, 2]
     elif parameters.rfi_level < 0:
         ntc = [parameters.max_nt_buffer, parameters.max_nt_buffer, parameters.max_nt_buffer]
     else:
@@ -329,7 +334,7 @@ def clipper_chain(parameters, ix, jx, aux=False):
                 rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=ntc[1], Df=1, Dt=1, two_pass=two_pass),
                 rf_pipelines.std_dev_clipper(sigma=3, axis=1, nt_chunk=ntc[2], Df=1, Dt=1, two_pass=two_pass) ]
 
-        if parameters.rfi_level < 0:
+        if (parameters.rfi_level < 0) and parameters.aux_clip_first and parameters.aux_clip_last:
             return ret
         else:
             ret += [ rf_pipelines.std_dev_clipper(sigma=3, axis=0, nt_chunk=ntc[2], Df=1, Dt=1, two_pass=two_pass),
@@ -345,6 +350,8 @@ def clipper_chain(parameters, ix, jx, aux=False):
        
 def transform_chain(parameters):
     transform_chain = [ ]
+
+    parameters.append_mask_counter(transform_chain, 'before_rfi')
     parameters.append_plotter_transform(transform_chain, 'raw')
     parameters.append_badchannel_mask(transform_chain)
 
@@ -365,5 +372,7 @@ def transform_chain(parameters):
             continue
 
         parameters.append_plotter_transform(transform_chain, 'dc_out_b%d' % ix)
+
+    parameters.append_mask_counter(transform_chain, 'after_rfi')
 
     return transform_chain

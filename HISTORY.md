@@ -1,3 +1,20 @@
+- Version 11:
+
+   - New RFI configs with an overall 4-sec latency and a uniform
+     nt_chunk size in clipping transforms
+
+- Version 10:
+
+   - From Dustin: mask_counter functionality
+
+   - From Alex: L1b usage.
+
+   - New script for post-processing astro events
+
+- Version 9:
+
+   - New transform chain (v1.6, aux-enabled)
+
 - Version 8:
 
    - From Chitrang: New transform for writing weights to disk

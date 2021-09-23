@@ -1,11 +1,7 @@
 #!/usr/bin/env python
 #
-# THIS IS NOT TRUE : 16K RFI removal with the parameter `two_pass=True` for all the clippers in
-# the first (outer) loop of detrenders. I forgot to commit changes on chains.py before running
-# this script. Therefore, `../../json_files/rfi_%s/17-12-01-two-pass-yzoom-v2*.json` are NOT
-# really valid "two_pass" configs!
-#
-# It does not include the badchannel mask.
+# 16K RFI removal with the parameter `two_pass=True` for all the clippers in the first
+# (outer) loop of detrenders. It does not include the badchannel mask and plotter transforms.
 # It uses bonsai's online mask filler.
 
 import ch_frb_rfi
@@ -17,16 +13,12 @@ import rf_pipelines
 # to prevent git-managed json files from being modified accidentally.
 clobber = False
 
-
 for make_plots in [ False, True ]:
     params = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
-                                             plot_nypix=1024,
-                                             plot_nxpix = 256,
-                                             plot_downsample_nt = 16,
-                                             plot_nzoom = 4,
                                              make_plots = make_plots,
                                              bonsai_output_plot_stem = 'triggers' if make_plots else None,
-                                             maskpath = None,
+                                             maskpath = '/data/chimefrb/badchannel_mask_2018-11-02.dat',
+                                             two_pass = False,
                                              detrender_niter = 2,
                                              clipper_niter = 6,
                                              spline = True,
@@ -46,14 +38,16 @@ for make_plots in [ False, True ]:
     p1k = rf_pipelines.pipeline(t1k)
 
     params.detrend_last = False
+    params.mask_counter = True
+
     _t1k = ch_frb_rfi.transform_chain(params)
     _p1k = rf_pipelines.pipeline(_t1k)
 
     t16k = [ rf_pipelines.wi_sub_pipeline(_p1k, nfreq_out=1024, nds_out=1) ]
-    t16k += ch_frb_rfi.chains.detrender_chain(params, ix=0)
+    t16k += ch_frb_rfi.chains.detrender_chain(params, ix=0, jx=1)
     p16k = rf_pipelines.pipeline(t16k)
 
     for (pobj, suffix) in [ (p1k,'1k'), (p16k,'16k') ]:
         suffix2 = '' if make_plots else '-noplot'
-        filename = '../../json_files/rfi_%s/17-12-01-two-pass-yzoom-v2%s.json' % (suffix, suffix2)
+        filename = '../../json_files/rfi_%s/17-12-02-two-pass-v5%s.json' % (suffix, suffix2)
         rf_pipelines.utils.json_write(filename, pobj, clobber=clobber)

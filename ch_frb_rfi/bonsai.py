@@ -34,10 +34,7 @@ def make_dedisperser(parameters, config_filename):
                                            plot_threshold2 = parameters.bonsai_plot_threshold2,
                                            dynamic_plotter = parameters.bonsai_dynamic_plotter, 
                                            plot_all_trees = parameters.bonsai_plot_all_trees,
-                                           event_outfile = parameters.bonsai_event_outfile,
-                                           L1Grouper_thr = parameters.L1Grouper_thr,
-                                           L1Grouper_beam = parameters.L1Grouper_beam,
-                                           L1Grouper_addr = parameters.L1Grouper_addr)
+                                           L1b_config = parameters.L1b_config)
 
 # -------------------------------------------------------------------------------------------------------
 
@@ -56,5 +53,6 @@ def nfreq1K_7tree(parameters, fpga_counts_per_sample, v):
     assert fpga_counts_per_sample in [ 384, 512 ]
     return make_dedisperser(parameters, _config('bonsai_nfreq1024_7tree_f%d_v%s.hdf5' % (fpga_counts_per_sample,v)))
 
-def nfreq16K_production(parameters):
-    return make_dedisperser(parameters, _config('bonsai_production_noups_nbeta1_v2.hdf5'))
+def nfreq16K_production(parameters, v, beta=1, u=True):
+    u = 'ups' if u else 'noups'
+    return make_dedisperser(parameters, _config('bonsai_production_%s_nbeta%s_v%s.hdf5' % (u,beta,v)))

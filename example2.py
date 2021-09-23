@@ -46,10 +46,7 @@ p = ch_frb_rfi.transform_parameters(plot_type = 'web_viewer',
                                     bonsai_plot_threshold1 = 7,
                                     bonsai_plot_threshold2 = 10,
                                     bonsai_dynamic_plotter = False,
-                                    bonsai_event_outfile = './events_example2.dat',
-                                    L1Grouper_thr = 10,
-                                    L1Grouper_beam = 0,
-                                    L1Grouper_addr = None)
+                                    L1b_config = 'L1b_config.yaml')
 
 # Using the specified parameters make a chain of transforms for estimating the variance.
 t = ch_frb_rfi.transform_chain(p)
@@ -60,7 +57,7 @@ pipeline = rf_pipelines.pipeline([s]+t)
 # The purpose of the first pipeline run is to create the h5 file containing variance
 # estimates (p.var_filename = './var_example2.h5').  We do this pipeline run using the
 # wrapper function run_in_scratch_dir(), which does not index the run with the web viewer.
-ch_frb_rfi.run_in_scratch_dir('example2', pipeline)
+ch_frb_rfi.run_in_scratch_dir('example2', None, pipeline)
 
 # In the v16 API, need to "unbind" the pipeline after running, before its constituent
 # pipeline_objects can be reused in another pipeline run.
@@ -77,7 +74,8 @@ pipeline = rf_pipelines.pipeline([s]+t)
 
 # Second pipeline run: we use the wrapper function run_for_web_viewer().
 # Run the pipeline (again) but now with the mask_filler and bonsai dedisperser.
-ch_frb_rfi.run_for_web_viewer('example2', pipeline)
+#ch_frb_rfi.run_for_web_viewer('example2', pipeline)
+ch_frb_rfi.run_in_scratch_dir('example2', None, pipeline)
 
 print "example2.py: pipeline run successful!"
 print "You can view the result at http://frb1.physics.mcgill.ca:5000/"

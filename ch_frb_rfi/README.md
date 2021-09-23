@@ -1,6 +1,8 @@
-### Transform Chain Version 1.5
+### Transform Chain Version 1.6
 
 Version History:
+
+   - 1.6: Introduced auxiliary chains, new logic for controlling the buffer and negative rfi_levels.
 
    - 1.5: An advanced chain with fine-tuned parameters. Tested on *days* of incoherent-beam acquisitions by the CHIME Pathfinder. 
 

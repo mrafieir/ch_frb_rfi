@@ -1,4 +1,4 @@
 # Makefile.local for frb-compute-0.physics.mcgill.ca (a CHIME L1 node)
 
 # Directory where Python modules will be installed
-PYDIR=$(HOME)/lib/python2.7/site-packages
+PYDIR ?= $(HOME)/lib/python2.7/site-packages

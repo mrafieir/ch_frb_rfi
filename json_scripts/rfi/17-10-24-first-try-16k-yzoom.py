@@ -13,8 +13,8 @@ import rf_pipelines
 # to prevent git-managed json files from being modified accidentally.
 clobber = False
 
-
 params = ch_frb_rfi.transform_parameters(plot_downsample_nt = 16,
+                                         two_pass = False,
                                          plot_nxpix = 256,
                                          plot_nypix = 1024,
                                          plot_nzoom = 4,
@@ -40,7 +40,7 @@ t1k = ch_frb_rfi.transform_chain(params)
 p1k = rf_pipelines.pipeline(t1k)
 
 t16k = [ rf_pipelines.wi_sub_pipeline(p1k, nfreq_out=1024, nds_out=1) ]
-t16k += ch_frb_rfi.chains.detrender_chain(params, ix=0)
+t16k += ch_frb_rfi.chains.detrender_chain(params, ix=0, jx=1)
 p16k = rf_pipelines.pipeline(t16k)
 
 for (pobj, suffix) in [ (p1k,'1k'), (p16k,'16k') ]:

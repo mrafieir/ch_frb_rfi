@@ -10,14 +10,14 @@ def make_rundir(topdir, run_name):
     """
     Returns (dirname, basename) pair.
 
-    The 'topdir' argument should be 'web_viewer' or 'scratch_pipelines' 
-    (These are subdirectories of /data2 on frb1.physics.mcgill.ca.)
+    The 'topdir' argument should be 'web_viewer' or 'scratch_pipelines'
+    (These are subdirectories of /frb-archiver1 on cfdn7)
 
     The 'run_name' argument should be a descriptive string such as 'example2'.
     """
 
     basename = '%s-%s' % (run_name, time.strftime('%y-%m-%d-%X'))
-    dirname = os.path.join('/data2', topdir, os.environ['USER'])
+    dirname = os.path.join('/frb-archiver1', topdir, os.environ['USER'])
     return (dirname, basename)
 
 
@@ -67,8 +67,7 @@ def make_pipeline(*args):
 
 def run_for_web_viewer(run_name, *args):
     """
-    Runs a pipeline, with output directory chosen appropriately for the web viewer
-    at frb1.physics.mcgill.ca.
+    Runs a pipeline, with output directory chosen appropriately for the web viewer on cfdn7.
 
     The 'run_name' argument should be a short descriptive string.  The pipeline rundir 
     will look schematically like "(username)/(run_name)_(time)".
@@ -93,7 +92,7 @@ def run_for_web_viewer(run_name, *args):
 def run_in_scratch_dir(run_name, dirname, *args):
     """
     Runs a pipeline in
-        - a subdirectory of /data2/scratch_pipelines (if dirname is None)
+        - a subdirectory of /frb-archiver1/scratch_pipelines (if dirname is None)
         or
         - dirname (if dirname is specified properly)
 
