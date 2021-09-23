@@ -49,9 +49,9 @@ class transform_parameters:
        - detrend_last: if True, then the RFI transform chain ends with a chain of detrenders.
            This is required for removing intensity residuals due to preceding transforms.
 
-       - aux_detrend_first: if True, then appends auxiliary detrenders to the first inner loop.
+       - aux_detrend_first: if True, then appends auxiliary detrenders to the very first inner loop.
 
-       - aux_clip_first: if True, then appends auxiliary clippers to the end of the first inner loop.
+       - aux_clip_first: if True, then appends auxiliary clippers to the very first inner loop.
 
        - aux_clip_last: if True, then appends auxiliary clippers to the last outer loop.
 
