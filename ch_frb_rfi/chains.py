@@ -298,8 +298,8 @@ def detrender_chain(parameters, ix, jx, aux=False):
             ret = [ rf_pipelines.polynomial_detrender(polydeg=4, axis='time', nt_chunk=parameters.detrend_nt) ]
 
             # AXIS_FREQ (nt_chunk=0 is OK here)
+            deg = 4 if ((parameters.rfi_level < 0) and parameters.aux_detrend_first) else 12
             if parameters.spline:
-                deg = 4 if ((parameters.rfi_level < 0) and parameters.aux_detrend_first) else 12
                 ret += [ rf_pipelines.spline_detrender(nbins=deg/2, axis='freq', nt_chunk=0) ]
             else:
                 ret += [ rf_pipelines.polynomial_detrender(polydeg=deg, axis='freq', nt_chunk=0) ]
