@@ -25,7 +25,7 @@ from .chains import clipper_chain, \
 from .transforms.transform_template import transform_template
 from .transforms.write_mask import WriteWeights
 
-from utils import run_for_web_viewer, run_in_scratch_dir, sample
+from utils import run_for_web_viewer, run_in_scratch_dir, sample, data_path
 
 # Example syntax: ch_frb_rfi.acquisitions.toy()
 from . import acquisitions

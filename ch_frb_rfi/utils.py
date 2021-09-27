@@ -21,6 +21,27 @@ def make_rundir(topdir, run_name):
     return (dirname, basename)
 
 
+def data_path(filename, envar='RFIDATA', mode='w'):
+    """Returns an absolute path to a ch_frb_rfi_data file."""
+
+    assert isinstance(filename, str)
+    assert isinstance(envar, str)
+    assert envar in os.environ, '%s has not been defined!' % envar
+    assert mode in ('r', 'w')
+
+    r = os.environ[envar]
+
+    if not os.path.exists(r):
+        raise RuntimeError('ch_frb_rfi.data_path: invalid path for %s: %s' % (envar, r))
+
+    f = os.path.join(r, filename)
+
+    if (not os.path.exists(f)) and (mode == 'r'):
+        raise RuntimeError('ch_frb_rfi.data_path: %s does not exist in %s' % (filename, f))
+
+    return f
+
+
 def _add_to_pipeline(p, *args):
     """
     Helper function which appends pipeline_objects to a pipeline.
