@@ -6,13 +6,13 @@ import ch_frb_rfi
 # If 'clobber' is False, then when a json file is created with rf_pipelines.json_write(filename, j),
 # we throw an exception if 'filename' already exists, and its contents differ from 'j'.  This is
 # to prevent git-managed json files from being modified accidentally.
-clobber = True
+clobber = False
 
 # Filenames are constructed from 'stems' as bonsai_analysis_$(stem).hdf5
 stem_list = [ 'noups_nbeta2_v1' ]
 
 for stem in stem_list:
-    config_filename = '/frb-archiver-1/ch_frb_rfi_data/bonsai_configs/bonsai_analysis_%s.hdf5' % stem
+    config_filename = ch_frb_rfi.data_path('bonsai_configs/bonsai_analysis_%s.hdf5' % stem)
     json_filename1 = '../../json_files/bonsai_16k/bonsai_analysis_%s.json' % stem
     json_filename2 = '../../json_files/bonsai_16k/bonsai_analysis_%s-noplot.json' % stem
 
