@@ -9,7 +9,7 @@ import ch_frb_rfi
 clobber = False
 
 # Filenames are constructed from 'stems' as bonsai_analysis_$(stem).hdf5
-stem_list = [ 'noups_nbeta2_v1' ]
+stem_list = [ 'noups_nbeta1_v1', 'noups_nbeta2_v1' ]
 
 for stem in stem_list:
     config_filename = ch_frb_rfi.data_path('bonsai_configs/bonsai_analysis_%s.hdf5' % stem)

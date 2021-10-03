@@ -1,0 +1,22 @@
+{
+    "use_analytic_normalization": false, 
+    "fill_rfi_mask": true, 
+    "n_zoom": 4, 
+    "hdf5_output_filename": null, 
+    "class_name": "bonsai_dedisperser_python", 
+    "dynamic_plotter": false, 
+    "deallocate_between_substreams": false, 
+    "global_max_tracker_dm_max": null, 
+    "img_prefix": "triggers", 
+    "img_ndm": 1024, 
+    "img_nt": 256, 
+    "global_max_tracker_dm_min": null, 
+    "config_filename": "/frb-archiver-1/ch_frb_rfi_data/bonsai_configs/bonsai_analysis_noups_nbeta1_v1.hdf5", 
+    "downsample_nt": 16, 
+    "L1b_config": null, 
+    "plot_all_trees": true, 
+    "track_global_max": false, 
+    "nt_per_hdf5_file": 0, 
+    "plot_threshold1": 7, 
+    "plot_threshold2": 10
+}
