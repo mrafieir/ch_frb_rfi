@@ -138,5 +138,17 @@
     [
         "rfi_storm_20210305_14_beam_0014", 
         "rfi-storms/rfi_storm_20210305_14_beam_0014.json"
+    ], 
+    [
+        "rfi_storm_20211001_1097_beam_1097", 
+        "rfi-storms/rfi_storm_20211001_1097_beam_1097.json"
+    ], 
+    [
+        "rfi_storm_20211001_2233_beam_2233", 
+        "rfi-storms/rfi_storm_20211001_2233_beam_2233.json"
+    ], 
+    [
+        "rfi_storm_20211001_3096_beam_3096", 
+        "rfi-storms/rfi_storm_20211001_3096_beam_3096.json"
     ]
 ]
