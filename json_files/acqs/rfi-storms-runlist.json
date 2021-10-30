@@ -1,21 +1,5 @@
 [
     [
-        "rfi_storm_20200811_82_beam_0082", 
-        "rfi-storms/rfi_storm_20200811_82_beam_0082.json"
-    ], 
-    [
-        "rfi_storm_20200812_1096_beam_1096", 
-        "rfi-storms/rfi_storm_20200812_1096_beam_1096.json"
-    ], 
-    [
-        "rfi_storm_20200812_2012_beam_2012", 
-        "rfi-storms/rfi_storm_20200812_2012_beam_2012.json"
-    ], 
-    [
-        "rfi_storm_20200813_250_beam_0250", 
-        "rfi-storms/rfi_storm_20200813_250_beam_0250.json"
-    ], 
-    [
         "rfi_storm_20201001_83_beam_0083", 
         "rfi-storms/rfi_storm_20201001_83_beam_0083.json"
     ], 
@@ -26,22 +10,6 @@
     [
         "rfi_storm_20201001_89_beam_0089", 
         "rfi-storms/rfi_storm_20201001_89_beam_0089.json"
-    ], 
-    [
-        "rfi_storm_20201014_171_beam_0171", 
-        "rfi-storms/rfi_storm_20201014_171_beam_0171.json"
-    ], 
-    [
-        "rfi_storm_20201014_178_beam_0178", 
-        "rfi-storms/rfi_storm_20201014_178_beam_0178.json"
-    ], 
-    [
-        "rfi_storm_20201014_180_beam_0180", 
-        "rfi-storms/rfi_storm_20201014_180_beam_0180.json"
-    ], 
-    [
-        "rfi_storm_20201014_250_beam_0250", 
-        "rfi-storms/rfi_storm_20201014_250_beam_0250.json"
     ], 
     [
         "rfi_storm_20201014_3_beam_0003", 
@@ -56,24 +24,12 @@
         "rfi-storms/rfi_storm_20201014_64_beam_0064.json"
     ], 
     [
-        "rfi_storm_20201030_94_beam_0094", 
-        "rfi-storms/rfi_storm_20201030_94_beam_0094.json"
-    ], 
-    [
         "rfi_storm_20210201_180_beam_0180", 
         "rfi-storms/rfi_storm_20210201_180_beam_0180.json"
     ], 
     [
         "rfi_storm_20210201_196_beam_0196", 
         "rfi-storms/rfi_storm_20210201_196_beam_0196.json"
-    ], 
-    [
-        "rfi_storm_20210201_253_beam_0253", 
-        "rfi-storms/rfi_storm_20210201_253_beam_0253.json"
-    ], 
-    [
-        "rfi_storm_20210201_51_beam_0051", 
-        "rfi-storms/rfi_storm_20210201_51_beam_0051.json"
     ], 
     [
         "rfi_storm_20210201_52_beam_0052", 
@@ -88,10 +44,6 @@
         "rfi-storms/rfi_storm_20210220_0156_beam_0156.json"
     ], 
     [
-        "rfi_storm_20210222_0060_beam_0060", 
-        "rfi-storms/rfi_storm_20210222_0060_beam_0060.json"
-    ], 
-    [
         "rfi_storm_20210222_0089_beam_0089", 
         "rfi-storms/rfi_storm_20210222_0089_beam_0089.json"
     ], 
@@ -100,44 +52,24 @@
         "rfi-storms/rfi_storm_20210222_0147_beam_0147.json"
     ], 
     [
-        "rfi_storm_20210223_0074_beam_0074", 
-        "rfi-storms/rfi_storm_20210223_0074_beam_0074.json"
-    ], 
-    [
-        "rfi_storm_20210223_0095_beam_0095", 
-        "rfi-storms/rfi_storm_20210223_0095_beam_0095.json"
-    ], 
-    [
-        "rfi_storm_20210223_0162_beam_0162", 
-        "rfi-storms/rfi_storm_20210223_0162_beam_0162.json"
-    ], 
-    [
-        "rfi_storm_20210224_1074_beam_1074", 
-        "rfi-storms/rfi_storm_20210224_1074_beam_1074.json"
-    ], 
-    [
-        "rfi_storm_20210224_1163_beam_1163", 
-        "rfi-storms/rfi_storm_20210224_1163_beam_1163.json"
-    ], 
-    [
-        "rfi_storm_20210224_155_beam_0155", 
-        "rfi-storms/rfi_storm_20210224_155_beam_0155.json"
-    ], 
-    [
-        "rfi_storm_20210224_68_beam_0068", 
-        "rfi-storms/rfi_storm_20210224_68_beam_0068.json"
-    ], 
-    [
-        "rfi_storm_20210226_158_beam_0158", 
-        "rfi-storms/rfi_storm_20210226_158_beam_0158.json"
-    ], 
-    [
-        "rfi_storm_20210226_96_beam_0096", 
-        "rfi-storms/rfi_storm_20210226_96_beam_0096.json"
-    ], 
-    [
         "rfi_storm_20210305_14_beam_0014", 
         "rfi-storms/rfi_storm_20210305_14_beam_0014.json"
+    ], 
+    [
+        "rfi_storm_20210620_152_beam_0152", 
+        "rfi-storms/rfi_storm_20210620_152_beam_0152.json"
+    ], 
+    [
+        "rfi_storm_20210809_130_beam_0130", 
+        "rfi-storms/rfi_storm_20210809_130_beam_0130.json"
+    ], 
+    [
+        "rfi_storm_20210809_220_beam_0220", 
+        "rfi-storms/rfi_storm_20210809_220_beam_0220.json"
+    ], 
+    [
+        "rfi_storm_20210809_35_beam_0035", 
+        "rfi-storms/rfi_storm_20210809_35_beam_0035.json"
     ], 
     [
         "rfi_storm_20211001_1097_beam_1097", 
@@ -150,5 +82,45 @@
     [
         "rfi_storm_20211001_3096_beam_3096", 
         "rfi-storms/rfi_storm_20211001_3096_beam_3096.json"
+    ], 
+    [
+        "rfi_storm_20211021_1050_beam_1050", 
+        "rfi-storms/rfi_storm_20211021_1050_beam_1050.json"
+    ], 
+    [
+        "rfi_storm_20211021_1100_beam_1100", 
+        "rfi-storms/rfi_storm_20211021_1100_beam_1100.json"
+    ], 
+    [
+        "rfi_storm_20211021_1240_beam_1240", 
+        "rfi-storms/rfi_storm_20211021_1240_beam_1240.json"
+    ], 
+    [
+        "rfi_storm_20211022_1235_beam_1235", 
+        "rfi-storms/rfi_storm_20211022_1235_beam_1235.json"
+    ], 
+    [
+        "rfi_storm_20211022_2245_beam_2245", 
+        "rfi-storms/rfi_storm_20211022_2245_beam_2245.json"
+    ], 
+    [
+        "rfi_storm_20211022_240_beam_0240", 
+        "rfi-storms/rfi_storm_20211022_240_beam_0240.json"
+    ], 
+    [
+        "rfi_storm_20211028_150_beam_0150", 
+        "rfi-storms/rfi_storm_20211028_150_beam_0150.json"
+    ], 
+    [
+        "rfi_storm_20211029_150_beam_0150", 
+        "rfi-storms/rfi_storm_20211029_150_beam_0150.json"
+    ], 
+    [
+        "rfi_storm_20211029_87_beam_0087", 
+        "rfi-storms/rfi_storm_20211029_87_beam_0087.json"
+    ], 
+    [
+        "rfi_storm_20211029_94_beam_0094", 
+        "rfi-storms/rfi_storm_20211029_94_beam_0094.json"
     ]
 ]
