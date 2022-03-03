@@ -1144,7 +1144,11 @@
             "nfreq_out": 1024, 
             "w_cutoff": 0, 
             "Dt": 0
-        }, 
+        },
+        {
+            "class_name": "chime_slow_pulsar_writer",
+            "nt_chunk": 1024
+        },
         {
             "class_name": "polynomial_detrender", 
             "epsilon": 0.01, 
